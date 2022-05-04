@@ -23,7 +23,7 @@ function App() {
   const[clients, setClients] = useState([])
 
   const fetchServices = async () => {
-    const response = await fetch("http://127.0.0.1:8000/api/services")
+    const response = await fetch("https://plabo.pythonanywhere.com/api/services")
     setServices(await response.json())
     }
 
@@ -33,7 +33,7 @@ function App() {
     }
     
   const fetchClients = async () => {
-    const response = await fetch("http://127.0.0.1:8000/api/clients")
+    const response = await fetch("https://plabo.pythonanywhere.com/api/clients")
     setClients(await response.json())
     }
 
