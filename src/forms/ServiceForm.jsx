@@ -58,7 +58,7 @@ function ServiceForm({onClose, service, services, setServices}){
                 'estimed_hours': durationHours,
                 'estimed_mins': durationMins
         }
-        const response = await fetch('http://127.0.0.1:8000/api/createservice',{
+        const response = await fetch('https://plabo.pythonanywhere.com/api/createservice',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -81,7 +81,7 @@ function ServiceForm({onClose, service, services, setServices}){
             'estimed_mins': durationMins
     }
 
-    const response = await fetch('http://127.0.0.1:8000/api/updateservice/'+service.id+'/',{
+    const response = await fetch('https://plabo.pythonanywhere.com/api/updateservice/'+service.id+'/',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

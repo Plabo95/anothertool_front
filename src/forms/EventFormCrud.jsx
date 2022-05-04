@@ -52,7 +52,7 @@ export default function EventFormCrud({onClose, event, events, setEvents, servic
             'note': note,
             'title': title,
     }
-    const response = await fetch('http://127.0.0.1:8000/api/createdate',{
+    const response = await fetch('https://plabo.pythonanywhere.com/api/createdate',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ export default function EventFormCrud({onClose, event, events, setEvents, servic
         'note': note,
         'title': title,
       }
-    const response = await fetch('http://127.0.0.1:8000/api/updatedate/'+event.id+'/', {
+    const response = await fetch('https://plabo.pythonanywhere.com/api/'+event.id+'/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ export default function EventFormCrud({onClose, event, events, setEvents, servic
   const deleteDate = async (e) => {
     e.preventDefault()
     console.log('Deleting', event.id)
-    fetch('http://127.0.0.1:8000/api/deletedate/' + event.id, {method: 'DELETE'})
+    fetch('https://plabo.pythonanywhere.com/api/' + event.id, {method: 'DELETE'})
     .then(setEvents(events.filter(item => item.id!==event.id)))
     }
 

@@ -50,7 +50,7 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
             'note': note,
             'title': title,
     }
-    const response = await fetch('http://127.0.0.1:8000/api/createdate',{
+    const response = await fetch('https://plabo.pythonanywhere.com/api/createdate',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
         'note': note,
         'title': title,
       }
-    const response = await fetch('http://127.0.0.1:8000/api/updatedate/'+event.id+'/', {
+    const response = await fetch('https://plabo.pythonanywhere.com/api/updatedate/'+event.id+'/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

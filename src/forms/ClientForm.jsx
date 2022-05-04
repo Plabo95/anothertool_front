@@ -44,7 +44,7 @@ function ClientForm({onClose, clients, client, setClients}){
                 'telf': telf,
         }
 
-        const response = await fetch('http://127.0.0.1:8000/api/createclient',{
+        const response = await fetch('https://plabo.pythonanywhere.com/api/createclient',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ function ClientForm({onClose, clients, client, setClients}){
             'car': car,
             'telf': telf,
     }
-    const response = await fetch('http://127.0.0.1:8000/api/updateclient/'+client.id+'/',{
+    const response = await fetch('https://plabo.pythonanywhere.com/api/updateclient/'+client.id+'/',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

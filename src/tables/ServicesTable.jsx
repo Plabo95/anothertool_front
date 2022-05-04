@@ -14,7 +14,7 @@ function ServicesTable({servicelist}){
     const[sService, setSService] = useState()               //selected service (when edditing)
 
     const deleteService = async (e) => {      
-        fetch('http://127.0.0.1:8000/api/deleteservice/' +e, {method: 'DELETE'})
+        fetch('https://plabo.pythonanywhere.com/api/deleteservice/' +e, {method: 'DELETE'})
         .then(setServices(services.filter(item => item.id!==e)))
         }
     

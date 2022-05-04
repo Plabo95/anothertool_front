@@ -10,7 +10,7 @@ function Nextsidebar({datelist}){
         },[datelist])
 
     const fetchNextDates = async () => {
-        const response = await fetch("http://127.0.0.1:8000/api/nextdates")
+        const response = await fetch("https://plabo.pythonanywhere.com/api/nextdates")
         setNextDates(await response.json())
         }
 

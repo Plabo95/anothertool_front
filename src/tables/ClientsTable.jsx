@@ -13,7 +13,7 @@ function ClientsTable({clientlist}){
 
     //Clients
     const deleteClient = async (e) => {
-        fetch('http://127.0.0.1:8000/api/deleteclient/' + e, {method: 'DELETE'})
+        fetch('https://plabo.pythonanywhere.com/api/deleteclient/' + e, {method: 'DELETE'})
         .then(setClients(clients.filter(item => item.id!==e)))
         }
 

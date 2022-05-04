@@ -21,7 +21,7 @@ function EventsTable({datelist, servicelist, clientlist}){
     
 
     const deleteDate = async (e) => {      
-        fetch('http://127.0.0.1:8000/api/deletedate/' +e, {method: 'DELETE'})
+        fetch('https://plabo.pythonanywhere.com/api/deletedate/' +e, {method: 'DELETE'})
         setEvents(events.filter(item => item.id!==e))
     }  
     function handleEdit(e){
