@@ -1,9 +1,38 @@
 import React, {useState, useEffect} from 'react'
 import {Flex, Heading, Text} from '@chakra-ui/react'
-import {Stat,StatLabel,StatNumber,StatHelpText,StatArrow,StatGroup, CircularProgress, CircularProgressLabel} from '@chakra-ui/react'
+import {Stat,StatLabel,StatNumber,StatHelpText,StatArrow,StatGroup, CircularProgress, CircularProgressLabel, Box} from '@chakra-ui/react'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+export const data = {
+    labels: ['ML', 'Integral', 'MP', 'Completa',],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [12, 19, 3, 5,],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
 function Analytics(){
     const [analytics, setAnalytics] = useState()
+
 
     const fetchAnalytics = async () => {
         console.log('fetchAnalytics')
@@ -36,9 +65,11 @@ function Analytics(){
                 </Stat>
             </StatGroup>
             </Flex>
-            <Flex>
-             <StatGroup w="100%" align="center" justify="center"> 
-                <Stat m="5" p="3" border='1px' borderColor='gray.300' borderRadius="lg">
+            
+            <Flex align='center' justify='space-between' w='60%' gap='6'>
+             <StatGroup w="100%" align='center'> 
+
+                <Stat m="5" p="3" border='1px'  borderColor='gray.300' borderRadius="lg">
                     <StatLabel>Ganancias totales</StatLabel>
                     <StatNumber>{analytics.total_gains} € </StatNumber>
                     <StatHelpText>
@@ -46,6 +77,7 @@ function Analytics(){
                         23.36%
                     </StatHelpText>
                 </Stat>
+
                 <Stat m="5" p="3" border='1px' borderColor='gray.300' borderRadius="lg">
                     <StatLabel>Ganancias/cita</StatLabel>
                     <StatNumber>{analytics.avg_gains} €</StatNumber> 
@@ -53,9 +85,19 @@ function Analytics(){
                         <StatArrow type='increase' />
                         5.46%
                     </StatHelpText>
-                </Stat>   
+                </Stat>  
+                <Box w="300">
+                    <Doughnut data={data} />
+                </Box> 
             </StatGroup>
             </Flex>
+
+            <Flex>
+
+
+
+            </Flex>
+
             </>}
         </Flex>
         

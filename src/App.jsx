@@ -49,9 +49,9 @@ function App() {
          <BrowserRouter>
           <Navbar/>  
           <Routes>       
-            <Route exact path="/" element={<CalendarComp localizer={localizer}  getEvents={fetchEvents} eventlist={myEvents} clientlist={clients} getClients={fetchClients} servicelist={services}  getServices={fetchServices}/>} />
-            <Route path="/analytics" element={<Analytics/>} />
-            <Route path="/garage" element={<Garage eventlist={myEvents} getEvents={fetchEvents} clientlist={clients} getClients={fetchClients} servicelist={services} getServices={fetchServices}/>} />
+            <Route exact path="klndr_front/" element={<CalendarComp localizer={localizer}  getEvents={fetchEvents} eventlist={myEvents} clientlist={clients} getClients={fetchClients} servicelist={services}  getServices={fetchServices}/>} />
+            <Route path="klndr_front/analytics" element={<Analytics/>} />
+            <Route path="klndr_front/garage" element={<Garage eventlist={myEvents} getEvents={fetchEvents} clientlist={clients} getClients={fetchClients} servicelist={services} getServices={fetchServices}/>} />
           </Routes>
         </BrowserRouter>
         </Flex>
