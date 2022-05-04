@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Box,Center, Button, Flex, Heading, Text} from '@chakra-ui/react'
+import {Flex, Heading, Text} from '@chakra-ui/react'
 import {Stat,StatLabel,StatNumber,StatHelpText,StatArrow,StatGroup, CircularProgress, CircularProgressLabel} from '@chakra-ui/react'
 
 function Analytics(){
@@ -7,7 +7,7 @@ function Analytics(){
 
     const fetchAnalytics = async () => {
         console.log('fetchAnalytics')
-        const response = await fetch("http://127.0.0.1:8000/api/analytics")
+        const response = await fetch("https://plabo.pythonanywhere.com/api/analytics")
         setAnalytics(await response.json())
         }
 
