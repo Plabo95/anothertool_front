@@ -28,6 +28,7 @@ function ClientForm({onClose, clients, client, setClients}){
     const onChangeName = (e) => {
         setName(e.target.value) 
       };
+
     const onChangeCar = (e) => {
         setCar(e.target.value) 
       };
@@ -41,7 +42,7 @@ function ClientForm({onClose, clients, client, setClients}){
         setLoadingCreate(false)
         onClose()
     }
-
+    
     const handleSubmit = async(e) => {
     setLoadingCreate(true)
     e.preventDefault()
@@ -80,7 +81,6 @@ function ClientForm({onClose, clients, client, setClients}){
                 closeDrawer()
             }
     }
-
     const  handleUpdate = async(e) => {
         e.preventDefault()
         const clientToUpdate ={
@@ -119,17 +119,19 @@ function ClientForm({onClose, clients, client, setClients}){
                 closeDrawer()
               }
     }
+
     return(
         <>
         <DrawerBody> 
             <FormControl>
                 <label> Nombre </label>
-                <Input type="text" onChange={onChangeName} placeholder={client? client.name : ' ' }/>
+                <Input onChange={onChangeName} placeholder={client? client.name : ' ' }/>
                 <label> Coche </label>
                 <Input type="text" onChange={onChangeCar} placeholder={client? client.car: 'Lexus IS200'}/>
                 <label> Teléfono </label>
                 <Input type="text" onChange={onChangeTelf} placeholder={client? client.telf: ''}/>
             </FormControl>
+
         </DrawerBody>
         <DrawerFooter>
           <Flex justify="right" columnGap="3" mt='3'>

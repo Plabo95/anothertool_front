@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import {DrawerBody, DrawerFooter, DrawerHeader,DrawerCloseButton, useToast} from '@chakra-ui/react'
-import {Button,Input, InputGroup, InputLeftElement, Text, Textarea, Stack, Flex, Select} from '@chakra-ui/react'
+import {Button,Input, InputGroup, InputLeftElement, Text, Textarea, Stack, Flex, Square} from '@chakra-ui/react'
 import {FormControl} from '@chakra-ui/react'
 import moment from 'moment';
 import SvgTime from  '../dist/Time'
+import {Select,} from "chakra-react-select";
+
 
 export default function EventForm({is_creating, onSave, onClose, handleClose, event, events, setEvents, servicelist, clientlist}) {
 
@@ -171,6 +173,19 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
   function getServiceName(id){
     return(servicelist.filter(item => item.id!==id)[0].name)
   }
+  //mapeo de clientes para que los lea el select list
+  const clients = clientlist.map((client)=>{
+    return {
+      value: client.id,
+      label: client.name,
+      }
+      })
+  const services = servicelist.map((service)=>{
+    return {
+      value: service.id,
+      label: <Flex align='center' gap={3} ><Square size='18px' bg={service.color} rounded="md"/> {service.name}</Flex> ,
+      }
+      })
 
   return (
     <>
@@ -181,21 +196,13 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
       </Flex>
     </DrawerHeader>
     <DrawerBody>
+    
       <FormControl px='3' >
         <Stack spacing={4}>           
           <Input  variant='flushed' onChange={e => setTitle(e.target.value)} placeholder={!is_creating? event.title  : 'Añadir título'}/>
-          <Select placeholder={!is_creating? getServiceName(event.service)  : 'Servicio'} onChange={e => setService(e.target.value)} >
-            {servicelist.map(service=>
-                <option key={service.id} value={service.id}> {service.name} </option>
-            )}
-          </Select>
-          <Select placeholder={!is_creating? getClientName(event.client)  : 'Cliente'} onChange={e => setClient(e.target.value)} >
-              {clientlist.map(client=>
-                  <option key={client.id} value={client.id}> {client.name} </option>
-              )}
-          </Select> 
+          <Select onChange={e => setService(e.value)} noOptionsMessage={()=>'No hay servicios'}  maxMenuHeight={120} placeholder={'Servicio'} defaultInputValue={!is_creating? getServiceName(event.service)  : ''} options={services} />
+          <Select onChange={e => setClient(e.value)} noOptionsMessage={()=>'No hay clientes'}  maxMenuHeight={120} placeholder={'Cliente'} defaultInputValue={!is_creating? getClientName(event.client)  : ''} options={clients} />
           </Stack> 
-
           {event &&  
           <Flex direction='column' gap='2' my='6' >
           <Flex align='center' justify='start' gap={3}> <SvgTime/>  <Text>{duration()}</Text> </Flex>                 
