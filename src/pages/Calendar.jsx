@@ -76,9 +76,6 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
     setSEvent()
     onClose()
   }
-  function handleDelete(){
-    onClose();
-  }
 
   //Calendar event name display props
   function handleEventName(e){

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { TwitterPicker } from 'react-color';
-import {Box, Heading, Button, CloseButton, Flex, FormControl,FormLabel,FormErrorMessage,FormHelperText,Input, InputGroup, InputLeftAddon} from '@chakra-ui/react'
+import {Button, Flex, FormControl,FormLabel,FormErrorMessage,Input, useToast, Square} from '@chakra-ui/react'
 import {NumberInput, NumberInputField, NumberInputStepper,NumberIncrementStepper,NumberDecrementStepper,} from '@chakra-ui/react'
 import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
 
@@ -12,11 +12,15 @@ function ServiceForm({onClose, service, services, setServices}){
     const[durationMins, setDurationMins] = useState()
     const[durationHours, setDurationHours] = useState()
 
+    const toast = useToast()
+    const[loadingDelete, setLoadingDelete] = useState(false)
+    const[loadingCreate, setLoadingCreate] = useState(false)
+
     useEffect(() => {
         if(service){
             setName(service.name)
             setPrice(service.baseprice)
-            setColour(service.colour)
+            setColour(service.color)
             setDurationMins(service.estimed_mins)
             setDurationHours(service.estimed_hours)
         }
@@ -27,20 +31,15 @@ function ServiceForm({onClose, service, services, setServices}){
         setDurationMins()
         setDurationHours()}
     }, [service]);
-
-
     const onChangeName = (e) => {
         setName(e.target.value)
       };
-
     const onChangePrice = (e) => {
         setPrice(e.target.value)
       };
-
     const onChangeColour = (e) => {
         setColour(e.hex)
       };
-
     const onChangeDurationMins = (e) => {
         //console.log(e)
         setDurationMins(e)
@@ -49,7 +48,14 @@ function ServiceForm({onClose, service, services, setServices}){
         setDurationHours(e)
       };    
 
+    function closeDrawer(){
+        setLoadingDelete(false)
+        setLoadingCreate(false)
+        onClose()
+    }
+
     const handleSubmit = async(e) => {
+    setLoadingCreate(true)
     e.preventDefault()
         const serviceToCreate ={
                 'name': name,
@@ -65,13 +71,31 @@ function ServiceForm({onClose, service, services, setServices}){
             },
             body: JSON.stringify(serviceToCreate)
             })
-        //console.log(await response.json())
+        const rstatus = response.status
+        if(rstatus >= 200 && rstatus<300){
+            toast({
+            title: 'Servicio guardado',
+            status: 'success',
+            duration: 6000,
+            isClosable: true,
+            }) 
         const newdata= await response.json()
         setServices((services) => [...services, newdata])
-        onClose()
+        closeDrawer()
+        }
+        else{
+            toast({
+              title: 'Error al guardar ',
+              description: "Código de error"+ rstatus +' intentalo mas tarde' ,
+              status: 'error',
+              duration: 6000,
+              isClosable: true,
+              })
+              closeDrawer()
+            }
     }
-
     const  handleUpdate = async(e) => {
+        setLoadingCreate(true)
         e.preventDefault()
         const serviceToUpdate ={
             'name': name,
@@ -80,7 +104,6 @@ function ServiceForm({onClose, service, services, setServices}){
             'estimed_hours': durationHours,
             'estimed_mins': durationMins
     }
-
     const response = await fetch('https://plabo.pythonanywhere.com/api/updateservice/'+service.id+'/',{
         method: 'POST',
         headers: {
@@ -88,12 +111,30 @@ function ServiceForm({onClose, service, services, setServices}){
         },
         body: JSON.stringify(serviceToUpdate)
         })
+        const rstatus = response.status
+        if(rstatus >= 200 && rstatus < 300){
+          toast({
+            title: 'Servicio guardado',
+            status: 'success',
+            duration: 6000,
+            isClosable: true,
+          }) 
         const newdata= await response.json()
         setServices(services.filter(item => item.id!==service.id)) //creo una lista con todos menos el editado
         setServices((services) => [...services, newdata]) //añado el editado a la lista
-        onClose()
+        closeDrawer()
+        }
+        else{
+            toast({
+              title: 'Error al guardar ',
+              description: "Código de error"+ rstatus +' intentalo mas tarde' ,
+              status: 'error',
+              duration: 6000,
+              isClosable: true,
+              })
+              closeDrawer()
+            }
     }
-
     return(
         <>
         <DrawerBody>    
@@ -102,7 +143,10 @@ function ServiceForm({onClose, service, services, setServices}){
             <Input my='3' onChange={onChangeName} placeholder={service? service.name : ' '}/>
             <FormLabel> Precio </FormLabel>
             <Input my='3' onChange={onChangePrice} placeholder={service? service.baseprice: ' '}/>
-            <FormLabel my='3'> Color </FormLabel>
+            <Flex mb='3' justify='start' align='center' gap='3' >
+                <FormLabel my='3'> Color  </FormLabel>
+                <Square size='20px' bg={color} rounded="md"/>
+            </Flex>
             <TwitterPicker
                 onChangeComplete={onChangeColour}
                 width={240}
@@ -134,8 +178,8 @@ function ServiceForm({onClose, service, services, setServices}){
             <Flex  justify="right" columnGap="3" my='3'>
                 <Button variant='ghost' colorScheme='red' size='sm'  onClick={onClose} >Cancel</Button>
                 {service? 
-                    <Button colorScheme='orange' size='sm' onClick={handleUpdate} >  Guardar </Button>: 
-                    <Button colorScheme='orange' size='sm' onClick={handleSubmit} >  Guardar </Button>}
+                    <Button colorScheme='orange' size='sm' onClick={handleUpdate} isLoading={loadingCreate} loadingText='Guardando' >  Guardar </Button>: 
+                    <Button colorScheme='orange' size='sm' onClick={handleSubmit} isLoading={loadingCreate} loadingText='Guardando'>  Guardar </Button>}
             </Flex>  
             </DrawerFooter>    
         </>

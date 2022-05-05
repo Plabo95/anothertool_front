@@ -23,7 +23,7 @@ function Nextsidebar({datelist}){
                 <Box p='3' my='6' width="280px" boxShadow='xl' borderColor="gray.300" rounded="lg" >
                     <Flex my='5 'align='center' justify='space-between' gap={3}>
                     <Square size='18px' bg={event.service.color} rounded="md"/>  
-                    <Text fontSize='xl' >{event.client.car} {event.client.name} </Text>
+                    <Text fontSize='xl' >{event.client.car} </Text>
                     <Text fontSize='xl'> {moment(event.start).format("hh:mm")} </Text>
                     </Flex>              
                     <Text fontSize='sm' mt={1}> {event.service.name} </Text>

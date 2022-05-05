@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,Flex,IconButton} from '@chakra-ui/react'
+import React, {useState} from 'react'
+import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import ClientForm from '../forms/ClientForm'
 import SvgEdit from  './../dist/Edit'
@@ -7,15 +7,34 @@ import PopoverDelete from '../components/PopoverDelete'
 
 function ClientsTable({clientlist}){
 
+    const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const[clients, setClients] = useState(clientlist)
     const[ sClient, setSClient] = useState()
 
     //Clients
     const deleteClient = async (e) => {
-        fetch('https://plabo.pythonanywhere.com/api/deleteclient/' + e, {method: 'DELETE'})
-        .then(setClients(clients.filter(item => item.id!==e)))
+        const response = await fetch('https://plabo.pythonanywhere.com/api/deleteclient/' + e, {method: 'DELETE'})
+        const rstatus = response.status
+        if(rstatus >= 200 && rstatus<300){
+            toast({
+              title: 'Cliente borrado',
+              status: 'success',
+              duration: 6000,
+              isClosable: true,
+            })
+        setClients(clients.filter(item => item.id!==e))
         }
+        else{
+            toast({
+                title: 'Error al borrar ',
+                description: "Código de error"+ rstatus +' intentalo mas tarde' ,
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+                })
+            }
+    }
 
     function handleEdit(e){
         setSClient(e)
@@ -66,7 +85,7 @@ function ClientsTable({clientlist}){
             <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader>{sClient? 'Editar Cliente': 'Crear Cliente' }</DrawerHeader>                
-            <ClientForm onClose={onClose} client={sClient}/>
+            <ClientForm onClose={onClose} client={sClient} clients={clients} setClients={setClients}/>
             </DrawerContent>
         </Drawer>                    
      

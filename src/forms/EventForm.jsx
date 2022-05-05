@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useMemo } from 'react'
-import {Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay,DrawerContent,DrawerCloseButton, useDisclosure} from '@chakra-ui/react'
-import {Box, Button,Input, InputGroup, InputLeftElement, Text, Textarea, Stack, Flex, Heading, Select, CloseButton} from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import {DrawerBody, DrawerFooter, DrawerHeader,DrawerCloseButton, useToast} from '@chakra-ui/react'
+import {Button,Input, InputGroup, InputLeftElement, Text, Textarea, Stack, Flex, Select} from '@chakra-ui/react'
 import {FormControl} from '@chakra-ui/react'
 import moment from 'moment';
 import SvgTime from  '../dist/Time'
@@ -12,8 +12,10 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
   const[client, setClient] = useState()
   const[price, setPrice] = useState()
   const[note, setNote] = useState()
-  const[datein, setDatein] = useState(event.start)
-  const[dateout, setDateout] = useState(event.end)
+
+  const toast = useToast()
+  const[loadingDelete, setLoadingDelete] = useState(false)
+  const[loadingCreate, setLoadingCreate] = useState(false)
 
   useEffect(() => {
     if(is_creating === false){
@@ -37,13 +39,18 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
   const onChangeNote = (e) => {
       setNote(e.target.value)
     };
-    
+  function closeDrawer(){
+    setLoadingDelete(false)
+    setLoadingCreate(false)
+    onClose()
+  }
 
   const createDate = async (e) => {
+    setLoadingCreate(true)
     e.preventDefault()
     const eventToCreate ={
-            'start': moment(datein),
-            'end': moment(dateout),
+            'start': moment(event.start),
+            'end': moment(event.end),
             'client': client,
             'extraprice': price,
             'service': service,
@@ -57,16 +64,36 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
         },
         body: JSON.stringify(eventToCreate)
         })
+    const rstatus = response.status
+    if(rstatus >= 200 && rstatus<300){
+      toast({
+        title: 'Evento guardado',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+      }) 
     const data = await response.json();
     onSave()  //deleteo previsualizacion 
     setEvents((events) => [...events, data]);
-          
-}
+    closeDrawer()
+    }
+    else{
+      toast({
+        title: 'Error al guardar ',
+        description: "Código de error"+ rstatus +' intentalo mas tarde' ,
+        status: 'error',
+        duration: 6000,
+        isClosable: true,
+        })
+        closeDrawer()
+      }
+  }
   const updateDate = async (e) => {
+    setLoadingCreate(true)
     e.preventDefault()
       const eventToUpdate ={
-        'start': datein,
-        'end': dateout,
+        'start': event.start,
+        'end': event.end,
         'client': client,
         'extraprice': price,
         'service': service,
@@ -80,18 +107,57 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
         },
         body: JSON.stringify(eventToUpdate)
         })
-        const data = await response.json();
-        setEvents(events.filter(item => item.id!==event.id)); //deleteo el que he modificado para updatearlo
-        setEvents((events) => [...events, data]); 
-        onClose()
-    }
+        const rstatus = response.status
+        if(rstatus >= 200 && rstatus<300){
+          toast({
+            title: 'Evento guardado',
+            status: 'success',
+            duration: 6000,
+            isClosable: true,
+          }) 
+          const data = await response.json();
+          setEvents(events.filter(item => item.id!==event.id)); //deleteo el que he modificado para updatearlo
+          setEvents((events) => [...events, data]); 
+          closeDrawer()
+          }
+        else{
+          toast({
+            title: 'Error al guardar ',
+            description: "Código de error"+ rstatus +' intentalo mas tarde' ,
+            status: 'error',
+            duration: 6000,
+            isClosable: true,
+            })
+            closeDrawer()
+          }
+        }
+      
   const deleteDate = async (e) => {
+    setLoadingDelete(true)
     e.preventDefault()
-    console.log('Deleting', event.id)
-    fetch('http://127.0.0.1:8000/api/deletedate/' + event.id, {method: 'DELETE'})
-    .then(setEvents(events.filter(item => item.id!==event.id)),
-          onClose()
-    )}
+    const response = await fetch('https://plabo.pythonanywhere.com/api/deletedate/' + event.id, {method: 'DELETE'})
+    const rstatus = response.status
+    if(rstatus >= 200 && rstatus<300){
+      toast({
+        title: 'Evento borrado',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+      })
+      setEvents(events.filter(item => item.id!==event.id));
+      closeDrawer()
+      }
+    else{
+      toast({
+        title: 'Error al borrar ',
+        description: "Código de error"+ rstatus +' intentalo mas tarde' ,
+        status: 'error',
+        duration: 6000,
+        isClosable: true,
+        })
+        closeDrawer()
+      }
+    }
 
     // Event duration calculator
   function duration(){
@@ -155,12 +221,12 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
         <Flex  justify="right" columnGap="3" my='3'>             
           {!is_creating?
               <>
-                <Button variant='ghost' colorScheme='red' size='sm'  onClick={deleteDate} >Eliminar</Button>
-                <Button colorScheme='orange' size='sm' onClick={updateDate} >  Guardar </Button>
+                <Button variant='ghost' colorScheme='red' size='sm' isLoading={loadingDelete} loadingText='Borrando' onClick={deleteDate} >Eliminar</Button>
+                <Button colorScheme='orange' size='sm' onClick={updateDate} isLoading={loadingCreate} loadingText='Guardando'>  Guardar </Button>
               </>: 
               <>
               <Button variant='ghost' colorScheme='red' size='sm'  onClick={handleClose} >Cancel</Button>
-              <Button colorScheme='orange' size='sm' onClick={createDate} >  Crear </Button>
+              <Button colorScheme='orange' size='sm' onClick={createDate} isLoading={loadingCreate} loadingText='Guardando'>  Crear </Button>
               </>}
         </Flex> 
         </DrawerFooter>   

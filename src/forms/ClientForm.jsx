@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { TwitterPicker } from 'react-color';
-import {Box, Heading, Button, CloseButton, Flex, FormControl,FormLabel,FormErrorMessage,FormHelperText,Input, InputGroup, InputLeftAddon} from '@chakra-ui/react'
-import {NumberInput, NumberInputField, NumberInputStepper,NumberIncrementStepper,NumberDecrementStepper,} from '@chakra-ui/react'
+import { Button, useToast, Flex, FormControl,FormErrorMessage,FormHelperText,Input} from '@chakra-ui/react'
 import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
 
 function ClientForm({onClose, clients, client, setClients}){
@@ -10,6 +8,10 @@ function ClientForm({onClose, clients, client, setClients}){
     const[name, setName] = useState()
     const[car, setCar] = useState()
     const[telf, setTelf] = useState()
+
+    const toast = useToast()
+    const[loadingDelete, setLoadingDelete] = useState(false)
+    const[loadingCreate, setLoadingCreate] = useState(false)
 
     useEffect(() => {
         if(client){
@@ -26,36 +28,57 @@ function ClientForm({onClose, clients, client, setClients}){
     const onChangeName = (e) => {
         setName(e.target.value) 
       };
-
     const onChangeCar = (e) => {
         setCar(e.target.value) 
       };
-
     const onChangeTelf = (e) => {
         //console.log(e.hex)
         setTelf(e.target.value)
       };
-            
+        
+    function closeDrawer(){
+        setLoadingDelete(false)
+        setLoadingCreate(false)
+        onClose()
+    }
+
     const handleSubmit = async(e) => {
+    setLoadingCreate(true)
     e.preventDefault()
         const clientToCreate ={
                 'name': name,
                 'car': car,
                 'telf': telf,
         }
-
-        const response = await fetch('https://plabo.pythonanywhere.com/api/createclient',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(clientToCreate)
-            })
-            console.log(response)
-            //console.log(await response.json())
-            const newdata= await response.json()
-            setClients((clients) => [...clients, newdata])
-            onClose()
+    const response = await fetch('https://plabo.pythonanywhere.com/api/createclient',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(clientToCreate)
+        })
+    const rstatus = response.status
+    if(rstatus >= 200 && rstatus<300){
+        toast({
+        title: 'Cliente guardado',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+        }) 
+        const newdata= await response.json()
+        setClients((clients) => [...clients, newdata])
+        closeDrawer()
+        }
+        else{
+            toast({
+                title: 'Error al guardar ',
+                description: "Código de error"+ rstatus +' intentalo mas tarde' ,
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+                })
+                closeDrawer()
+            }
     }
 
     const  handleUpdate = async(e) => {
@@ -72,11 +95,29 @@ function ClientForm({onClose, clients, client, setClients}){
         },
         body: JSON.stringify(clientToUpdate)
         })
-        console.log(clientToUpdate)
+        const rstatus = response.status
+        if(rstatus >= 200 && rstatus<300){
+            toast({
+            title: 'Cliente guardado',
+            status: 'success',
+            duration: 6000,
+            isClosable: true,
+            }) 
         const newdata= await response.json()
         setClients(clients.filter(item => item.id!==client.id)) //creo una lista con todos menos el editado
         setClients((clients) => [...clients, newdata]) //añado el editado a la lista
-        onClose()
+        closeDrawer()
+        }
+        else{
+            toast({
+                title: 'Error al guardar ',
+                description: "Código de error"+ rstatus +' intentalo mas tarde' ,
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+                })
+                closeDrawer()
+              }
     }
     return(
         <>
@@ -94,8 +135,8 @@ function ClientForm({onClose, clients, client, setClients}){
           <Flex justify="right" columnGap="3" mt='3'>
               <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancel</Button>
               {client? 
-              <Button colorScheme='orange' size='sm' onClick={handleUpdate} >  Update </Button>: 
-              <Button colorScheme='orange' size='sm' onClick={handleSubmit} >  Create </Button>}
+              <Button colorScheme='orange' size='sm' onClick={handleUpdate} isLoading={loadingCreate} loadingText='Guardando'>  Update </Button>: 
+              <Button colorScheme='orange' size='sm' onClick={handleSubmit} isLoading={loadingCreate} loadingText='Guardando'>  Create </Button>}
           </Flex>  
         </DrawerFooter>
         </>
