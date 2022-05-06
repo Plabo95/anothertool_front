@@ -5,7 +5,7 @@ import {FormControl} from '@chakra-ui/react'
 import moment from 'moment';
 import SvgTime from  '../dist/Time'
 import {Select,} from "chakra-react-select";
-
+import PopoverClientForm from './PopoverClientForm'
 
 export default function EventForm({is_creating, onSave, onClose, handleClose, event, events, setEvents, servicelist, clientlist}) {
 
@@ -15,6 +15,7 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
   const[price, setPrice] = useState()
   const[note, setNote] = useState()
 
+  const[clients, setClients] = useState(clientlist)
   const toast = useToast()
   const[loadingDelete, setLoadingDelete] = useState(false)
   const[loadingCreate, setLoadingCreate] = useState(false)
@@ -160,7 +161,7 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
         closeDrawer()
       }
     }
-
+console.log(client)
     // Event duration calculator
   function duration(){
     const d = moment.duration(moment(event.end).diff(moment(event.start)))
@@ -174,7 +175,7 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
     return(servicelist.filter(item => item.id!==id)[0].name)
   }
   //mapeo de clientes para que los lea el select list
-  const clients = clientlist.map((client)=>{
+  const m_clients = clients.map((client)=>{
     return {
       value: client.id,
       label: client.name,
@@ -196,12 +197,14 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
       </Flex>
     </DrawerHeader>
     <DrawerBody>
-    
+
       <FormControl px='3' >
         <Stack spacing={4}>           
           <Input  variant='flushed' onChange={e => setTitle(e.target.value)} placeholder={!is_creating? event.title  : 'Añadir título'}/>
           <Select onChange={e => setService(e.value)} noOptionsMessage={()=>'No hay servicios'}  maxMenuHeight={120} placeholder={'Servicio'} defaultInputValue={!is_creating? getServiceName(event.service)  : ''} options={services} />
-          <Select onChange={e => setClient(e.value)} noOptionsMessage={()=>'No hay clientes'}  maxMenuHeight={120} placeholder={'Cliente'} defaultInputValue={!is_creating? getClientName(event.client)  : ''} options={clients} />
+          <Select onChange={e => setClient(e.value)} noOptionsMessage={()=>'No hay clientes'}  maxMenuHeight={120} placeholder={'Cliente'} defaultInputValue={client? getClientName(client)  : ''} options={m_clients} />
+          {is_creating === true && 
+            <PopoverClientForm setClients={setClients} setClient={setClient} />}    
           </Stack> 
           {event &&  
           <Flex direction='column' gap='2' my='6' >
