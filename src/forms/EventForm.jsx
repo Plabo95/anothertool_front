@@ -161,7 +161,6 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
         closeDrawer()
       }
     }
-console.log(client)
     // Event duration calculator
   function duration(){
     const d = moment.duration(moment(event.end).diff(moment(event.start)))
@@ -199,7 +198,7 @@ console.log(client)
     <DrawerBody>
 
       <FormControl px='3' >
-        <Stack spacing={4}>           
+        <Stack spacing={4} w="100%" >           
           <Input  variant='flushed' onChange={e => setTitle(e.target.value)} placeholder={!is_creating? event.title  : 'Añadir título'}/>
           <Select onChange={e => setService(e.value)} noOptionsMessage={()=>'No hay servicios'}  maxMenuHeight={120} placeholder={'Servicio'} defaultInputValue={!is_creating? getServiceName(event.service)  : ''} options={services} />
           <Select onChange={e => setClient(e.value)} noOptionsMessage={()=>'No hay clientes'}  maxMenuHeight={120} placeholder={'Cliente'} defaultInputValue={client? getClientName(client)  : ''} options={m_clients} />

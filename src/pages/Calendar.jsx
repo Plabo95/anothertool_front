@@ -9,18 +9,18 @@ import EventForm from '../forms/EventForm'
 
 export default function CalendarComp({localizer, eventlist, getEvents, servicelist, getServices, clientlist, getClients}) {
 
-  useEffect(() => {
-    getEvents();
-    getServices();
-    getClients();
-  }, []);
-
+      //fetch events when page Loads
   const[myEvents, setEvents] = useState(eventlist)
   const[creating, setCreating] = useState(false)
   const {isOpen, onOpen, onClose } = useDisclosure()
   const titleInput = React.useRef()
   const [sEvent, setSEvent] = useState()  //event selected
-   
+  const [bcView, setBCView] = useState('week');
+
+  useEffect(() => {           //Cargo los eventos en el estado cada vez que cambie el fetch
+    setEvents(eventlist);
+    },[eventlist])
+
   const events = myEvents.map((event)=>{
     return {
       id: event.id,
@@ -34,15 +34,19 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
 
 //Manage del selection timeframe
   function handleSelectSlot ({ start, end }){
-    if(creating) myEvents.pop()
-    onOpen()
-    setCreating(true)
-    const newevent = {
-      'start': (start),
-      'end': (end),
+    if(bcView==='month'){
+      setBCView('day')
     }
-    setSEvent(newevent) 
-    setEvents((myEvents) => [...myEvents, newevent])
+    else{
+      if(creating) myEvents.pop()
+      onOpen()
+      setCreating(true)
+      const newevent = {
+        'start': (start),
+        'end': (end),
+      }
+      setSEvent(newevent) 
+      setEvents((myEvents) => [...myEvents, newevent])}
     }
     
 
@@ -63,7 +67,6 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
   ) 
   function handleClose(){
     if(creating){
-      console.log('creating true. bororo ultimo')
       myEvents.pop()}
     setCreating(false)
     setSEvent()
@@ -133,8 +136,12 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
     <Flex w="100%" p="5" gap={6}>
         <Nextsidebar datelist={myEvents} />    
       <Calendar
+      dayLayoutAlgorithm={'no-overlap'} //algoritmo no overlappin
       defaultDate={defaultDate}
+      defaultView = {Views.WEEK}
       events={events}
+      view={bcView}
+      onView={setBCView}
       localizer={localizer}
       showMultiDayTimes
       views={views}
@@ -159,7 +166,7 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
       }}
       />
       </Flex>
-      <Drawer placement='right'onClose={handleClose} initialFocusRef={titleInput} isOpen={isOpen}>
+      <Drawer placement='right'  onClose={handleClose} initialFocusRef={titleInput} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <EventForm onClose={onClose} handleClose={handleClose} onSave={handleSave} is_creating={creating} event={sEvent} events={eventlist} servicelist={servicelist} clientlist={clientlist} setEvents={setEvents} />

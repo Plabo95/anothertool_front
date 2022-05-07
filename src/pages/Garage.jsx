@@ -6,12 +6,6 @@ import EventsTable from '../tables/EventsTable'
 
 function Garage({clientlist, eventlist, servicelist, getEvents, getServices, getClients}){
 
-    useEffect(() => {
-            getEvents();
-            getServices();
-            getClients();
-        }, []);
-
     return(
         <>
         <Flex w="100%" justify={'center'} mt={10}>

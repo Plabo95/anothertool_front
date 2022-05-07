@@ -14,12 +14,7 @@ function EventsTable({datelist, servicelist, clientlist}){
     const[events, setEvents] = useState(datelist)
     const[Fevents, setFevents] = useState(datelist)
     const[event, setEvent] = useState()               //selected service (when edditing)
-
-    useEffect(() => {
-        setFevents(events)
-      }, [events]);
     
-
     const deleteDate = async (e) => {      
         fetch('https://plabo.pythonanywhere.com/api/deletedate/' +e, {method: 'DELETE'})
         setEvents(events.filter(item => item.id!==e))

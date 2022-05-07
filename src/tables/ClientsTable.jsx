@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import ClientForm from '../forms/ClientForm'
@@ -7,10 +7,11 @@ import PopoverDelete from '../components/PopoverDelete'
 
 function ClientsTable({clientlist}){
 
+
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const[clients, setClients] = useState(clientlist)
-    const[ sClient, setSClient] = useState()
+    const[sClient, setSClient] = useState()
 
     //Clients
     const deleteClient = async (e) => {
