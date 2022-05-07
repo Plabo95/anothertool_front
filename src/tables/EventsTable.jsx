@@ -54,7 +54,7 @@ function EventsTable({datelist, servicelist, clientlist}){
         </InputGroup>
         </Flex>
         <Flex w="100%">    
-            <TableContainer mt='5' borderRadius='lg'>
+            <TableContainer mt='5' borderRadius='lg' w="100%">
                 <Table variant='simple' size='md'>
                 <Thead bg='#E9E9E9'>
                     <Tr>
@@ -75,7 +75,9 @@ function EventsTable({datelist, servicelist, clientlist}){
                             <Td>{moment(date.start).format("DD/MM/YYYY, hh:mm")}</Td>
                             <Td>{getClientName(date.client)}</Td>
                             <Td>{getServiceName(date.service)}</Td>
-                            <Td>{getTotalPrice(date)}</Td>
+                            <Td textAlign={'center'}> 
+                                {getTotalPrice(date)}
+                            </Td>
                             <Td>
                                 <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>} onClick={() => handleEdit(date)} ></IconButton> 
                                 <PopoverDelete onDelete={deleteDate} id={date.id} />
