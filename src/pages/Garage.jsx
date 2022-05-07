@@ -15,7 +15,7 @@ function Garage({clientlist, eventlist, servicelist, getEvents, getServices, get
     return(
         <>
         <Flex w="100%" justify={'center'} mt={10}>
-        <Tabs isFitted variant='enclosed' colorScheme='orange'>
+        <Tabs isFitted variant='enclosed' colorScheme='orange' w="90%">
             <TabList >
                 <Tab _selected={{ color: 'orange', textDecorationLine: 'underline', textDecorationThickness:'2px'}} >Citas</Tab>
                 <Tab _selected={{ color: 'orange', textDecorationLine: 'underline', textDecorationThickness:'2px'}}>Servicios</Tab>

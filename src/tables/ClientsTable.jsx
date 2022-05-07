@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton} from '@chakra-ui/react'
+import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import ClientForm from '../forms/ClientForm'
 import SvgEdit from  './../dist/Edit'
@@ -48,8 +48,8 @@ function ClientsTable({clientlist}){
     return(
         <>
         <Button colorScheme='orange' type="button" onClick={()=>handleCreate()}>Crear</Button>
-      
-        <TableContainer mt='5' borderRadius='lg'>
+        <Flex w="100%">
+        <TableContainer mt='5' borderRadius='lg' w="100%">
         <Table variant='simple' size='md'>
             <Thead bg='#E9E9E9'>
                 <Tr>
@@ -76,6 +76,7 @@ function ClientsTable({clientlist}){
             </Tbody>
         </Table>
         </TableContainer>
+        </Flex>
         <Drawer
             isOpen={isOpen}
             placement='right'
