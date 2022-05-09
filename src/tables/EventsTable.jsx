@@ -64,6 +64,7 @@ function EventsTable({datelist, servicelist, clientlist}){
                     <Th>Cliente</Th>
                     <Th>Servicio</Th>
                     <Th>Cobrado (€)</Th>
+                    <Th>Paid</Th>
                     <Th></Th>
                     </Tr>
                 </Thead>
@@ -78,6 +79,7 @@ function EventsTable({datelist, servicelist, clientlist}){
                             <Td textAlign={'center'}> 
                                 {getTotalPrice(date)}
                             </Td>
+                            <Td> {JSON.stringify(date.paid)} </Td>
                             <Td>
                                 <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>} onClick={() => handleEdit(date)} ></IconButton> 
                                 <PopoverDelete onDelete={deleteDate} id={date.id} />

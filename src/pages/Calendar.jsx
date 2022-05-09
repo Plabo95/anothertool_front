@@ -9,6 +9,7 @@ import EventForm from '../forms/EventForm'
 
 export default function CalendarComp({localizer, eventlist, getEvents, servicelist, getServices, clientlist, getClients}) {
 
+  console.log(eventlist)
       //fetch events when page Loads
   const[myEvents, setEvents] = useState(eventlist)
   const[creating, setCreating] = useState(false)
