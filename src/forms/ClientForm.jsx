@@ -1,18 +1,16 @@
 import React, {useState} from 'react'
-import { Button, useToast, Flex,VStack,Input, FormLabel} from '@chakra-ui/react'
+import { Button, useToast, Flex,VStack} from '@chakra-ui/react'
 import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
 import * as Yup from 'yup';
-import {Formik, useFormik} from "formik";
+import {Formik} from "formik";
 import TextField from './TextField';
 
 function ClientForm({onClose, clients, client, setClients}){
     
     const toast = useToast()
-    const[loadingDelete, setLoadingDelete] = useState(false)
     const[loadingCreate, setLoadingCreate] = useState(false)
       
     function closeDrawer(){
-        setLoadingDelete(false)
         setLoadingCreate(false)
         onClose()
     }
@@ -74,7 +72,7 @@ function ClientForm({onClose, clients, client, setClients}){
         {formik => (
         <>
         <DrawerBody>        
-            <VStack>
+            <VStack as="form" >
                 <TextField label="Nombre" name="name" />
                 <TextField label="Coche" name="car" />
                 <TextField label="Teléfono" name="telf" />

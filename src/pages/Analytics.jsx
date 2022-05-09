@@ -33,9 +33,7 @@ export const data = {
 function Analytics(){
     const [analytics, setAnalytics] = useState()
 
-
     const fetchAnalytics = async () => {
-        console.log('fetchAnalytics')
         const response = await fetch("https://plabo.pythonanywhere.com/api/analytics")
         setAnalytics(await response.json())
         }
@@ -90,12 +88,6 @@ function Analytics(){
                     <Doughnut data={data} />
                 </Box> 
             </StatGroup>
-            </Flex>
-
-            <Flex>
-
-
-
             </Flex>
 
             </>}

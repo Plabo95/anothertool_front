@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {DrawerBody, DrawerFooter, DrawerHeader,DrawerCloseButton, useToast} from '@chakra-ui/react'
-import {Button,Input, InputGroup, InputLeftElement, Text, Textarea, Stack, Flex, Square} from '@chakra-ui/react'
-import {FormControl} from '@chakra-ui/react'
+import {Button,Input, InputGroup, InputLeftElement, Text, Textarea, Stack, Flex, Square, FormControl, FormHelperText, FormErrorMessage} from '@chakra-ui/react'
 import moment from 'moment';
 import SvgTime from  '../dist/Time'
 import {Select,} from "chakra-react-select";
@@ -21,7 +20,7 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
   const[loadingCreate, setLoadingCreate] = useState(false)
 
   useEffect(() => {
-    if(is_creating === false){
+    if(event !== undefined){
         setTitle(event.title)
         setService(event.service)
         setClient(event.client)
@@ -36,18 +35,11 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
     }
     }, [event]);
 
-  const onChangePrice = (e) => {
-      setPrice(e.target.value)
-    };
-  const onChangeNote = (e) => {
-      setNote(e.target.value)
-    };
   function closeDrawer(){
     setLoadingDelete(false)
     setLoadingCreate(false)
     onClose()
   }
-
   const createDate = async (e) => {
     setLoadingCreate(true)
     e.preventDefault()
@@ -76,7 +68,9 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
         isClosable: true,
       }) 
     const data = await response.json();
-    onSave()  //deleteo previsualizacion 
+    onSave()  //deleteo previsualizacion
+    if(!is_creating){       
+    setEvents(events.filter(item => item.id!==event.id))} //deleteo el que he modificado para updatearlo
     setEvents((events) => [...events, data]);
     closeDrawer()
     }
@@ -91,49 +85,6 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
         closeDrawer()
       }
   }
-  const updateDate = async (e) => {
-    setLoadingCreate(true)
-    e.preventDefault()
-      const eventToUpdate ={
-        'start': event.start,
-        'end': event.end,
-        'client': client,
-        'extraprice': price,
-        'service': service,
-        'note': note,
-        'title': title,
-      }
-    const response = await fetch('https://plabo.pythonanywhere.com/api/updatedate/'+event.id+'/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(eventToUpdate)
-        })
-        const rstatus = response.status
-        if(rstatus >= 200 && rstatus<300){
-          toast({
-            title: 'Evento guardado',
-            status: 'success',
-            duration: 6000,
-            isClosable: true,
-          }) 
-          const data = await response.json();
-          setEvents(events.filter(item => item.id!==event.id)); //deleteo el que he modificado para updatearlo
-          setEvents((events) => [...events, data]); 
-          closeDrawer()
-          }
-        else{
-          toast({
-            title: 'Error al guardar ',
-            description: "Código de error"+ rstatus +' intentalo mas tarde' ,
-            status: 'error',
-            duration: 6000,
-            isClosable: true,
-            })
-            closeDrawer()
-          }
-        }
       
   const deleteDate = async (e) => {
     setLoadingDelete(true)
@@ -168,11 +119,21 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
     return (<p>{formated}</p>)
   }
   function getClientName(id){
-    return(clientlist.filter(item => item.id!==id)[0].name)
+    try {
+      return(clients.filter(item => item.id===id)[0].name)
+    } catch (error) {
+      console.log(error)
+      return('Except en getclientename')
+    }
   }
   function getServiceName(id){
-    return(servicelist.filter(item => item.id!==id)[0].name)
+    try {
+      return(servicelist.filter(item => item.id===id)[0].name)
+    } catch (error) {
+      return('Except en getservicename')
+    } 
   }
+
   //mapeo de clientes para que los lea el select list
   const m_clients = clients.map((client)=>{
     return {
@@ -187,6 +148,10 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
       }
       })
 
+  const isServiceError = service === undefined
+  const isClientError = client === undefined
+  const submitAvailable = isServiceError && isClientError
+
   return (
     <>
     <DrawerHeader> 
@@ -196,46 +161,65 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
       </Flex>
     </DrawerHeader>
     <DrawerBody>
+      <Stack spacing={4} w="100%" >   
+      <Input  variant='flushed' onChange={e => setTitle(e.target.value)} placeholder={!is_creating? event.title  : 'Añadir título'}/> 
 
-      <FormControl px='3' >
-        <Stack spacing={4} w="100%" >           
-          <Input  variant='flushed' onChange={e => setTitle(e.target.value)} placeholder={!is_creating? event.title  : 'Añadir título'}/>
-          <Select onChange={e => setService(e.value)} noOptionsMessage={()=>'No hay servicios'}  maxMenuHeight={120} placeholder={'Servicio'} defaultInputValue={!is_creating? getServiceName(event.service)  : ''} options={services} />
-          <Select onChange={e => setClient(e.value)} noOptionsMessage={()=>'No hay clientes'}  maxMenuHeight={120} placeholder={'Cliente'} defaultInputValue={client? getClientName(client)  : ''} options={m_clients} />
-          {is_creating === true && 
-            <PopoverClientForm setClients={setClients} setClient={setClient} />}    
-          </Stack> 
-          {event &&  
-          <Flex direction='column' gap='2' my='6' >
-          <Flex align='center' justify='start' gap={3}> <SvgTime/>  <Text>{duration()}</Text> </Flex>                 
-          <Text> IN  {moment(event.start).format("DD/MM/YYYY, hh:mm")} </Text>
-          <Text> OUT {moment(event.end).format("DD/MM/YYYY hh:mm")}</Text>
-          </Flex>  } 
+      <FormControl isInvalid={isServiceError}>      
+      <Select onChange={e => setService(e.value)} noOptionsMessage={()=>'No hay servicios'}  maxMenuHeight={120} placeholder={'Servicio'} defaultInputValue={!is_creating? getServiceName(event.service)  : ''} options={services} />
+      {!isServiceError ? (
+        <FormHelperText>
+          Elige un servicio
+        </FormHelperText>
+      ) : (
+        <FormErrorMessage>El servicio es obligatorio</FormErrorMessage>
+      )}
+      </FormControl> 
 
-          <Stack spacing={4}>
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents='none'
-              color='gray.300'
-              fontSize='1.2em'
-              children='€'
-            />
-            <Input onChange={onChangePrice} placeholder={!is_creating? event.extraprice: 'Precio extra?'} />
-          </InputGroup>
-          <Textarea height='140px' bg='gray.300' onChange={onChangeNote} variant='filled' placeholder={!is_creating? event.note: 'Notas'} /> 
-          </Stack>
-        </FormControl>
+      <FormControl isInvalid={isClientError}>
+      <Select onChange={e => setClient(e.value)} noOptionsMessage={()=>'No hay clientes'}  maxMenuHeight={120} placeholder={'Cliente'} defaultInputValue={!is_creating? getClientName(client)  : ''} options={m_clients} />
+      {!isClientError ? (
+        <FormHelperText>
+          Elige un cliente o crea uno rápido
+        </FormHelperText>
+      ) : (
+        <FormErrorMessage>El cliente es obligatorio</FormErrorMessage>
+      )}
+      </FormControl> 
+       
+       
+        {is_creating === true && 
+          <PopoverClientForm setClients={setClients} setClient={setClient} />}    
+        </Stack> 
+        {event &&  
+        <Flex direction='column' gap='2' my='6' >
+        <Flex align='center' justify='start' gap={3}> <SvgTime/>  <Text>{duration()}</Text> </Flex>                 
+        <Text> IN  {moment(event.start).format("DD/MM/YYYY, hh:mm")} </Text>
+        <Text> OUT {moment(event.end).format("DD/MM/YYYY hh:mm")}</Text>
+        </Flex>  } 
+
+        <Stack spacing={4}>
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents='none'
+            color='gray.300'
+            fontSize='1.2em'
+            children='€'
+          />
+          <Input onChange={e => setPrice(e.target.value)} placeholder={!is_creating? event.extraprice: 'Precio extra?'} />
+        </InputGroup>
+        <Textarea height='140px' bg='gray.300' onChange={e => setNote(e.target.value)} variant='filled' placeholder={!is_creating? event.note: 'Notas'} /> 
+        </Stack>
     </DrawerBody>
       <DrawerFooter>
         <Flex  justify="right" columnGap="3" my='3'>             
           {!is_creating?
               <>
-                <Button variant='ghost' colorScheme='red' size='sm' isLoading={loadingDelete} loadingText='Borrando' onClick={deleteDate} >Eliminar</Button>
-                <Button colorScheme='orange' size='sm' onClick={updateDate} isLoading={loadingCreate} loadingText='Guardando'>  Guardar </Button>
+                <Button variant='ghost' colorScheme='red' size='sm' isLoading={loadingDelete} isDisabled={submitAvailable} loadingText='Borrando' onClick={deleteDate} >Eliminar</Button>
+                <Button colorScheme='orange' size='sm' onClick={createDate} isLoading={loadingCreate} loadingText='Guardando'>  Guardar </Button>
               </>: 
               <>
               <Button variant='ghost' colorScheme='red' size='sm'  onClick={handleClose} >Cancel</Button>
-              <Button colorScheme='orange' size='sm' onClick={createDate} isLoading={loadingCreate} loadingText='Guardando'>  Crear </Button>
+              <Button colorScheme='orange' size='sm' onClick={createDate} isLoading={loadingCreate} isDisabled={submitAvailable} loadingText='Guardando'>  Crear </Button>
               </>}
         </Flex> 
         </DrawerFooter>   

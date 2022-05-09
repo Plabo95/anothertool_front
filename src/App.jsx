@@ -28,7 +28,6 @@ function App() {
     }
 
   const fetchEvents = async () => {
-    console.log('fetch events y estado en app')
     const response = await fetch("https://plabo.pythonanywhere.com/api/dates")
     setEvents(await response.json())
     }

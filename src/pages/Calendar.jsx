@@ -2,15 +2,13 @@ import React, { useEffect, useState, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
 import Nextsidebar from '../components/Nextsidebar'
-import {Drawer, DrawerHeader, DrawerOverlay,DrawerContent,DrawerCloseButton, useDisclosure} from '@chakra-ui/react'
+import {Drawer, DrawerOverlay,DrawerContent, useDisclosure} from '@chakra-ui/react'
 import { Flex,} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 
-
 export default function CalendarComp({localizer, eventlist, getEvents, servicelist, getServices, clientlist, getClients}) {
 
-  console.log(eventlist)
-      //fetch events when page Loads
+  //fetch events when page Loads
   const[myEvents, setEvents] = useState(eventlist)
   const[creating, setCreating] = useState(false)
   const {isOpen, onOpen, onClose } = useDisclosure()
@@ -21,6 +19,7 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
   useEffect(() => {           //Cargo los eventos en el estado cada vez que cambie el fetch
     setEvents(eventlist);
     },[eventlist])
+
 
   const events = myEvents.map((event)=>{
     return {

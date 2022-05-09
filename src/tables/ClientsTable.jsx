@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex} from '@chakra-ui/react'
 
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
@@ -46,7 +46,6 @@ function ClientsTable({clientlist}){
         setSClient()
         onOpen()
     }
-    console.log(clientlist)
     return(
         <>
         <Button colorScheme='orange' type="button" onClick={()=>handleCreate()}>Crear</Button>
