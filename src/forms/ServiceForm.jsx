@@ -23,7 +23,6 @@ function ServiceForm({onClose, service, services, setServices}){
         setLoadingCreate(false)
         onClose()
     }
-
     const handleSubmit = async(values) => {
     setLoadingCreate(true)
         const serviceToCreate ={
@@ -32,8 +31,12 @@ function ServiceForm({onClose, service, services, setServices}){
                 'color': color,
                 'estimed_hours': values.estimed_hours,
                 'estimed_mins': values.estimed_mins
-        }
-        const response = await fetch('https://plabo.pythonanywhere.com/api/createservice',{
+        }      
+        var url= ''
+        if(service===undefined){ 
+        url = 'https://plabo.pythonanywhere.com/api/createservice'}   
+        else{url = 'https://plabo.pythonanywhere.com/api/updateservice/' + service.id + '/'}
+        const response = await fetch(url,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

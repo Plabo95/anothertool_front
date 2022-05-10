@@ -21,6 +21,7 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
     },[eventlist])
 
 
+
   const events = myEvents.map((event)=>{
     return {
       id: event.id,
@@ -30,7 +31,9 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
       end: new Date(event.end),
       allDay: false,
       }
-      })
+      }) 
+    console.log('eventlist', eventlist)
+    console.log('events', events)
 
 //Manage del selection timeframe
   function handleSelectSlot ({ start, end }){

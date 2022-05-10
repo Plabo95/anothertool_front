@@ -22,7 +22,11 @@ function ClientForm({onClose, clients, client, setClients}){
                 'car': values.car,
                 'telf': values.telf,
         }
-    const response = await fetch('https://plabo.pythonanywhere.com/api/createclient',{
+    var url = ''
+    if(client===undefined){ 
+        url = 'https://plabo.pythonanywhere.com/api/createclient'}   
+    else{url = 'https://plabo.pythonanywhere.com/api/updateclient/' + client.id + '/'}
+    const response = await fetch(url,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
