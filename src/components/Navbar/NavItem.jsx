@@ -1,7 +1,9 @@
 import {Flex, Text, IconButton, Menu, Link, MenuButton, } from '@chakra-ui/react'
-import { Link as ReachLink } from 'react-router-dom';
+import { Link as ReachLink, useMatch, useResolvedPath } from 'react-router-dom';
 
-function NavItem({navSize, icon, title, active, slash}){
+function NavItem({navSize, icon, title, slash}){
+    let resolved = useResolvedPath(slash);
+    let active = useMatch({ path: resolved.pathname, end: true });
     return(
     <Flex
         mt={30}
@@ -22,7 +24,7 @@ function NavItem({navSize, icon, title, active, slash}){
             >
                 <MenuButton w="100%">
                     <Flex>
-                        <IconButton as={icon} bg='none' size='xs' color={active? "white": "orange" }  />
+                        <IconButton as={icon} bg='none' size='xs' color={active ? "white": "orange" }  />
                         <Text display={navSize === "small"? "none": "flex"} ml="5" color="whiteAlpha.800" > {title} </Text>
                     </Flex>
                 </MenuButton>
