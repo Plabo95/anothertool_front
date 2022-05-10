@@ -13,7 +13,9 @@ function Navbar(){
     
     return(
     <>
-    <Flex bg='#2A2A2A' h="100vh" flexFlow='column wrap' justify="space-between"
+    <Flex bg='blue' h="100%" flexFlow='column wrap' justify="space-between"
+    w={navSize === "small"? "75px": "250px"}></Flex>
+    <Flex bg='#2A2A2A' h="100%" position="fixed" flexFlow='column wrap' justify="space-between"
     w={navSize === "small"? "75px": "200px"}
     >
     
