@@ -6,10 +6,11 @@ import {Drawer, DrawerOverlay,DrawerContent, useDisclosure} from '@chakra-ui/rea
 import { Flex,} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 
+
 export default function CalendarComp({localizer, eventlist, getEvents, servicelist, getServices, clientlist, getClients}) {
 
   //fetch events when page Loads
-  const[myEvents, setEvents] = useState(eventlist)
+  const [myEvents, setEvents] = useState(eventlist)
   const[creating, setCreating] = useState(false)
   const {isOpen, onOpen, onClose } = useDisclosure()
   const titleInput = React.useRef()
@@ -18,9 +19,7 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
 
   useEffect(() => {           //Cargo los eventos en el estado cada vez que cambie el fetch
     setEvents(eventlist);
-    },[eventlist])
-
-
+    },[])
 
   const events = myEvents.map((event)=>{
     return {
@@ -32,8 +31,8 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
       allDay: false,
       }
       }) 
-    console.log('eventlist', eventlist)
-    console.log('events', events)
+    //console.log('eventlist', eventlist)
+    //console.log('events', events)
 
 //Manage del selection timeframe
   function handleSelectSlot ({ start, end }){
