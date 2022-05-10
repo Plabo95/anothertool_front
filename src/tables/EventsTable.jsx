@@ -29,9 +29,8 @@ function EventsTable({datelist, servicelist, clientlist}){
     }
     function handleFilter(e){
         var filter = e.target.value.toLowerCase() 
-        console.log(filter)
-        setFevents(events.filter(item => getClientName(item.client).toLowerCase().includes(filter)))
-        
+        //console.log(filter)
+        setFevents(events.filter(item => getClientName(item.client).toLowerCase().includes(filter)))   
     }
     function getClientName(id){
         return(clientlist.filter(item => item.id===id)[0].name)

@@ -4,6 +4,7 @@ import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import TextField from './TextField';
+import {SwitchControl} from "formik-chakra-ui";
 
 function ClientForm({onClose, clients, client, setClients}){
     
@@ -21,6 +22,7 @@ function ClientForm({onClose, clients, client, setClients}){
                 'name': values.name,
                 'car': values.car,
                 'telf': values.telf,
+                'moroso': values.moroso,
         }
     var url = ''
     if(client===undefined){ 
@@ -60,7 +62,7 @@ function ClientForm({onClose, clients, client, setClients}){
     }
     return(
         <Formik
-        initialValues= {{name: client? client.name : '' ,car: client? client.car: '',telf: client? client.telf: ''}}
+        initialValues= {{name: client? client.name : '' ,car: client? client.car: '',telf: client? client.telf: '',moroso: client? client.moroso: false }}
         validationSchema = {Yup.object({
             name: Yup.string().required("Nombre es obligatorio"),
             car: Yup.string().required("Coche es obligatorio"),
@@ -69,6 +71,7 @@ function ClientForm({onClose, clients, client, setClients}){
             .max(9, "Debe se de 9 dígitos"),
         })}
         onSubmit= {(values, actions) => {
+            alert(JSON.stringify(values))
             handleSubmit(values)
             actions.resetForm()
         }}
@@ -80,6 +83,7 @@ function ClientForm({onClose, clients, client, setClients}){
                 <TextField label="Nombre" name="name" />
                 <TextField label="Coche" name="car" />
                 <TextField label="Teléfono" name="telf" />
+                <SwitchControl label="Moroso" name="moroso"  />
             </VStack>      
         </DrawerBody>
         <DrawerFooter>
