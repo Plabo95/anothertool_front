@@ -8,21 +8,22 @@ import './index.css'
 
 const customTheme = {
   colors:{
-    brand: {
-      100: "#0258FF",
-      orange: "#FF7C02",
-      900: "#F0F0F0",
+    primary: "#0258FF", //light blue
+    secondary: "#001234", //darkblue,
+    highlight: "#FF7C02", //orange
+    mygray: "#F0F0F0",
+
   },
 }
-}
+
   
-  const theme = extendTheme({ customTheme })
+  const myTheme = extendTheme({ customTheme })
 
   const rootElement = document.getElementById('root');
   const root = createRoot(rootElement);
 
     root.render(
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={myTheme}>
       <App/>
     </ChakraProvider>,
     );
