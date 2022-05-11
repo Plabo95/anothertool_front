@@ -33,17 +33,33 @@ function EventsTable({datelist, servicelist, clientlist}){
         setFevents(events.filter(item => getClientName(item.client).toLowerCase().includes(filter)))   
     }
     function getClientName(id){
-        return(clientlist.filter(item => item.id===id)[0].name)
+        try {
+            return(clientlist.filter(item => item.id===id)[0].name)
+        } catch (error) {
+            console.log(error)
+            return('No able to get') 
+        }
       }
     function getServiceName(id){
-        return(servicelist.filter(item => item.id===id)[0].name)
+        try {
+            return(servicelist.filter(item => item.id===id)[0].name)
+        } catch (error) {
+            console.log(error)
+            return('No able to get') 
+        }
       }
     function getTotalPrice(id){
-        const base = parseFloat(servicelist.filter(item => item.id!==id)[0].baseprice, 10)
-        const extra = parseFloat(id.extraprice, 10)
-        const total =base+extra
-        return(total)
+        try {
+            const base = parseFloat(servicelist.filter(item => item.id!==id)[0].baseprice, 10)
+            const extra = parseFloat(id.extraprice, 10)
+            const total =base+extra
+            return(total)
+        } catch (error) {
+            console.log(error)
+            return('No price') 
       }
+    }
+
     return(
         <>
         <Flex >
