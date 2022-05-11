@@ -1,5 +1,9 @@
 import React, {useState} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex} from '@chakra-ui/react'
+import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex, Center} from '@chakra-ui/react'
+
+/* Iconos */
+import { FaCheck } from "react-icons/fa";
+import { BiX } from "react-icons/bi";
 
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import ClientForm from '../forms/ClientForm'
@@ -58,7 +62,7 @@ function ClientsTable({clientlist}){
                 <Th>Name</Th>
                 <Th>Car</Th>
                 <Th>Phone</Th>
-                <Th>Moroso</Th>
+                <Th textAlign={'center'}>Moroso</Th>
                 <Th></Th>
                 </Tr>
             </Thead>
@@ -69,7 +73,11 @@ function ClientsTable({clientlist}){
                         <Td>{client.name}</Td>
                         <Td>{client.car}</Td>
                         <Td>{client.telf}</Td>
-                        <Td>{JSON.stringify(client.moroso)}</Td>
+                        <Td>{JSON.stringify(client.moroso)
+                                ? <Center><FaCheck/></Center>
+                                : <Center><BiX/></Center>
+                            }
+                        </Td>
                         <Td>
                             <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>}  onClick={()=> handleEdit(client)} ></IconButton>  
                             <PopoverDelete onDelete={deleteClient} id={client.id} />

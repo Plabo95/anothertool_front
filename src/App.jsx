@@ -4,7 +4,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import React, { useEffect, useState} from 'react'
 import {Flex} from '@chakra-ui/react'
 
-//Components
+/* Components */
 import CalendarComp from "./pages/Calendar";
 import Navbar from "./components/Navbar/Navbar";
 import Analytics from './pages/Analytics';

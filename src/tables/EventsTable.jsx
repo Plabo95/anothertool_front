@@ -1,7 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,Flex, IconButton} from '@chakra-ui/react'
+import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,Flex, IconButton, Center} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {InputGroup, Input, InputLeftAddon} from '@chakra-ui/react'
+
+/* Iconos */
+import { FaCheck } from "react-icons/fa";
+import { BiX } from "react-icons/bi";
+
 import EventFormCrud from '../forms/EventFormCrud'
 import moment from 'moment';
 import {FiSearch,} from 'react-icons/fi';
@@ -64,7 +69,7 @@ function EventsTable({datelist, servicelist, clientlist}){
                     <Th>Cliente</Th>
                     <Th>Servicio</Th>
                     <Th>Cobrado (€)</Th>
-                    <Th>Paid</Th>
+                    <Th textAlign={'center'}>Paid</Th>
                     <Th></Th>
                     </Tr>
                 </Thead>
@@ -79,7 +84,11 @@ function EventsTable({datelist, servicelist, clientlist}){
                             <Td textAlign={'center'}> 
                                 {getTotalPrice(date)}
                             </Td>
-                            <Td> {JSON.stringify(date.paid)} </Td>
+                            <Td> {JSON.stringify(date.paid)
+                                    ? <Center><FaCheck/></Center>
+                                    : <Center><BiX/></Center>
+                                 } 
+                            </Td>
                             <Td>
                                 <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>} onClick={() => handleEdit(date)} ></IconButton> 
                                 <PopoverDelete onDelete={deleteDate} id={date.id} />
