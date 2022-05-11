@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client'
 import App from './App';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 
+/* Styles */
+import './index.css'
+
 const colors = {
     brand: {
       900: '#1a365d',
