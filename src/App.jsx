@@ -10,6 +10,7 @@ import CalendarComp from "./pages/Calendar";
 import Navbar from "./components/Navbar/Navbar";
 import Analytics from './pages/Analytics';
 import Garage from './pages/Garage';
+import Register from './pages/Register';
 
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
@@ -71,6 +72,7 @@ function App() {
             <Route exact path="klndr_front/" element={<CalendarComp localizer={localizer} getEvents={fetchEvents}  eventlist={myEvents} clientlist={clients} getClients={fetchClients} servicelist={services}  getServices={fetchServices}/>} />
             <Route path="klndr_front/analytics" element={<Analytics/>} />
             <Route path="klndr_front/garage" element={<Garage eventlist={myEvents} getEvents={fetchEvents} clientlist={clients} getClients={fetchClients} servicelist={services} getServices={fetchServices}/>} />
+            <Route path="klndr_front/register" element={<Register/>} />
           </Routes>
         </BrowserRouter>
         </Flex>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex, Text} from '@chakra-ui/react'
+import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex, Text, Box} from '@chakra-ui/react'
 
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure, Switch} from '@chakra-ui/react'
 import ClientForm from '../forms/ClientForm'
@@ -50,20 +50,29 @@ function ClientsTable({clientlist}){
     function handleFilter(){
         setFilter(!filter)
         if(filter){ setFClients(clients.filter(item => item.moroso===true)) }
-        else{setFClients(clients)}
+        else{setFClients(clients)}      
     }
+
+    const morosos = fClients.filter(item => item.moroso===true).length
+
     return(
         <>
-        <Flex justify={'space-around'}>
-        <Button colorScheme='orange' type="button" onClick={()=>handleCreate()}>Crear</Button>
-        <Text>Morosos <Switch size='lg' onChange={()=>handleFilter()} /> </Text> 
+        <Flex justify={'space-between'}>
+            <Flex p='6' gap='4' direction={'column'} shadow='md' borderRadius={'xl'} alignItems={'center'} bg="white">
+                <Text>Morosos</Text>
+                <Flex gap='4' align={'center'}>
+                    <Text> {morosos} </Text>
+                    <Switch size='sm' onChange={()=>handleFilter()} />
+                </Flex>
+            </Flex>
+            <Button colorScheme={'blue'} type="button" onClick={()=>handleCreate()}>+ Añadir cliente</Button>
         </Flex>
         <Flex w="100%">
-        <TableContainer mt='5' borderRadius='lg' w="100%">
+        <TableContainer mt='5' borderRadius='lg' w="100%" bg='white' >
         <Table variant='simple' size='md'>
-            <Thead bg='#E9E9E9'>
+            <Thead>
                 <Tr>
-                <Th>Id</Th>
+                <Th>#</Th>
                 <Th>Name</Th>
                 <Th>Car</Th>
                 <Th>Phone</Th>

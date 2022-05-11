@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import ClientsTable from '../tables/ClientsTable'
 import ServicesTable from '../tables/ServicesTable'
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Flex, Text } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Flex, Text, Heading } from '@chakra-ui/react'
 import EventsTable from '../tables/EventsTable'
 
 function Garage({clientlist, eventlist, servicelist, getEvents, getServices, getClients}){
@@ -14,12 +14,16 @@ function Garage({clientlist, eventlist, servicelist, getEvents, getServices, get
 
     return(
         <>
-        <Flex w="100%" justify={'center'} mt={10}>
-        <Tabs isFitted variant='enclosed' colorScheme='orange' w="90%">
+        <Flex w="100%" direction={'column'} minH='100vh' bg='gray.200' align='center'>
+        <Flex py='4' justify={'start'} w='80%'>
+            <Heading>Mi taller</Heading>
+        </Flex>
+        <Flex w='80%' align='center' >
+        <Tabs variant='unstyled' colorScheme='orange' w='100%'>
             <TabList >
-                <Tab _selected={{ color: 'orange', textDecorationLine: 'underline', textDecorationThickness:'2px'}} >Citas</Tab>
-                <Tab _selected={{ color: 'orange', textDecorationLine: 'underline', textDecorationThickness:'2px'}}>Servicios</Tab>
-                <Tab _selected={{ color: 'orange', textDecorationLine: 'underline', textDecorationThickness:'2px'}}>Clientes</Tab>
+                <Tab px='10' _selected={{ color: 'white', bg: 'blue', rounded: 'xl' }} >Citas</Tab>
+                <Tab px='10' _selected={{ color: 'white', bg: 'blue', rounded: 'xl' }}>Servicios</Tab>
+                <Tab px='10' _selected={{ color: 'white', bg: 'blue', rounded: 'xl' }}>Clientes</Tab>
             </TabList>
             <TabPanels>
                 <TabPanel>
@@ -33,6 +37,7 @@ function Garage({clientlist, eventlist, servicelist, getEvents, getServices, get
                 </TabPanel>
             </TabPanels>
             </Tabs>
+        </Flex>
         </Flex> 
         </>
     );

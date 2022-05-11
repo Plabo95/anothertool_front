@@ -43,7 +43,7 @@ function Analytics(){
         },[])
 
     return(    
-        <Flex w="100%" p={5} direction="column" align="center" >
+        <Flex w="100%" p={5} direction="column" align="center" bg='gray.200' minH={'100vh'} >
             <Heading py='10' > ¿Como va el taller? </Heading>
             {analytics&&
             <>

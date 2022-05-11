@@ -62,18 +62,18 @@ function EventsTable({datelist, servicelist, clientlist}){
 
     return(
         <>
-        <Flex >
-        <InputGroup w="200px" >
+        <Flex>
+        <InputGroup rounded={'md'} bg="white" w="200px" >
             <InputLeftAddon children={<FiSearch/>} />
             <Input type='text' placeholder='Filtra por cliente' onChange={(e) => handleFilter(e)} />
         </InputGroup>
         </Flex>
-        <Flex w="100%">    
-            <TableContainer mt='5' borderRadius='lg' w="100%">
+        <Flex w="100%"  >    
+            <TableContainer mt='5' borderRadius='lg' w="100%" bg="white">
                 <Table variant='simple' size='md'>
-                <Thead bg='#E9E9E9'>
+                <Thead>
                     <Tr>
-                    <Th>Id</Th>
+                    <Th>#</Th>
                     <Th>Título</Th>
                     <Th>Día</Th>
                     <Th>Cliente</Th>

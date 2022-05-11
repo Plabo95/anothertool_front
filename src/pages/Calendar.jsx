@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
 import Nextsidebar from '../components/Nextsidebar'
-import {Drawer, DrawerOverlay,DrawerContent, useDisclosure} from '@chakra-ui/react'
+import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box} from '@chakra-ui/react'
 import { Flex,} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 import useFetch from '../useFetch'
@@ -134,7 +134,7 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
 
   return (
     <>
-    <Flex w="100%" p="5" gap={6}>
+    <Flex w="100%" p="5" gap={6} bg="white" >
         <Nextsidebar datelist={myEvents} />    
       <Calendar
       dayLayoutAlgorithm={'no-overlap'} //algoritmo no overlappin
