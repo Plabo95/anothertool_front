@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,Flex, IconButton, useToast, Center} from '@chakra-ui/react'
+import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,Flex, IconButton, useToast} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure, Square} from '@chakra-ui/react'
 import ServiceForm from '../forms/ServiceForm'
 import PopoverDelete from '../components/PopoverDelete'
@@ -57,7 +57,7 @@ function ServicesTable({servicelist}){
                     <Th>Name</Th>
                     <Th>Estimed Time</Th>
                     <Th>Price (€)</Th>
-                    <Th textAlign="center">Color</Th>
+                    <Th>Color</Th>
                     <Th></Th>
                     </Tr>
                 </Thead>
@@ -68,7 +68,7 @@ function ServicesTable({servicelist}){
                             <Td>{service.name}</Td>
                             <Td>{service.estimed_hours} h : {service.estimed_mins} m</Td>
                             <Td >{service.baseprice}</Td>
-                            <Td><Center><Square size='18px' bg={service.color} rounded="md"/></Center></Td>
+                            <Td><Square size='18px' bg={service.color} rounded="md"/></Td>
                             <Td>
                                 <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>}  onClick={() => handleEdit(service)} ></IconButton> 
                                 <PopoverDelete onDelete={deleteService} id={service.id} />

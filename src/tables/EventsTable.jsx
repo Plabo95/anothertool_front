@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,Flex, IconButton, Center} from '@chakra-ui/react'
+import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,Flex, IconButton} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {InputGroup, Input, InputLeftAddon} from '@chakra-ui/react'
-
-/* Iconos */
-import { FaCheck } from "react-icons/fa";
-import { BiX } from "react-icons/bi";
-
 import EventFormCrud from '../forms/EventFormCrud'
 import moment from 'moment';
 import {FiSearch,} from 'react-icons/fi';
@@ -34,22 +29,37 @@ function EventsTable({datelist, servicelist, clientlist}){
     }
     function handleFilter(e){
         var filter = e.target.value.toLowerCase() 
-        console.log(filter)
-        setFevents(events.filter(item => getClientName(item.client).toLowerCase().includes(filter)))
-        
+        //console.log(filter)
+        setFevents(events.filter(item => getClientName(item.client).toLowerCase().includes(filter)))   
     }
     function getClientName(id){
-        return(clientlist.filter(item => item.id===id)[0].name)
+        try {
+            return(clientlist.filter(item => item.id===id)[0].name)
+        } catch (error) {
+            console.log(error)
+            return('No able to get') 
+        }
       }
     function getServiceName(id){
-        return(servicelist.filter(item => item.id===id)[0].name)
+        try {
+            return(servicelist.filter(item => item.id===id)[0].name)
+        } catch (error) {
+            console.log(error)
+            return('No able to get') 
+        }
       }
     function getTotalPrice(id){
-        const base = parseFloat(servicelist.filter(item => item.id!==id)[0].baseprice, 10)
-        const extra = parseFloat(id.extraprice, 10)
-        const total =base+extra
-        return(total)
+        try {
+            const base = parseFloat(servicelist.filter(item => item.id!==id)[0].baseprice, 10)
+            const extra = parseFloat(id.extraprice, 10)
+            const total =base+extra
+            return(total)
+        } catch (error) {
+            console.log(error)
+            return('No price') 
       }
+    }
+
     return(
         <>
         <Flex >
@@ -69,7 +79,7 @@ function EventsTable({datelist, servicelist, clientlist}){
                     <Th>Cliente</Th>
                     <Th>Servicio</Th>
                     <Th>Cobrado (€)</Th>
-                    <Th textAlign={'center'}>Paid</Th>
+                    <Th>Paid</Th>
                     <Th></Th>
                     </Tr>
                 </Thead>
@@ -84,11 +94,7 @@ function EventsTable({datelist, servicelist, clientlist}){
                             <Td textAlign={'center'}> 
                                 {getTotalPrice(date)}
                             </Td>
-                            <Td> {JSON.stringify(date.paid)
-                                    ? <Center><FaCheck/></Center>
-                                    : <Center><BiX/></Center>
-                                 } 
-                            </Td>
+                            <Td> {JSON.stringify(date.paid)} </Td>
                             <Td>
                                 <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>} onClick={() => handleEdit(date)} ></IconButton> 
                                 <PopoverDelete onDelete={deleteDate} id={date.id} />

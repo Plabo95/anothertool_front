@@ -6,11 +6,12 @@ import Nextsidebar from '../components/Nextsidebar'
 import {Drawer, DrawerOverlay,DrawerContent, useDisclosure} from '@chakra-ui/react'
 import { Flex,} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
+import useFetch from '../useFetch'
 
 export default function CalendarComp({localizer, eventlist, getEvents, servicelist, getServices, clientlist, getClients}) {
 
   //fetch events when page Loads
-  const[myEvents, setEvents] = useState(eventlist)
+  const [myEvents, setEvents] = useState(eventlist)
   const[creating, setCreating] = useState(false)
   const {isOpen, onOpen, onClose } = useDisclosure()
   const titleInput = React.useRef()

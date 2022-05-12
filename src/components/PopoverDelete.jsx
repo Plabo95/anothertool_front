@@ -1,9 +1,17 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import {Popover,PopoverTrigger,PopoverContent, PopoverHeader, PopoverBody,PopoverFooter,PopoverArrow,PopoverCloseButton, useDisclosure, ButtonGroup} from '@chakra-ui/react'
 import {Button} from '@chakra-ui/react'
 
 export default function PopoverDelete({onDelete, id}){
 
+<<<<<<< HEAD
+    const initialFocusRef = useRef()
+    const {isOpen, onOpen, onClose } = useDisclosure()
+
+    return(
+        <>
+        <Popover onClose={onClose}  initialFocusRef={initialFocusRef}>
+=======
     const initialFocusRef = React.useRef()
     const {isOpen, onOpen, onClose, onCancel } = useDisclosure()
 
@@ -12,6 +20,7 @@ export default function PopoverDelete({onDelete, id}){
         <Popover onClose={onClose} initialFocusRef={initialFocusRef}>
         {({ onClose }) => (
             <>
+>>>>>>> 24b4c681aecc4ee3c1b2f6d29e6ac30809c7c357
             <PopoverTrigger>
                 <Button colorScheme='red' size='xs' type="button">X</Button>
             </PopoverTrigger>

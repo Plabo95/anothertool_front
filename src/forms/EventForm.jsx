@@ -40,7 +40,8 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
     setLoadingCreate(false)
     onClose()
   }
-  const createDate = async (e) => {
+  
+  const handleSubmit = async (e) => {
     setLoadingCreate(true)
     e.preventDefault()
     const eventToCreate ={
@@ -52,7 +53,11 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
             'note': note,
             'title': title,
     }
-    const response = await fetch('https://plabo.pythonanywhere.com/api/createdate',{
+    var url = ''
+    if(is_creating){ 
+      url = 'https://plabo.pythonanywhere.com/api/createdate'}   
+    else{url = 'https://plabo.pythonanywhere.com/api/updatedate/' + event.id + '/'}
+    const response = await fetch(url,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -69,7 +74,7 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
       }) 
     const data = await response.json();
     onSave()  //deleteo previsualizacion
-    if(!is_creating){       
+    if(!is_creating){        
     setEvents(events.filter(item => item.id!==event.id))} //deleteo el que he modificado para updatearlo
     setEvents((events) => [...events, data]);
     closeDrawer()
@@ -213,14 +218,11 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
       <DrawerFooter>
         <Flex  justify="right" columnGap="3" my='3'>             
           {!is_creating?
-              <>
-                <Button variant='ghost' colorScheme='red' size='sm' isLoading={loadingDelete} isDisabled={submitAvailable} loadingText='Borrando' onClick={deleteDate} >Eliminar</Button>
-                <Button colorScheme='orange' size='sm' onClick={createDate} isLoading={loadingCreate} loadingText='Guardando'>  Guardar </Button>
-              </>: 
-              <>
+              <Button variant='ghost' colorScheme='red' size='sm' isLoading={loadingDelete} isDisabled={submitAvailable} loadingText='Borrando' onClick={deleteDate} >Eliminar</Button>
+              : 
               <Button variant='ghost' colorScheme='red' size='sm'  onClick={handleClose} >Cancel</Button>
-              <Button colorScheme='orange' size='sm' onClick={createDate} isLoading={loadingCreate} isDisabled={submitAvailable} loadingText='Guardando'>  Crear </Button>
-              </>}
+              }
+              <Button colorScheme='orange' size='sm' onClick={handleSubmit} isLoading={loadingCreate} isDisabled={submitAvailable} loadingText='Guardando'>  Crear </Button>
         </Flex> 
         </DrawerFooter>   
       </>

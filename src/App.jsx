@@ -4,7 +4,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import React, { useEffect, useState} from 'react'
 import {Flex} from '@chakra-ui/react'
 
-/* Components */
+//Components
+import useFetch from './useFetch';
 import CalendarComp from "./pages/Calendar";
 import Navbar from "./components/Navbar/Navbar";
 import Analytics from './pages/Analytics';
@@ -16,31 +17,50 @@ require('moment/locale/es.js')
 const localizer=momentLocalizer(moment)
 
 
+
 function App() {
 
-  const [myEvents, setEvents] = useState([])
+  const [myEvents, setEvents] = useState([useFetch("https://plabo.pythonanywhere.com/api/dates")])
   const[services, setServices] = useState([])
   const[clients, setClients] = useState([])
 
   const fetchServices = async () => {
-    const response = await fetch("https://plabo.pythonanywhere.com/api/services")
-    setServices(await response.json())
-    }
+    fetch("https://plabo.pythonanywhere.com/api/services")
+      .then(res => res.json())
+      .then(result => {
+        setServices(result)
+    },
+    (error) => {
+      console.error("Error fetching services ", error)
+    })
+  }
 
   const fetchEvents = async () => {
-    const response = await fetch("https://plabo.pythonanywhere.com/api/dates")
-    setEvents(await response.json())
-    }
-    
+    fetch("https://plabo.pythonanywhere.com/api/dates")
+      .then(res => res.json())
+      .then(result => {
+        setEvents(result)
+    },
+    (error) => {
+      console.error("Error fetching services ", error)
+    })
+  }
+
   const fetchClients = async () => {
-    const response = await fetch("https://plabo.pythonanywhere.com/api/clients")
-    setClients(await response.json())
-    }
+    fetch("https://plabo.pythonanywhere.com/api/clients")
+    .then(res => res.json())
+    .then(result => {
+      setClients(result)
+    },
+    (error) => {
+      console.error("Error fetching clients ", error)
+    })
+  }
 
   useEffect(() => {
-      fetchEvents();
       fetchClients();
       fetchServices();
+      fetchEvents();
       },[])
 
     return (
@@ -48,7 +68,7 @@ function App() {
          <BrowserRouter>
           <Navbar/>  
           <Routes>       
-            <Route exact path="klndr_front/" element={<CalendarComp localizer={localizer}  getEvents={fetchEvents} eventlist={myEvents} clientlist={clients} getClients={fetchClients} servicelist={services}  getServices={fetchServices}/>} />
+            <Route exact path="klndr_front/" element={<CalendarComp localizer={localizer} getEvents={fetchEvents}  eventlist={myEvents} clientlist={clients} getClients={fetchClients} servicelist={services}  getServices={fetchServices}/>} />
             <Route path="klndr_front/analytics" element={<Analytics/>} />
             <Route path="klndr_front/garage" element={<Garage eventlist={myEvents} getEvents={fetchEvents} clientlist={clients} getClients={fetchClients} servicelist={services} getServices={fetchServices}/>} />
           </Routes>
