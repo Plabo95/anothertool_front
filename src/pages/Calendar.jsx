@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import moment from 'moment';
 import PropTypes from 'prop-types'
 import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
 import Nextsidebar from '../components/Nextsidebar'
@@ -15,6 +16,7 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
   const titleInput = React.useRef()
   const [sEvent, setSEvent] = useState()  //event selected
   const [bcView, setBCView] = useState('week');
+  const [yourDate, setYourDate] = useState();
 
   useEffect(() => {           //Cargo los eventos en el estado cada vez que cambie el fetch
     setEvents(eventlist);
@@ -32,9 +34,14 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
       }
       })
 
+  function handleNavigate(date) {
+    setYourDate(moment(date).toDate())
+  }
+
 //Manage del selection timeframe
   function handleSelectSlot ({ start, end }){
     if(bcView==='month'){
+      handleNavigate(start)
       setBCView('day')
     }
     else{
@@ -150,6 +157,8 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
       onSelectEvent={handleSelectEvent}
       onSelectSlot={handleSelectSlot}
       eventPropGetter={eventPropGetter}
+      date={yourDate}
+      onNavigate={handleNavigate}
       selectable
       min= {new Date(1972, 0, 1, 8, 0, 0)}
       max= {new Date(2022, 10, 0, 22, 0, 0)}
