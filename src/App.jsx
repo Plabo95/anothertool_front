@@ -11,8 +11,11 @@ import Navbar from "./components/Navbar/Navbar";
 import Analytics from './pages/Analytics';
 import Garage from './pages/Garage';
 import Register from './pages/Register';
+import Login from './pages/Login';
 
 import {BrowserRouter, Routes, Route} from "react-router-dom";
+import PrivateRoute from './auth/PrivateRoute'
+import {AuthProvider} from './auth/AuthContext'
 
 require('moment/locale/es.js')
 const localizer=momentLocalizer(moment)
@@ -66,15 +69,34 @@ function App() {
 
     return (
         <Flex>
+          
          <BrowserRouter>
-          <Navbar/>  
-          <Routes>       
-            <Route exact path="klndr_front/" element={<CalendarComp localizer={localizer} getEvents={fetchEvents}  eventlist={myEvents} clientlist={clients} getClients={fetchClients} servicelist={services}  getServices={fetchServices}/>} />
-            <Route path="klndr_front/analytics" element={<Analytics/>} />
-            <Route path="klndr_front/garage" element={<Garage eventlist={myEvents} getEvents={fetchEvents} clientlist={clients} getClients={fetchClients} servicelist={services} getServices={fetchServices}/>} />
-            <Route path="klndr_front/register" element={<Register/>} />
+          <Navbar/> 
+          <AuthProvider>  
+          <Routes>
+            <Route path='klndr_front/register' element={<Register/>} /> 
+            <Route path='klndr_front/login' element={<Login/>} /> 
+            
+              <Route path="klndr_front/garage" element={
+                <PrivateRoute>
+                  <Garage eventlist={myEvents} getEvents={fetchEvents} clientlist={clients} getClients={fetchClients} servicelist={services} getServices={fetchServices}/>
+                </PrivateRoute>
+                }/>
+              <Route path="klndr_front/analytics" element={
+                <PrivateRoute>
+                  <Analytics/>
+                </PrivateRoute>
+              }/>
+              <Route path="klndr_front/" element={
+                <PrivateRoute>
+                  <CalendarComp localizer={localizer} getEvents={fetchEvents}  eventlist={myEvents} clientlist={clients} getClients={fetchClients} servicelist={services}  getServices={fetchServices} />
+                </PrivateRoute>
+              }/>
+             
           </Routes>
+          </AuthProvider> 
         </BrowserRouter>
+        
         </Flex>
     );
 }
