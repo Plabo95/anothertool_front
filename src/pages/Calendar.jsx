@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useContext } from 'react'
 import moment from 'moment';
 import PropTypes from 'prop-types'
 import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
@@ -7,11 +7,13 @@ import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box} from '@chakra-u
 import { Flex,} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 import useFetch from '../useFetch'
+import AuthContext from '../auth/AuthContext';
+import { string } from 'yup/lib/locale';
 
-export default function CalendarComp({localizer, eventlist, getEvents, servicelist, getServices, clientlist, getClients}) {
+export default function CalendarComp({localizer, servicelist, getServices, clientlist, getClients}) {
 
   //fetch events when page Loads
-  const [myEvents, setEvents] = useState(eventlist)
+  const [myEvents, setEvents] = useState([])
   const[creating, setCreating] = useState(false)
   const {isOpen, onOpen, onClose } = useDisclosure()
   const titleInput = React.useRef()
@@ -19,10 +21,30 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
   const [bcView, setBCView] = useState('week');
   const [yourDate, setYourDate] = useState();
 
-  useEffect(() => {           //Cargo los eventos en el estado cada vez que cambie el fetch
-    setEvents(eventlist);
-    },[eventlist])
+  const {user, authTokens} = useContext(AuthContext)
 
+  console.log(user)
+
+  useEffect(() => {           //Cargo los eventos en el estado cada vez que cambie el fetch
+    fetchEvents()  
+  },[])
+
+  const fetchEvents = async () => {
+    fetch("http://127.0.0.1:8000/api/events/"+user.user_id,{
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+ String(authTokens.access),
+      },
+    })
+      .then(res => res.json())
+      .then(result => {
+        setEvents(result)
+    },
+    (error) => {
+      console.error("Error fetching services ", error)
+    })
+  }
 
   const events = myEvents.map((event)=>{
     return {
@@ -179,7 +201,7 @@ export default function CalendarComp({localizer, eventlist, getEvents, serviceli
       <Drawer placement='right'  onClose={handleClose} initialFocusRef={titleInput} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <EventForm onClose={onClose} handleClose={handleClose} onSave={handleSave} is_creating={creating} event={sEvent} events={eventlist} servicelist={servicelist} clientlist={clientlist} setEvents={setEvents} />
+          <EventForm onClose={onClose} handleClose={handleClose} onSave={handleSave} is_creating={creating} event={sEvent} events={myEvents} servicelist={servicelist} clientlist={clientlist} setEvents={setEvents} />
         </DrawerContent>
       </Drawer>    
       </>
