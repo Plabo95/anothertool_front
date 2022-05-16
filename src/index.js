@@ -6,15 +6,14 @@ import { ChakraProvider, extendTheme,} from '@chakra-ui/react'
 /* Styles */
 import './index.css'
 
-const customTheme = {
+const customTheme = extendTheme({
   colors:{
     primary: "#0258FF", //light blue
     secondary: "#001234", //darkblue,
     highlight: "#FF7C02", //orange
     mygray: "#F0F0F0",
-
   },
-}
+})
 
   
   const myTheme = extendTheme({ customTheme })
