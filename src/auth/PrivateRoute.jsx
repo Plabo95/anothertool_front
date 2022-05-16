@@ -4,8 +4,7 @@ import AuthContext from './AuthContext'
 
 function PrivateRoute({ children }) {
     const user = useContext(AuthContext)
-    // return user.user ? children : <Navigate to="/klndr_front/login" />;
-    return true ? children : <Navigate to="/klndr_front/login" />;
-  }
+    return user.user ? children : <Navigate to="/klndr_front/login" />;
+    }
 
 export default PrivateRoute;

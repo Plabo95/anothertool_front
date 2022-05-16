@@ -8,6 +8,8 @@ import { Flex,} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 import useApi from '../hooks/useApi';
 import eventsApi from '../api/eventsApi';
+import servicesApi from '../api/servicesApi';
+import clientsApi from '../api/clientsApi';
 import AuthContext from '../auth/AuthContext';
 
 export default function CalendarComp({localizer, servicelist, getServices, clientlist, getClients}) {
@@ -24,9 +26,13 @@ export default function CalendarComp({localizer, servicelist, getServices, clien
   const [yourDate, setYourDate] = useState();
  
   const getEventsApi = useApi(eventsApi.getAllEvents);
-  //const getEventsApi = useApi(getAllEvents)
+  const getServicesApi = useApi(servicesApi.getAllServices);
+  const getClientsApi = useApi(clientsApi.getAllClients);
+
   useEffect(() => {          
-    getEventsApi.request(user,authTokens)  
+    getEventsApi.request(user,authTokens)
+    getServicesApi.request(user,authTokens)  
+    getClientsApi.request(user,authTokens) 
   },[])
 
   const events = getEventsApi.data?.map((event)=>{
@@ -98,13 +104,13 @@ export default function CalendarComp({localizer, servicelist, getServices, clien
     let title = 'Untitled';
     let client = ''
     if(e.service){
-      try{title = servicelist.filter(item => item.id===e.service)[0].name}
+      try{title = getServicesApi.data?.filter(item => item.id===e.service)[0].name}
       catch{
         console.log('Nose encuentra name para service ', e.service)
       }
     }
     if(e.client){
-      try{client ='  para  '+ clientlist.filter(item => item.id===e.client)[0].name}
+      try{client ='  para  '+ getClientsApi.data?.filter(item => item.id===e.client)[0].name}
       catch{
         console.log('Nose encuentra name para cliente ', e.client)
       }
@@ -126,7 +132,7 @@ export default function CalendarComp({localizer, servicelist, getServices, clien
   function eventPropGetter(event, start, end, isSelected) {
     let backgroundColor = 'grey';
     if(event.service){
-      try{backgroundColor = servicelist.filter(item => item.id===event.service)[0].color}
+      try{backgroundColor = getServicesApi.data?.filter(item => item.id===event.service)[0].color}
       catch{
         console.log('Nose ha encontrado color para el servicio', event.service)
       }

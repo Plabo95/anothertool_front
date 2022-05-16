@@ -3,6 +3,9 @@ import jwt_decode from "jwt-decode";
 import {useNavigate} from 'react-router-dom'
 import { useEffect } from "react";
 
+const url_local= 'http://127.0.0.1:8000/api/token/'
+const url_live= 'https://plabo.pythonanywhere.com/api/'
+
 const AuthContext = createContext()
 
 export default  AuthContext
@@ -20,7 +23,7 @@ export const AuthProvider = ({children}) => {
     const [loading,setLoading] = useState(true)     //loggin in loading
 
     const loginUser = async(e) => {
-        const response = await fetch('http://127.0.0.1:8000/api/token/',{
+        const response = await fetch(url_live+'token/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -52,7 +55,7 @@ export const AuthProvider = ({children}) => {
 
     const updateToken = async() => {
         console.log('refreshing token')
-        const response = await fetch('http://127.0.0.1:8000/api/token/refresh/',{
+        const response = await fetch(url_live+'token/refresh/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
