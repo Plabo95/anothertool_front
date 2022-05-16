@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/klndr_front/static/css/main.7910e3e5.css",
-    "main.js": "/klndr_front/static/js/main.e4fe5f01.js",
+    "main.js": "/klndr_front/static/js/main.5130f68b.js",
     "index.html": "/klndr_front/index.html",
     "main.7910e3e5.css.map": "/klndr_front/static/css/main.7910e3e5.css.map",
-    "main.e4fe5f01.js.map": "/klndr_front/static/js/main.e4fe5f01.js.map"
+    "main.5130f68b.js.map": "/klndr_front/static/js/main.5130f68b.js.map"
   },
   "entrypoints": [
     "static/css/main.7910e3e5.css",
-    "static/js/main.e4fe5f01.js"
+    "static/js/main.5130f68b.js"
   ]
 }
