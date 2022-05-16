@@ -1,24 +1,23 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import moment from 'moment';
 import {Box, Text, Checkbox, Square, Flex, Heading} from '@chakra-ui/react'
+import AuthContext from '../auth/AuthContext';
+import useApi from '../hooks/useApi';
+import eventsApi from '../api/eventsApi';
 
-function Nextsidebar({datelist}){
+function Nextsidebar(){
     const [nextDates, setNextDates] = useState([])
-
+    const {user, authTokens} = useContext(AuthContext)
+    const getNextEventsApi = useApi(eventsApi.getNextEvents);
     useEffect(() => {
-        fetchNextDates();
-        },[datelist])
-
-    const fetchNextDates = async () => {
-        const response = await fetch("https://plabo.pythonanywhere.com/api/nextdates")
-        setNextDates(await response.json())
-        }
+        getNextEventsApi.request(user,authTokens)
+        },[])
 
     return(
         <>
         <Box my='5'>
             <Heading size='lg' my='5' >Para hoy: </Heading>
-            {nextDates.map(event=>
+            {getNextEventsApi.data?.map(event=>
             <Flex key={event.id}>
                 <Box p='3' my='6' width="280px" boxShadow='xl' borderColor="gray.300" rounded="lg" >
                     <Flex my='5 'align='center' justify='space-between' gap={3}>

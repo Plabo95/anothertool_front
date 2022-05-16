@@ -7,6 +7,7 @@ import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box} from '@chakra-u
 import { Flex,} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 import useApi from '../hooks/useApi';
+import eventsApi from '../api/eventsApi';
 import AuthContext from '../auth/AuthContext';
 
 export default function CalendarComp({localizer, servicelist, getServices, clientlist, getClients}) {
@@ -21,19 +22,11 @@ export default function CalendarComp({localizer, servicelist, getServices, clien
   const [sEvent, setSEvent] = useState()  //event selected
   const [bcView, setBCView] = useState('week');
   const [yourDate, setYourDate] = useState();
-
-  const getAllEvents = () => 
-  fetch("http://127.0.0.1:8000/api/events/"+user.user_id,{
-  method: 'GET',
-  headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+ String(authTokens.access),
-  }});
-
-  const getEventsApi = useApi(getAllEvents);
-
+ 
+  const getEventsApi = useApi(eventsApi.getAllEvents);
+  //const getEventsApi = useApi(getAllEvents)
   useEffect(() => {          
-    getEventsApi.request()  
+    getEventsApi.request(user,authTokens)  
   },[])
 
   const events = getEventsApi.data?.map((event)=>{

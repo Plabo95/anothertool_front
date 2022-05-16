@@ -5,14 +5,13 @@ export default (apiFunc) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const request = async (...args) => {
+  const request = async (...props) => {
     setLoading(true);
+    console.log('fetchin data')
     try {
-      const response = await apiFunc(...args);
-      console.log(response)
+      const response = await apiFunc(...props)
       if (response.ok) {
         const newdata = await response.json();
-        console.log(newdata)
         setData(newdata);
         setError(null);
         setLoading(false);
@@ -22,6 +21,7 @@ export default (apiFunc) => {
       } 
     } catch (err) {
       setError(err.message || "Error en solicitud post!");
+      console.log(error)
     } finally {
       setLoading(false);
     }
