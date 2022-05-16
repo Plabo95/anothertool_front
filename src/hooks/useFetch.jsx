@@ -1,4 +1,5 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
+import AuthContext from "../auth/AuthContext";
 
 
 export default function useFetch (url) {
@@ -6,12 +7,20 @@ export default function useFetch (url) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    
+    const {user, authTokens} = useContext(AuthContext)
+
     const doSomething = () => {}
 
     useEffect(() => {
+        console.log('fetching data from hook', url)
         setLoading(true)
-        fetch(url)
+        fetch(url,{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ String(authTokens.access),
+            },
+        })
         .then(res => res.json())
         .then(result => {
           setData(result)
@@ -23,5 +32,5 @@ export default function useFetch (url) {
         })
     }, [url])
 
-    return[{data, loading}, doSomething]
+    return[{data, loading, error}, doSomething]
 }

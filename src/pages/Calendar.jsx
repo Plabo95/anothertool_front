@@ -6,11 +6,12 @@ import Nextsidebar from '../components/Nextsidebar'
 import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box} from '@chakra-ui/react'
 import { Flex,} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
-import useFetch from '../useFetch'
+import useApi from '../hooks/useApi';
 import AuthContext from '../auth/AuthContext';
-import { string } from 'yup/lib/locale';
 
 export default function CalendarComp({localizer, servicelist, getServices, clientlist, getClients}) {
+
+  const {user, authTokens} = useContext(AuthContext)
 
   //fetch events when page Loads
   const [myEvents, setEvents] = useState([])
@@ -21,32 +22,21 @@ export default function CalendarComp({localizer, servicelist, getServices, clien
   const [bcView, setBCView] = useState('week');
   const [yourDate, setYourDate] = useState();
 
-  const {user, authTokens} = useContext(AuthContext)
+  const getAllEvents = () => 
+  fetch("http://127.0.0.1:8000/api/events/"+user.user_id,{
+  method: 'GET',
+  headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ String(authTokens.access),
+  }});
 
-  console.log(user)
+  const getEventsApi = useApi(getAllEvents);
 
-  useEffect(() => {           //Cargo los eventos en el estado cada vez que cambie el fetch
-    fetchEvents()  
+  useEffect(() => {          
+    getEventsApi.request()  
   },[])
 
-  const fetchEvents = async () => {
-    fetch("http://127.0.0.1:8000/api/events/"+user.user_id,{
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer '+ String(authTokens.access),
-      },
-    })
-      .then(res => res.json())
-      .then(result => {
-        setEvents(result)
-    },
-    (error) => {
-      console.error("Error fetching services ", error)
-    })
-  }
-
-  const events = myEvents.map((event)=>{
+  const events = getEventsApi.data?.map((event)=>{
     return {
       id: event.id,
       service: event.service,

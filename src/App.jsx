@@ -5,7 +5,6 @@ import React, { useEffect, useState, useContext} from 'react'
 import {Flex} from '@chakra-ui/react'
 
 //Components
-import useFetch from './useFetch';
 import CalendarComp from "./pages/Calendar";
 import Navbar from "./components/Navbar/Navbar";
 import Analytics from './pages/Analytics';

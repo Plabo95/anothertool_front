@@ -66,6 +66,7 @@ export const AuthProvider = ({children}) => {
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))
                 localStorage.setItem('authTokens', JSON.stringify(data))    //cache?
+                console.log('user refreshed', user)
                 }
             else{
                 console.log('error de refresh token')
