@@ -14,7 +14,7 @@ function Garage({clientlist, eventlist, servicelist, getEvents, getServices, get
     },[])
     return(
         <>
-        <Flex w="100%" direction={'column'} minH='100vh' bg='#F0F0F0' align='center'>
+        <Flex w="100%" direction={'column'} minH='100vh' bg='mygray' align='center'>
         <Flex py='4' justify={'start'} w='80%'>
             <Heading>Mi taller</Heading>
         </Flex>

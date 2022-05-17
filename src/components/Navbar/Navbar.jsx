@@ -1,4 +1,4 @@
-import {Flex, Divider, Avatar,Heading, Text, IconButton, Button} from '@chakra-ui/react'
+import {Flex, Divider, Avatar, Heading, Text, IconButton, Button} from '@chakra-ui/react'
 import SvgMenu from  '../../dist/Menu'
 import SvgAnalytics from  '../../dist/Analytics'
 import SvgCalendar from  '../../dist/Calendar'
@@ -15,9 +15,9 @@ function Navbar(){
     if (user) {
     return(
         <>
-        <Flex bg='blue' h="100%" flexFlow='column wrap' justify="space-between"
+        <Flex bg='secondary' h="100%" flexFlow='column wrap' justify="space-between"
         w={navSize === "small"? "75px": "250px"}></Flex>
-        <Flex bg='#001234' h="100%" position="fixed" flexFlow='column wrap' justify="space-between"
+        <Flex bg='secondary' h="100%" position="fixed" flexFlow='column wrap' justify="space-between"
         w={navSize === "small"? "75px": "200px"}
         >
         

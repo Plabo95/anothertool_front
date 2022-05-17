@@ -15,14 +15,11 @@ const customTheme = extendTheme({
   },
 })
 
-  
-  const myTheme = extendTheme({ customTheme })
-
   const rootElement = document.getElementById('root');
   const root = createRoot(rootElement);
 
     root.render(
-    <ChakraProvider theme={myTheme}>
+    <ChakraProvider theme={customTheme}>
       <App/>
     </ChakraProvider>,
     );
