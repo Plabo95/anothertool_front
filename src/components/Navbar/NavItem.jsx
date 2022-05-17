@@ -13,10 +13,10 @@ function NavItem({navSize, icon, title, slash}){
     >
         <Menu>
             <Link
-            backgroundColor={active && "0258FF"}
+            backgroundColor={active && "primary"}
             p="3"
             borderRadius={8}
-            _hover={{textDecor: 'none', backgroundColor:"#0258FF", color:"white"}}
+            _hover={{textDecor: 'none', backgroundColor:"primary", color:"white"}}
             w={navSize === "large" && "100%"}
             as={ReachLink}
             to={slash}
