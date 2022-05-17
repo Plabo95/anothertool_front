@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {DrawerBody, DrawerFooter, DrawerHeader,DrawerCloseButton, useToast} from '@chakra-ui/react'
 import {Button,Input, InputGroup, InputLeftElement, Text, Textarea, Stack, Flex, Square, FormControl, FormHelperText, FormErrorMessage} from '@chakra-ui/react'
 import moment from 'moment';
 import SvgTime from  '../dist/Time'
 import {Select,} from "chakra-react-select";
 import PopoverClientForm from './PopoverClientForm'
+import eventsApi from '../api/eventsApi';
+import AuthContext from '../auth/AuthContext';
+import useApi from '../hooks/useApi';
+import { createEvent } from '@testing-library/react';
 
 export default function EventForm({is_creating, onSave, onClose, handleClose, event, events, setEvents, servicelist, clientlist}) {
+
+  const {user, authTokens} = useContext(AuthContext)
 
   const[title, setTitle] = useState()
   const[service, setService] = useState()
@@ -18,6 +24,8 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
   const toast = useToast()
   const[loadingDelete, setLoadingDelete] = useState(false)
   const[loadingCreate, setLoadingCreate] = useState(false)
+
+  const createEventApi = useApi(eventsApi.createEvent);
 
   useEffect(() => {
     if(event !== undefined){
@@ -41,7 +49,7 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
     onClose()
   }
   
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {    
     setLoadingCreate(true)
     e.preventDefault()
     const eventToCreate ={
@@ -52,6 +60,15 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
             'service': service,
             'note': note,
             'title': title,
+            'user': user.user_id,
+    }
+    createEventApi.request(is_creating, eventToCreate, user, authTokens)
+    if(createEventApi.data){
+          onSave()  //deleteo previsualizacion
+    if(!is_creating){        
+    setEvents(events.filter(item => item.id!==event.id))} //deleteo el que he modificado para updatearlo
+    setEvents((events) => [...events, createEventApi.data]);
+    closeDrawer()
     }
     var url = ''
     if(is_creating){ 

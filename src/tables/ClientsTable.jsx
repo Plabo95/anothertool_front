@@ -1,22 +1,54 @@
-import React, {useState} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex, Text, Box} from '@chakra-ui/react'
 
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure, Switch} from '@chakra-ui/react'
 import ClientForm from '../forms/ClientForm'
 import SvgEdit from  './../dist/Edit'
 import PopoverDelete from '../components/PopoverDelete'
+import clientsApi from '../api/clientsApi'
+import useApi from '../hooks/useApi'
+import AuthContext from '../auth/AuthContext'
 
-function ClientsTable({clientlist}){
+function ClientsTable(){
 
+    const {user, authTokens} = useContext(AuthContext)
+    const getClientsApi = useApi(clientsApi.getAllClients);
+    const deleteClientApi = useApi(clientsApi.deleteClient);
 
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const[fClients, setFClients] = useState(clientlist)
-    const[clients, setClients] = useState(clientlist)
+    const[fClients, setFClients] = useState([])
+    const[clients, setClients] = useState([])
     const[sClient, setSClient] = useState()
 
     const[filter, setFilter] = useState(true)
+
     //Clients
+    const handleDelete = (e) =>{
+        console.log('deleting client: ', e)
+        deleteClientApi.request(e, user,authTokens)
+        if(!deleteClientApi.error){
+            console.log('exitos')
+            toast({
+                title: 'Cliente borrado',
+                status: 'success',
+                duration: 6000,
+                isClosable: true,
+              })
+              setClients(clients?.filter(item => item.id!==e))
+        }   
+        else{
+            console.log('error es:', deleteClientApi.error)
+            toast({
+                title: 'Error al borrar ',
+                description: "Código de error"+ deleteClientApi.error +' intentalo mas tarde' ,
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+                })
+        }    
+    }
+
     const deleteClient = async (e) => {
         const response = await fetch('https://plabo.pythonanywhere.com/api/deleteclient/' + e, {method: 'DELETE'})
         const rstatus = response.status
@@ -27,7 +59,7 @@ function ClientsTable({clientlist}){
               duration: 6000,
               isClosable: true,
             })
-        setClients(clients.filter(item => item.id!==e))
+        setClients(clients?.filter(item => item.id!==e))
         }
         else{
             toast({
@@ -49,11 +81,17 @@ function ClientsTable({clientlist}){
     }
     function handleFilter(){
         setFilter(!filter)
-        if(filter){ setFClients(clients.filter(item => item.moroso===true)) }
-        else{setFClients(clients)}      
+        if(filter){ setFClients(getClientsApi.data?.filter(item => item.moroso===true)) }
+        else{setFClients(getClientsApi.data)}      
     }
 
-    const morosos = fClients.filter(item => item.moroso===true).length
+    const morosos = getClientsApi.data?.filter(item => item.moroso===true).length
+
+    useEffect(() => {   
+        console.log('calling use effect de clients')
+        getClientsApi.request(user,authTokens)
+        setClients(getClientsApi.data)     
+    },[])
 
     return(
         <>
@@ -81,7 +119,7 @@ function ClientsTable({clientlist}){
                 </Tr>
             </Thead>
             <Tbody>
-                {fClients.map(client=>
+                {clients?.map(client=>
                     <Tr key={client.id}>
                         <Td>{client.id}</Td>
                         <Td>{client.name}</Td>
@@ -90,7 +128,7 @@ function ClientsTable({clientlist}){
                         <Td>{JSON.stringify(client.moroso)}</Td>
                         <Td>
                             <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>}  onClick={()=> handleEdit(client)} ></IconButton>  
-                            <PopoverDelete onDelete={deleteClient} id={client.id} />
+                            <PopoverDelete onDelete={handleDelete} id={client.id} />
                         </Td>    
                     </Tr>
                 )}

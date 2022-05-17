@@ -9,7 +9,17 @@ const getAllClients=(user, authTokens)=>(
         }})   
     )
 
+const deleteClient = (id, user, authTokens) => {
+    fetch(base_url+'deleteclient/'+user.user_id+'/'+id, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ String(authTokens.access),
+        }}) 
+    }
+
 export default {
     getAllClients,
+    deleteClient,
     
   };

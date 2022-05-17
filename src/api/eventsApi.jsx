@@ -19,9 +19,33 @@ const getNextEvents=(user, authTokens)=>(
         }})   
     )
 
+const createEvent = (is_creating, event, user,authTokens) => {
+    var url=''
+    if(is_creating){ 
+            url = base_url+'createevent/'+user.user_id+'/'}   
+    else{   url = base_url+'updateevent/'+ user.user_id + '/' +event.id}
+    fetch(url,{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ String(authTokens.access),
+        },
+        body: JSON.stringify(event)
+        })
+    }
+const deleteEvent = (id, user, authTokens) => {
+    fetch(base_url+'deleteevent/'+user.user_id+'/'+id, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ String(authTokens.access),
+        }}) 
+    }
 
 
 export default {
     getAllEvents,
-    getNextEvents
+    getNextEvents,
+    createEvent,
+    deleteEvent,
   };

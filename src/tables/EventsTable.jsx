@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,Flex, IconButton} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {InputGroup, Input, InputLeftAddon} from '@chakra-ui/react'
@@ -7,18 +7,31 @@ import moment from 'moment';
 import {FiSearch,} from 'react-icons/fi';
 import SvgEdit from  './../dist/Edit'
 import PopoverDelete from '../components/PopoverDelete'
+import eventsApi from '../api/eventsApi'
+import servicesApi from '../api/servicesApi'
+import clientsApi from '../api/clientsApi'
+import useApi from '../hooks/useApi'
+import AuthContext from '../auth/AuthContext'
 
-function EventsTable({datelist, servicelist, clientlist}){
+function EventsTable(){
+
+    const {user, authTokens} = useContext(AuthContext)
+    
+    const getEventsApi = useApi(eventsApi.getAllEvents);
+    const deleteEventApi = useApi(eventsApi.deleteEvent);
+    const getClientsApi = useApi(clientsApi.getAllClients);
+    const getServicesApi = useApi(servicesApi.getAllServices);
 
     const {isOpen, onOpen, onClose } = useDisclosure()
-    const[events, setEvents] = useState(datelist)
-    const[Fevents, setFevents] = useState(datelist)
+    const[events, setEvents] = useState([])
     const[event, setEvent] = useState()               //selected service (when edditing)
+
+    useEffect(() => { 
+        getEventsApi.request(user,authTokens)  
+        getServicesApi.request(user,authTokens)   
+        getClientsApi.request(user,authTokens) 
+    },[])
     
-    const deleteDate = async (e) => {      
-        fetch('https://plabo.pythonanywhere.com/api/deletedate/' +e, {method: 'DELETE'})
-        setEvents(events.filter(item => item.id!==e))
-    }  
     function handleEdit(e){
         setEvent(e)
         onOpen()
@@ -27,14 +40,18 @@ function EventsTable({datelist, servicelist, clientlist}){
         setEvent()
         onOpen()
     }
+    function handleDelete(e){
+        console.log('borrar',e)
+        deleteEventApi.request(e,user,authTokens)
+    }
+
     function handleFilter(e){
         var filter = e.target.value.toLowerCase() 
-        //console.log(filter)
-        setFevents(events.filter(item => getClientName(item.client).toLowerCase().includes(filter)))   
+        setEvents(getEventsApi.data?.filter(item => getClientName(item.client).toLowerCase().includes(filter)))   
     }
     function getClientName(id){
         try {
-            return(clientlist.filter(item => item.id===id)[0].name)
+            return(getClientsApi.data?.filter(item => item.id===id)[0].name)
         } catch (error) {
             console.log(error)
             return('No able to get') 
@@ -42,7 +59,7 @@ function EventsTable({datelist, servicelist, clientlist}){
       }
     function getServiceName(id){
         try {
-            return(servicelist.filter(item => item.id===id)[0].name)
+            return(getServicesApi.data?.filter(item => item.id===id)[0].name)
         } catch (error) {
             console.log(error)
             return('No able to get') 
@@ -50,7 +67,7 @@ function EventsTable({datelist, servicelist, clientlist}){
       }
     function getTotalPrice(id){
         try {
-            const base = parseFloat(servicelist.filter(item => item.id!==id)[0].baseprice, 10)
+            const base = parseFloat(getServicesApi.data?.filter(item => item.id!==id)[0].baseprice, 10)
             const extra = parseFloat(id.extraprice, 10)
             const total =base+extra
             return(total)
@@ -84,7 +101,7 @@ function EventsTable({datelist, servicelist, clientlist}){
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {Fevents.map(date=>
+                    {getEventsApi.data?.map(date=>
                         <Tr key={date.id}>
                             <Td>{date.id}</Td>
                             <Td>{date.title}</Td>
@@ -97,7 +114,7 @@ function EventsTable({datelist, servicelist, clientlist}){
                             <Td> {JSON.stringify(date.paid)} </Td>
                             <Td>
                                 <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>} onClick={() => handleEdit(date)} ></IconButton> 
-                                <PopoverDelete onDelete={deleteDate} id={date.id} />
+                                <PopoverDelete onDelete={handleDelete} id={date.id} />
                             </Td>    
                         </Tr>
                     )}
@@ -113,7 +130,7 @@ function EventsTable({datelist, servicelist, clientlist}){
                 <DrawerContent>
                 <DrawerCloseButton />
                 <DrawerHeader>{event? 'Editar Cita': 'Crear cita' }</DrawerHeader>
-                <EventFormCrud onClose={onClose} event={event} events={Fevents} setEvents={setFevents} servicelist={servicelist} clientlist={clientlist} />
+                <EventFormCrud onClose={onClose} event={event} events={events} setEvents={setEvents} servicelist={getServicesApi.data} clientlist={getClientsApi.data} />
                 </DrawerContent>
             </Drawer>                    
       </Flex>
