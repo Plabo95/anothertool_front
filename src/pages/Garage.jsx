@@ -9,7 +9,7 @@ function Garage(){
     
     return(
         <>
-        <Flex w="100%" direction={'column'} minH='100vh' bg='mygray' align='center'>
+        <Flex w="100%" direction={'column'} minH='100vh' align='center'>
         <Flex py='4' justify={'start'} w='80%'>
             <Heading>Mi taller</Heading>
         </Flex>

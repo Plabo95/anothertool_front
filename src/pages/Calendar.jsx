@@ -2,15 +2,23 @@ import React, { useEffect, useState, useMemo, useContext } from 'react'
 import moment from 'moment';
 import PropTypes from 'prop-types'
 import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
+import Toolbar from "react-big-calendar/lib/Toolbar";
 import Nextsidebar from '../components/Nextsidebar'
 import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box} from '@chakra-ui/react'
-import { Flex,} from '@chakra-ui/react'
+import { Flex, button} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 import useApi from '../hooks/useApi';
 import eventsApi from '../api/eventsApi';
 import servicesApi from '../api/servicesApi';
 import clientsApi from '../api/clientsApi';
 import AuthContext from '../auth/AuthContext';
+import {
+  faWindowClose,
+  faChevronLeft,
+  faChevronRight
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { string } from 'yup/lib/locale';
 
 export default function CalendarComp({localizer}) {
 
@@ -126,7 +134,7 @@ export default function CalendarComp({localizer}) {
       }, culture, local) =>
       local.format(start, 'HH:mm', culture) + '-' +
       local.format(end, 'HH:mm', culture),
-    dayFormat: 'DD',
+    dayFormat: 'dddd',
     weekdayFormat: 'dddd'
   }
   function eventPropGetter(event, start, end, isSelected) {
@@ -152,7 +160,7 @@ export default function CalendarComp({localizer}) {
 
   return (
     <>
-    <Flex w="100%" p="5" gap={6} bg="white" >
+    <Flex w="100%" p="5" gap={6}>
         <Nextsidebar datelist={myEvents} />    
       <Calendar
       dayLayoutAlgorithm={'no-overlap'} //algoritmo no overlappin
@@ -185,6 +193,9 @@ export default function CalendarComp({localizer}) {
         week: "Semana",
         day: "Día"
       }}
+      components={{
+        toolbar: CustomToolbar,
+      }}
       />
       </Flex>
       <Drawer placement='right'  onClose={handleClose} initialFocusRef={titleInput} isOpen={isOpen}>
@@ -200,3 +211,79 @@ export default function CalendarComp({localizer}) {
 CalendarComp.propTypes = {
   localizer: PropTypes.instanceOf(DateLocalizer),
 }
+
+const CustomToolbar = (toolbar) => {
+
+  const capitalizarPrimeraLetra = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  const goToBack = () => {
+    toolbar.date.setMonth(toolbar.date.getMonth() - 1);
+    toolbar.onNavigate('prev');
+  };
+
+  const goToNext = () => {
+    toolbar.date.setMonth(toolbar.date.getMonth() + 1);
+    toolbar.onNavigate('next');
+  };
+
+  const goToCurrent = () => {
+    const now = new Date();
+    toolbar.date.setMonth(now.getMonth());
+    toolbar.date.setYear(now.getFullYear());
+    toolbar.onNavigate('TODAY');
+  };
+
+  const label = () => {
+    const date = moment(toolbar.date);
+    return (
+      <span><b>{date.format('MMMM')}</b><span> {date.format('YYYY')}</span></span>
+    );
+  };
+
+  const goToDayView = () => {
+    toolbar.onView("day");
+    // toolbar.setViewState("day");
+    active('.btn-dia');
+  };
+  const goToWeekView = () => {
+    toolbar.onView("week");
+    // toolbar.setViewState("week");
+    active('.btn-semana');
+  };
+  const goToMonthView = () => {
+    toolbar.onView("month");
+    // toolbar.setViewState("month");
+    active('.btn-mes');
+  };
+  const goToAgendaView = () => {
+    toolbar.onView("agenda");
+    // toolbar.setViewState("agenda");
+    active('.btn-agenda');
+  };
+
+  const active = (clase) => {
+    document.querySelector(".btn-select-view .active").classList.remove("active");
+    document.querySelector(clase).classList.add("active");
+  }
+
+  return (
+      <div className='rbc-toolbar'>
+        <span className="rbc-btn-group toolbar-left">
+          <Flex>
+            <span className="cursor" onClick={goToBack}>&lt;</span>
+            <Flex align='center' className="rbc-toolbar-label"><p>{capitalizarPrimeraLetra(toolbar.label)}</p></Flex>
+            <span className="cursor" onClick={goToNext}>&gt;</span>
+          </Flex>
+        </span>
+        <button type="button" onClick={goToCurrent}>Hoy</button>
+        <span className="rbc-btn-group btn-select-view">
+          <button type="button" className="btn-mes" onClick={goToMonthView}>Mes</button>
+          <button type="button" className="btn-semana active" onClick={goToWeekView}>Semana</button>
+          <button type="button" className="btn-dia" onClick={goToDayView}>Día</button>
+          <button type="button" className="btn-agenda" onClick={goToAgendaView}>Agenda</button>
+        </span>
+      </div>
+  );
+};
