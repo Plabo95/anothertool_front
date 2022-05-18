@@ -1,7 +1,7 @@
 const local = 'http://127.0.0.1:8000/api/'
-const live = 'https://plabo95.github.io/klndr_front/api/'
+const live = 'https://plabo.pythonanywhere.com/api/'
 
-const base_url = live
+const base_url = local
 
 const getAllClients=(user, authTokens)=>(
     fetch(base_url+"clients/"+user.user_id,{

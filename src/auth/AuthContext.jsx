@@ -6,7 +6,7 @@ import { useEffect } from "react";
 const local = 'http://127.0.0.1:8000/api/'
 const live = 'https://plabo95.github.io/klndr_front/api/'
 
-const base_url = live
+const base_url = local
 
 const AuthContext = createContext()
 

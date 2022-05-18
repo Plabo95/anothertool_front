@@ -1,13 +1,14 @@
-import {Flex, Heading, Text, Button} from '@chakra-ui/react'
+import {Flex, Heading, Text, Button, Box} from '@chakra-ui/react'
 
 
 export default function Landing(){
 
     const p_franja = '5%'
     const h_franja = '75vh'
+    const icon_box = '120px'
 
     return(
-        <Flex direction='column' w='100%'>
+        <Flex direction='column' w='100%' bg='lightgray' >
             <Flex height='8vh' w='100%' >
                 <h2>ESTO ES NAVBAR</h2>
             </Flex>
@@ -26,9 +27,9 @@ export default function Landing(){
                     anothertool quiere facilitarte el trabajo con un diseño intuitivo y actual.
                 </Text>
             </Flex>
-            <Flex height={h_franja} w='100%'  border={'1px'} direction='column' p={p_franja} align='center' >
+            <Flex height={h_franja} w='100%'  border={'1px'} p={p_franja} align='center' >
                 <Flex w='50%'>
-
+                    <p>Imagen</p>
                 </Flex>
                 <Flex w='50%' direction='column' gap='3'>
                     <Flex>
@@ -45,6 +46,34 @@ export default function Landing(){
                     </Flex>
                 </Flex>
             </Flex>
+            <Flex height={h_franja} w='100%'  border={'1px'} direction='column' align='center' p={p_franja}>
+                <Heading>anothertool, tu otra herramienta online</Heading>      
+                <Text>Calendario, seguimiento de trabajos, historial de cliente,s gestión de citas, tareas y servicios
+                    estadísticas... 
+                </Text>
+                <Flex gap='10'  mt='5%' >
+                    <Box bg='white' w={icon_box} h={icon_box} rounded='xl'>
+        
+                    </Box>
+                    <Box bg='white' w={icon_box} h={icon_box} rounded='xl'>
+        
+                    </Box>
+                    <Box bg='white' w={icon_box} h={icon_box} rounded='xl'>
+        
+                    </Box>
+                    <Box bg='white' w={icon_box} h={icon_box} rounded='xl'>
+        
+                    </Box>
+                    <Box bg='white' w={icon_box} h={icon_box} rounded='xl'>
+        
+                    </Box>
+                    <Box bg='white' w={icon_box} h={icon_box} rounded='xl'>
+                    
+                    </Box>
+
+                </Flex>
+            </Flex>
+
         </Flex>
     )
 }
