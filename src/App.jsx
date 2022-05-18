@@ -30,26 +30,18 @@ function App() {
           <AuthProvider>
           <Navbar/>   
           <Routes>
-              <Route path='klndr_front/' element={<Landing/>} /> 
+              <Route index element={<Landing/>} />
+              <Route path='klndr_front/' index element={<Landing/>} />  
               <Route path='klndr_front/register' element={<Register/>} /> 
               <Route path='klndr_front/login' element={<Login/>} />  
-               
-              <Route path="klndr_front/garage" element={
-                <PrivateRoute>
-                  <Garage/>
-                </PrivateRoute>
-                }/>
-              <Route path="klndr_front/analytics" element={
-                <PrivateRoute>
-                  <Analytics/>
-                </PrivateRoute>
-              }/>
-              <Route path="klndr_front/calendar" element={
-                <PrivateRoute>
-                  <CalendarComp localizer={localizer}/>
-                </PrivateRoute>
-              }/>
-             
+
+              <Route element={<PrivateRoute/>}>
+                <Route path="klndr_front/calendar" element={<CalendarComp localizer={localizer}/>} />
+                <Route path="klndr_front/garage" element={<Garage/>} />
+                <Route path="klndr_front/analytics" element={<Analytics/>} />
+              </Route>
+
+              <Route path="*" element={<p>There's nothing here: 404!</p>} />
           </Routes>
           </AuthProvider> 
         </BrowserRouter>

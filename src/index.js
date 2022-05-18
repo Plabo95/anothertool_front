@@ -8,10 +8,11 @@ import './index.css'
 
 const customTheme = extendTheme({
   colors:{
-    primary: "#0258FF", //light blue
-    secondary: "#001234", //darkblue,
-    highlight: "#FF7C02", //orange
+    blue: "#0258FF", //light blue
+    darkblue: "#001234", //darkblue,
+    orange: "#FF7C02", //orange
     mygray: "#F0F0F0",
+    
   },
 })
 

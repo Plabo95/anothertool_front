@@ -3,8 +3,10 @@ import jwt_decode from "jwt-decode";
 import {useNavigate} from 'react-router-dom'
 import { useEffect } from "react";
 
-const url_local= 'http://127.0.0.1:8000/api/'
-const url_live= 'https://plabo.pythonanywhere.com/api/'
+const local = 'http://127.0.0.1:8000/api/'
+const live = 'https://plabo95.github.io/klndr_front/api/'
+
+const base_url = live
 
 const AuthContext = createContext()
 
@@ -25,7 +27,7 @@ export const AuthProvider = ({children}) => {
     const [loading,setLoading] = useState(true)  
 
     const loginUser = async(e) => {
-        const response = await fetch(url_local+'token/',{
+        const response = await fetch(base_url+'token/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -52,12 +54,12 @@ export const AuthProvider = ({children}) => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
-        navigate('klndr_front/login')
+        navigate('klndr_front/')
     } 
 
     const updateToken = async() => {
         console.log('refreshing token')
-        const response = await fetch(url_local+'token/refresh/',{
+        const response = await fetch(base_url+'token/refresh/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -75,7 +77,7 @@ export const AuthProvider = ({children}) => {
                 }
             else{
                 console.log('error de refresh token')
-                logoutUser()
+                //logoutUser()
             }
             //al terminar de refrescar el token quito loading
             if(loading){
