@@ -15,9 +15,9 @@ function Navbar(){
     if (user) {
     return(
         <>
-        <Flex bg='secondary' h="100%" flexFlow='column wrap' justify="space-between"
+        <Flex bg='darkblue' h="100%" flexFlow='column wrap' justify="space-between"
         w={navSize === "small"? "75px": "250px"}></Flex>
-        <Flex bg='secondary' h="100%" position="fixed" flexFlow='column wrap' justify="space-between"
+        <Flex bg='darkblue' h="100%" position="fixed" flexFlow='column wrap' justify="space-between"
         w={navSize === "small"? "75px": "200px"}
         >
         
