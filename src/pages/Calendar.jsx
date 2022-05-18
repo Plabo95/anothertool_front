@@ -12,13 +12,6 @@ import eventsApi from '../api/eventsApi';
 import servicesApi from '../api/servicesApi';
 import clientsApi from '../api/clientsApi';
 import AuthContext from '../auth/AuthContext';
-import {
-  faWindowClose,
-  faChevronLeft,
-  faChevronRight
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { string } from 'yup/lib/locale';
 
 export default function CalendarComp({localizer}) {
 
