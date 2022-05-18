@@ -2,11 +2,7 @@ import {createContext, useState } from "react";
 import jwt_decode from "jwt-decode";
 import {useNavigate} from 'react-router-dom'
 import { useEffect } from "react";
-
-const local = 'http://127.0.0.1:8000/api/'
-const live = 'https://plabo95.github.io/klndr_front/api/'
-
-const base_url = local
+import {base_url} from '../environment/global';
 
 const AuthContext = createContext()
 
