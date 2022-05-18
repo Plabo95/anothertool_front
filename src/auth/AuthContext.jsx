@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import {useNavigate} from 'react-router-dom'
 import { useEffect } from "react";
 
-const url_local= 'http://127.0.0.1:8000/api/token/'
+const url_local= 'http://127.0.0.1:8000/api/'
 const url_live= 'https://plabo.pythonanywhere.com/api/'
 
 const AuthContext = createContext()
@@ -20,10 +20,12 @@ export const AuthProvider = ({children}) => {
     let [authTokens, setAuthTokens] = useState(()=>  localStorage.getItem('authTokens')          
     ?JSON.parse(localStorage.getItem('authTokens'))
     :null, [])
-    const [loading,setLoading] = useState(true)     //loggin in loading
+
+    //nos dice si el authcontext esta listo para ser cargado
+    const [loading,setLoading] = useState(true)  
 
     const loginUser = async(e) => {
-        const response = await fetch(url_live+'token/',{
+        const response = await fetch(url_local+'token/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -39,7 +41,7 @@ export const AuthProvider = ({children}) => {
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))
                 localStorage.setItem('authTokens',JSON.stringify(data))    //cache?
-                navigate('klndr_front/');
+                navigate('klndr_front/calendar');
             }
             else{
                 console.log('error de login')
@@ -55,13 +57,13 @@ export const AuthProvider = ({children}) => {
 
     const updateToken = async() => {
         console.log('refreshing token')
-        const response = await fetch(url_live+'token/refresh/',{
+        const response = await fetch(url_local+'token/refresh/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                'refresh': authTokens.refresh })
+                'refresh': authTokens?.refresh })
             })
             const rstatus = response.status
             if(rstatus >= 200 && rstatus<300){
@@ -75,6 +77,10 @@ export const AuthProvider = ({children}) => {
                 console.log('error de refresh token')
                 logoutUser()
             }
+            //al terminar de refrescar el token quito loading
+            if(loading){
+                setLoading(false)
+            }
     }
     const contextData = {
         user: user,
@@ -83,7 +89,12 @@ export const AuthProvider = ({children}) => {
         logoutUser: logoutUser,
     }
     //refresh token cada 4 mins antes de que caduque en 5
+    //tambien es importante que obtenga el refresh cada vez que recarga pagina
     useEffect(()=>{ 
+
+        if(loading){
+            updateToken()
+        }
         const interval = setInterval(() => {
             if(authTokens){
                 updateToken()
@@ -94,7 +105,7 @@ export const AuthProvider = ({children}) => {
     
     return(
         <AuthContext.Provider value={contextData} >
-            {children}
+            {loading? null: children}
         </AuthContext.Provider>
     )
 }

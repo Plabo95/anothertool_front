@@ -1,28 +1,64 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { Button, useToast, Flex,VStack} from '@chakra-ui/react'
 import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import TextField from './TextField';
 import {SwitchControl} from "formik-chakra-ui";
+import clientsApi from '../api/clientsApi';
+import AuthContext from '../auth/AuthContext';
+import useApi from '../hooks/useApi';
 
-function ClientForm({onClose, clients, client, setClients}){
+function ClientForm({is_creating, onClose, clients, client, setClients}){
     
     const toast = useToast()
     const[loadingCreate, setLoadingCreate] = useState(false)
-      
+    const {user, authTokens} = useContext(AuthContext)      
+    const createClientApi = useApi(clientsApi.createClient);
+
     function closeDrawer(){
         setLoadingCreate(false)
         onClose()
     }
     
-    const handleSubmit = async(values) => {
+    const handleSubmit = (values) => {    
+        setLoadingCreate(true)
+        const clientToCreate ={
+            'name': values.name,
+            'car': values.car,
+            'telf': values.telf,
+            'moroso': values.moroso,
+            'user': user.user_id,
+        }
+        createClientApi.request(client, clientToCreate, user, authTokens)
+        if(createClientApi.error){
+            toast({
+                title: 'Error al guardar ',
+                description: "Código de error"+ createClientApi.error +' intentalo mas tarde' ,
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+                })
+        }
+        else{
+            toast({
+                title: 'Cliente guardado',
+                status: 'success',
+                duration: 6000,
+                isClosable: true,
+                }) 
+        }
+        closeDrawer()
+    }
+
+    const handleSubmitt = async(values) => {
     setLoadingCreate(true)
         const clientToCreate ={
                 'name': values.name,
                 'car': values.car,
                 'telf': values.telf,
                 'moroso': values.moroso,
+                'user': user.user_id,
         }
     var url = ''
     if(client===undefined){ 
@@ -71,7 +107,7 @@ function ClientForm({onClose, clients, client, setClients}){
             .max(9, "Debe se de 9 dígitos"),
         })}
         onSubmit= {(values, actions) => {
-            alert(JSON.stringify(values))
+            //alert(JSON.stringify(values))
             handleSubmit(values)
             actions.resetForm()
         }}

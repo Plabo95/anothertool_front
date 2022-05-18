@@ -1,17 +1,26 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,Flex, IconButton, useToast} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure, Square} from '@chakra-ui/react'
 import ServiceForm from '../forms/ServiceForm'
 import PopoverDelete from '../components/PopoverDelete'
 import SvgEdit from  './../dist/Edit'
+import servicesApi from '../api/servicesApi'
+import AuthContext from '../auth/AuthContext'
+import useApi from '../hooks/useApi'
 
+function ServicesTable(){
 
-function ServicesTable({servicelist}){
+    const {user, authTokens} = useContext(AuthContext)
+    const getServicesApi = useApi(servicesApi.getAllServices);
 
     const toast = useToast()
     const {isOpen, onOpen, onClose } = useDisclosure()
-    const[services, setServices] = useState(servicelist)
+    const[services, setServices] = useState([])
     const[sService, setSService] = useState()               //selected service (when edditing)
+
+    useEffect(() => {  
+        getServicesApi.request(user,authTokens)          
+      },[])
 
     const deleteService = async (e) => {      
         const response = await fetch('https://plabo.pythonanywhere.com/api/deleteservice/' +e, {method: 'DELETE'})
@@ -23,7 +32,7 @@ function ServicesTable({servicelist}){
             duration: 6000,
             isClosable: true,
           })
-        setServices(services.filter(item => item.id!==e))
+        setServices(services?.filter(item => item.id!==e))
         }
         else{
         toast({
@@ -62,7 +71,7 @@ function ServicesTable({servicelist}){
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {services.map(service=>
+                    {getServicesApi.data?.map(service=>
                         <Tr key={service.id}>
                             <Td>{service.id}</Td>
                             <Td>{service.name}</Td>

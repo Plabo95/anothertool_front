@@ -20,7 +20,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { string } from 'yup/lib/locale';
 
-export default function CalendarComp({localizer, servicelist, getServices, clientlist, getClients}) {
+export default function CalendarComp({localizer}) {
 
   const {user, authTokens} = useContext(AuthContext)
 
@@ -201,7 +201,7 @@ export default function CalendarComp({localizer, servicelist, getServices, clien
       <Drawer placement='right'  onClose={handleClose} initialFocusRef={titleInput} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <EventForm onClose={onClose} handleClose={handleClose} onSave={handleSave} is_creating={creating} event={sEvent} events={myEvents} servicelist={servicelist} clientlist={clientlist} setEvents={setEvents} />
+          <EventForm onClose={onClose} handleClose={handleClose} onSave={handleSave} is_creating={creating} event={sEvent} events={getEventsApi.data} servicelist={getServicesApi.data} clientlist={getClientsApi.data} setEvents={setEvents} />
         </DrawerContent>
       </Drawer>    
       </>

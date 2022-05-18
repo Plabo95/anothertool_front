@@ -30,7 +30,7 @@ function Navbar(){
                     setNavSize("small")
             }}
             />
-            <NavItem navSize={navSize} icon={SvgCalendar} title="Calendar" slash='/klndr_front' />
+            <NavItem navSize={navSize} icon={SvgCalendar} title="Calendar" slash='/klndr_front/calendar' />
             <NavItem navSize={navSize} icon={SvgServicios} title="Garage" slash='klndr_front/garage' />      
             <NavItem navSize={navSize} icon={SvgAnalytics} title="Reports" slash='klndr_front/analytics' /> 
         </Flex>

@@ -9,7 +9,32 @@ const getAllClients=(user, authTokens)=>(
         }})   
     )
 
+const deleteClient = (id, user, authTokens) => {
+    fetch(base_url+'deleteclient/'+user.user_id+'/'+id+'/', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ String(authTokens.access),
+        }}) 
+    }
+
+const createClient = (client, clientToCreate, user,authTokens) => {
+    var url=''
+    if(client === undefined){ 
+            url = base_url+'createclient/'}   
+    else{   url = base_url+'updateclient/'+ user.user_id + '/' + client.id+'/'}
+    fetch(url,{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ String(authTokens.access),
+        },
+        body: JSON.stringify(clientToCreate)
+        })
+    }
+
 export default {
     getAllClients,
-    
+    deleteClient,
+    createClient
   };

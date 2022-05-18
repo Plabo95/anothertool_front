@@ -3,15 +3,10 @@ import ClientsTable from '../tables/ClientsTable'
 import ServicesTable from '../tables/ServicesTable'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Flex, Text, Heading } from '@chakra-ui/react'
 import EventsTable from '../tables/EventsTable'
-import AuthContext from '../auth/AuthContext'
 
-function Garage({clientlist, eventlist, servicelist, getEvents, getServices, getClients}){
-    let {name} = useContext(AuthContext)
-    useEffect(() => {     
-        getEvents();
-        getServices();
-        getClients();
-    },[])
+
+function Garage(){
+    
     return(
         <>
         <Flex w="100%" direction={'column'} minH='100vh' align='center'>
@@ -27,13 +22,13 @@ function Garage({clientlist, eventlist, servicelist, getEvents, getServices, get
             </TabList>
             <TabPanels>
                 <TabPanel>
-                    <EventsTable datelist={eventlist} servicelist={servicelist} clientlist={clientlist}/>
+                    <EventsTable/>
                 </TabPanel>
                 <TabPanel>
-                    <ServicesTable servicelist={servicelist} />
+                    <ServicesTable/>
                 </TabPanel>
                 <TabPanel>
-                    <ClientsTable clientlist={clientlist} />
+                    <ClientsTable/>
                 </TabPanel>
             </TabPanels>
             </Tabs>
