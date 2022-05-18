@@ -2,20 +2,18 @@
 
 *{
   font-family: 'Poppins', Arial, Helvetica !important;
+  color: #001234;
 }
+
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: #F0F0F0 !important;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
 
 button:focus {
@@ -24,6 +22,83 @@ button:focus {
 *:focus {
   box-shadow: none !important;
 }
+
+/************* CALENDAR **************/
 .rbc-month-row{
   cursor: pointer !important;
+}
+
+.rbc-btn-group button{
+  color: #001234 !important;
+}
+.rbc-allday-cell{
+  display: none !important;
+  border: none !important;
+  border-top: none !important;
+  padding-top: 0px !important;
+}
+
+.rbc-time-header-content, .rbc-month-header{
+  background-color: #ccc;
+}
+
+.rbc-header{
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rbc-header + .rbc-header{
+  border: none !important;
+}
+
+.rbc-header {
+  font-weight: normal !important;
+}
+
+.rbc-today {
+  background-color: #fcfcfc;
+  /* border-color:#ccc */
+}
+/*
+.rbc-today .rbc-timeslot-group{
+  border-color:#ccc
+}
+.rbc-today .rbc-timeslot-group .rbc-time-slot{
+  border-color:#ccc
+}
+*/
+.rbc-off-range .rbc-button-link{
+  color: #ccc !important;
+}
+
+.rbc-current-time-indicator{
+  background-color: #FF7C02;
+}
+
+.rbc-toolbar{
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-select-view .active{
+  background-color: #FF7C02;
+  box-shadow: 0px 0px 10px black inset;
+  color: #fcfcfc !important;
+}
+.btn-select-view .active:focus {
+  background-color: #FF7C02 !important;
+  box-shadow: 0px 0px 10px black inset !important;
+  color: #fcfcfc !important;
+}
+
+.toolbar-left span, .toolbar-left p{
+  font-weight: bold !important;
+  font-size: x-large;
+}
+
+/***************** CURSOR POINTER *************************/
+.cursor{
+  cursor: pointer;
 }
