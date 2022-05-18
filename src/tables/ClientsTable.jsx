@@ -20,6 +20,7 @@ function ClientsTable(){
     const[fClients, setFClients] = useState([])
     const[clients, setClients] = useState([])
     const[sClient, setSClient] = useState()
+    const[creating, setCreating] = useState(false)
 
     const[filter, setFilter] = useState(true)
 
@@ -28,14 +29,14 @@ function ClientsTable(){
         console.log('deleting client: ', e)
         deleteClientApi.request(e, user,authTokens)
         if(!deleteClientApi.error){
-            console.log('exitos')
             toast({
                 title: 'Cliente borrado',
                 status: 'success',
                 duration: 6000,
                 isClosable: true,
               })
-              setClients(clients?.filter(item => item.id!==e))
+            setClients(clients.filter(item => item.id!==e))
+            //updateTable()
         }   
         else{
             console.log('error es:', deleteClientApi.error)
@@ -49,6 +50,17 @@ function ClientsTable(){
         }    
     }
 
+    const updateTable = () => {
+        console.log('updating table')
+        getClientsApi.request(user,authTokens)
+        console.log(getClientsApi)
+        if(getClientsApi.error){
+            console.log('Error fetching...', getClientsApi.error)
+        }
+        else{setClients(getClientsApi.data)}
+        console.log(clients)      
+    }
+
     const deleteClient = async (e) => {
         const response = await fetch('https://plabo.pythonanywhere.com/api/deleteclient/' + e, {method: 'DELETE'})
         const rstatus = response.status
@@ -59,7 +71,7 @@ function ClientsTable(){
               duration: 6000,
               isClosable: true,
             })
-        setClients(clients?.filter(item => item.id!==e))
+        setClients(getClientsApi.data.filter(item => item.id!==e))
         }
         else{
             toast({
@@ -73,10 +85,12 @@ function ClientsTable(){
     }
     function handleEdit(e){
         setSClient(e)
+        setCreating(false)
         onOpen()
     }
     function handleCreate(){
         setSClient()
+        setCreating(true)
         onOpen()
     }
     function handleFilter(){
@@ -89,9 +103,10 @@ function ClientsTable(){
 
     useEffect(() => {   
         console.log('calling use effect de clients')
-        getClientsApi.request(user,authTokens)
-        setClients(getClientsApi.data)     
+        updateTable()
     },[])
+
+    
 
     return(
         <>
@@ -119,7 +134,7 @@ function ClientsTable(){
                 </Tr>
             </Thead>
             <Tbody>
-                {clients?.map(client=>
+                {getClientsApi.data?.map(client=>
                     <Tr key={client.id}>
                         <Td>{client.id}</Td>
                         <Td>{client.name}</Td>
@@ -145,7 +160,7 @@ function ClientsTable(){
             <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader>{sClient? 'Editar Cliente': 'Crear Cliente' }</DrawerHeader>                
-            <ClientForm onClose={onClose} client={sClient} clients={fClients} setClients={setFClients}/>
+            <ClientForm is_creating={creating} onClose={onClose} client={sClient} clients={fClients} setClients={setFClients}/>
             </DrawerContent>
         </Drawer>                    
      

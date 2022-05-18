@@ -12,9 +12,11 @@ export default (apiFunc) => {
     setLoading(true);
     try {
       const response = await apiFunc(...props)
-      if (response.ok) {
+      if (response.statusText === 'OK') {
         const newdata = await response.json();
         setData(newdata);
+        console.log(response)
+        console.log(newdata)
         setError(null);
         setLoading(false);
       }
@@ -23,7 +25,7 @@ export default (apiFunc) => {
         logoutUser()
       }
       else {
-        setError("Hubo un error al obtener los datos");
+        setError(response.status, response.statusText);
       } 
     } catch (err) {
       setError(err.message || "Error en solicitud post!");

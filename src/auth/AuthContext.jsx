@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import {useNavigate} from 'react-router-dom'
 import { useEffect } from "react";
 
-const url_local= 'http://127.0.0.1:8000/api/token/'
+const url_local= 'http://127.0.0.1:8000/api/'
 const url_live= 'https://plabo.pythonanywhere.com/api/'
 
 const AuthContext = createContext()
@@ -25,7 +25,7 @@ export const AuthProvider = ({children}) => {
     const [loading,setLoading] = useState(true)  
 
     const loginUser = async(e) => {
-        const response = await fetch(url_live+'token/',{
+        const response = await fetch(url_local+'token/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ export const AuthProvider = ({children}) => {
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))
                 localStorage.setItem('authTokens',JSON.stringify(data))    //cache?
-                navigate('klndr_front/');
+                navigate('klndr_front/calendar');
             }
             else{
                 console.log('error de login')
@@ -57,7 +57,7 @@ export const AuthProvider = ({children}) => {
 
     const updateToken = async() => {
         console.log('refreshing token')
-        const response = await fetch(url_live+'token/refresh/',{
+        const response = await fetch(url_local+'token/refresh/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

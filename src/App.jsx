@@ -4,13 +4,16 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import React from 'react'
 import {Flex} from '@chakra-ui/react'
 
-//Components
+// Auth Components
 import CalendarComp from "./pages/Calendar";
 import Navbar from "./components/Navbar/Navbar";
 import Analytics from './pages/Analytics';
 import Garage from './pages/Garage';
 import Register from './pages/Register';
 import Login from './pages/Login';
+
+//Non Auth Components
+import Landing from './pages/Landing';
 
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import PrivateRoute from './auth/PrivateRoute'
@@ -27,9 +30,10 @@ function App() {
           <AuthProvider>
           <Navbar/>   
           <Routes>
-            <Route path='klndr_front/register' element={<Register/>} /> 
-            <Route path='klndr_front/login' element={<Login/>} /> 
-            
+              <Route path='klndr_front/' element={<Landing/>} /> 
+              <Route path='klndr_front/register' element={<Register/>} /> 
+              <Route path='klndr_front/login' element={<Login/>} />  
+               
               <Route path="klndr_front/garage" element={
                 <PrivateRoute>
                   <Garage/>
@@ -40,7 +44,7 @@ function App() {
                   <Analytics/>
                 </PrivateRoute>
               }/>
-              <Route path="klndr_front/" element={
+              <Route path="klndr_front/calendar" element={
                 <PrivateRoute>
                   <CalendarComp localizer={localizer}/>
                 </PrivateRoute>
