@@ -1,4 +1,5 @@
-const base_url = 'http://127.0.0.1:8000/api/'
+import {base_url} from '../environment/global';
+
 
 const getAllServices=(user, authTokens)=>(
     fetch(base_url+"services/"+user.user_id,{

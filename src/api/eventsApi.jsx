@@ -1,5 +1,4 @@
-const base_url = 'http://127.0.0.1:8000/api/'
-//const base_url = 'https://plabo.pythonanywhere.com/api/'
+import {base_url} from '../environment/global';
 
 const getAllEvents=(user, authTokens)=>(
     fetch(base_url+"events/"+user.user_id,{
