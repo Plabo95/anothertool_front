@@ -160,7 +160,7 @@ function ClientsTable(){
             <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader>{sClient? 'Editar Cliente': 'Crear Cliente' }</DrawerHeader>                
-            <ClientForm is_creating={creating} onClose={onClose} client={sClient} clients={fClients} setClients={setFClients}/>
+            <ClientForm is_creating={creating} onClose={onClose} client={sClient} clients={fClients} setClients={setFClients} updateTable={updateTable}/>
             </DrawerContent>
         </Drawer>                    
      
