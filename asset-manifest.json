@@ -1,17 +1,18 @@
 {
   "files": {
     "main.css": "/klndr_front/static/css/main.93c7233b.css",
-    "main.js": "/klndr_front/static/js/main.868ea412.js",
+    "main.js": "/klndr_front/static/js/main.46ce8695.js",
     "static/media/landing3_img1.png": "/klndr_front/static/media/landing3_img1.9de78e75998bf65c037e.png",
     "static/media/landing2_img1.png": "/klndr_front/static/media/landing2_img1.0dc9445d7c572f7a78e8.png",
     "static/media/landing5_img1.png": "/klndr_front/static/media/landing5_img1.3295c05bdc78a67851fa.png",
+    "static/media/login_bg.png": "/klndr_front/static/media/login_bg.b31f6347fa17a6305a10.png",
     "static/media/landing1_img1.png": "/klndr_front/static/media/landing1_img1.b6c963ba376cf027459f.png",
     "index.html": "/klndr_front/index.html",
     "main.93c7233b.css.map": "/klndr_front/static/css/main.93c7233b.css.map",
-    "main.868ea412.js.map": "/klndr_front/static/js/main.868ea412.js.map"
+    "main.46ce8695.js.map": "/klndr_front/static/js/main.46ce8695.js.map"
   },
   "entrypoints": [
     "static/css/main.93c7233b.css",
-    "static/js/main.868ea412.js"
+    "static/js/main.46ce8695.js"
   ]
 }
