@@ -1,4 +1,6 @@
 import {Flex, Heading, Text, Button, Box, Image} from '@chakra-ui/react'
+import AuthContext from '../auth/AuthContext'
+import { useContext } from 'react'
 import img1 from '../assets/landing1_img1.png'
 import img2 from '../assets/landing2_img1.png'
 import img3 from '../assets/landing3_img1.png'
@@ -13,10 +15,15 @@ import {useNavigate} from 'react-router-dom'
 
 export default function Landing(){
 
+    const {user, authTokens} = useContext(AuthContext)
     const p_franja = '5%'
     const h_franja = '75vh'
     const icon_box = '120px'
     const navigate = useNavigate();
+    if(user){
+        //console.log('hay user', user)
+        navigate('calendar')
+    }
 
     return(
         <Flex direction='column' w='100%' >

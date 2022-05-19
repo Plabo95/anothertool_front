@@ -35,6 +35,7 @@ export const AuthProvider = ({children}) => {
             })
             const rstatus = response.status
             if(rstatus >= 200 && rstatus<300){
+
                 const data = await response.json();
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))

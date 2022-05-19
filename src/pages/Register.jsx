@@ -1,13 +1,17 @@
 import React, {useState} from 'react'
-import { Button, useToast, Flex,VStack} from '@chakra-ui/react'
-import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
+import { Button, useToast, Flex,VStack, Text,Heading} from '@chakra-ui/react'
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import TextField from '../forms/TextField'
 import {SwitchControl} from "formik-chakra-ui";
+import {useNavigate} from 'react-router-dom'
+import {CheckboxSingleControl}  from "formik-chakra-ui";
+
+import bg from '../assets/register_bg.png'
 
 export default function Register(){
 
+    const navigate = useNavigate();
     const toast = useToast()
     const[loadingCreate, setLoadingCreate] = useState(false)
 
@@ -50,42 +54,67 @@ export default function Register(){
 
 
     return(
-        <Flex w='100%'>
-        <Formik
-        initialValues = {{
-            email: "",
-            username: "",
-            password: "",
-            password2: "",
-        }
-    }
-        validationSchema = {Yup.object({
-            email: Yup.string().required("Nombre es obligatorio"),
-            username: Yup.string().required("Nombre es obligatorio"),
-            password: Yup.string().required("Coche es obligatorio"),
-            password2: Yup.string().required("Coche es obligatorio"),
-        })}
-        onSubmit= {(values, actions) => {
-            alert(JSON.stringify(values))
-            handleSubmit(values)
-            actions.resetForm()
-        }}
-        >
-        {formik => (
-        <Flex direction={'column'} w='100%' justify='space-around' align='center' >
-        <VStack as="form" >
-            <TextField label="Email" name="email" />
-            <TextField label="Usuario" name="username" />
-            <TextField label="Password" name="password" />
-            <TextField label="Password2" name="password2" />
-        </VStack>      
-        <Flex justify="right" columnGap="3" mt='3'>
-            <Button variant='ghost' colorScheme='red' size='sm' >Cancelar</Button>
-            <Button colorScheme='orange' size='sm' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Guardando'>  Guardar </Button>
-        </Flex>  
-        </Flex>
-            )}
-        </Formik>
+        <Flex w='100%' minH='100vh' direction='column' backgroundImage={bg}>
+            
+            <Flex height='8vh' w='100%' p='1%' align='center'>
+                <Flex w='50%' justify='start' ml='3%'>
+                    <Flex onClick={() => navigate('/klndr_front/')} cursor='pointer' >
+                        <Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading>
+                    </Flex>
+                </Flex>
+                <Flex w='50%' justify='end' gap='10' align='center' mr='3%' >
+                    <Text fontWeight='bold' >¿Ya tienes una cuenta?</Text>
+                    <Button bg='blue' color='white' size='sm'
+                    onClick={() => navigate('/klndr_front/login')}
+                    >Iniciar Sesión</Button>
+                </Flex>
+            </Flex>
+
+            <Flex justify='center' align='center' w='100%'>
+                <Flex py='5%'  w='20%' direction='column' align='center' gap='5'>
+                    <Flex><Heading size='lg' >another</Heading><Heading size='lg' color={'blue'}>tool</Heading></Flex>
+                    <Flex bg='white' w='100%' rounded='xl' direction='column' align='center'  gap='3' py='12%'>
+                        <Heading size='md'> ¡Bienvenido! </Heading>
+                        <Formik
+                        initialValues = {{
+                            email: "",
+                            username: "",
+                            password: "",
+                            password2: "",
+                        }
+                        }
+                        validationSchema = {Yup.object({
+                            email: Yup.string().required("Nombre es obligatorio"),
+                            username: Yup.string().required("Nombre es obligatorio"),
+                            password: Yup.string().required("Coche es obligatorio"),
+                            password2: Yup.string().required("Coche es obligatorio"),
+                        })}
+                        onSubmit= {(values, actions) => {
+                            //alert(JSON.stringify(values))
+                            handleSubmit(values)
+                            actions.resetForm()
+                        }}
+                        >
+                        {formik => (
+                        <Flex as="form" direction={'column'} w='80%' justify='space-around' align='center' gap='3'>
+                            <TextField placeholder="Correo electrónico" name="email" />
+                            <TextField placeholder="Usuario" name="username" />
+                            <TextField placeholder="Contraseña" name="password" />
+                            <TextField placeholder="Repite Contraseña" name="password2" />
+                            <CheckboxSingleControl name="record">
+                                <Text fontSize='xs' fontWeight='hairline'  >
+                                Estoy de acuerdo con los términos del servicio y la política
+                                de privacidad 
+                                </Text>              
+                            </CheckboxSingleControl>
+                            <Button mt='8' bgColor='blue' color='white' size='md' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
+                            Registrarse </Button>  
+                        </Flex>
+                            )}
+                        </Formik>
+                    </Flex>
+                </Flex>
+            </Flex>
         </Flex>
     )
 
