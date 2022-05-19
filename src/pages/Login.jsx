@@ -7,6 +7,8 @@ import TextField from '../forms/TextField'
 import AuthContext from '../auth/AuthContext';
 import {useNavigate} from 'react-router-dom'
 
+import bg from '../assets/login_bg.png'
+
 export default function Login(){
 
     const navigate = useNavigate();
@@ -15,8 +17,8 @@ export default function Login(){
     const {loginUser} = useContext(AuthContext)
 
     return(
-        <Flex w='100%' minH='100vh' direction='column' >
-
+        <Flex w='100%' minH='100vh' direction='column' backgroundImage={bg}>
+            
             <Flex height='8vh' w='100%' p='1%' align='center'>
                 <Flex w='50%' justify='start' ml='3%'>
                     <Flex><Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading></Flex>
