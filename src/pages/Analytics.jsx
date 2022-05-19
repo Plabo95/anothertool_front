@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Flex, Heading, Text} from '@chakra-ui/react'
 import {Stat,StatLabel,StatNumber,StatHelpText,StatArrow,StatGroup, CircularProgress, CircularProgressLabel, Box} from '@chakra-ui/react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import AuthContext from '../auth/AuthContext';
+import {base_url} from '../environment/global';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 export const data = {
@@ -31,10 +33,12 @@ export const data = {
   };
 
 function Analytics(){
+
+    const {user, authTokens} = useContext(AuthContext)
     const [analytics, setAnalytics] = useState()
 
     const fetchAnalytics = async () => {
-        const response = await fetch("https://plabo.pythonanywhere.com/api/analytics")
+        const response = await fetch(base_url+'analytics/'+user.user_id)
         setAnalytics(await response.json())
         }
 
