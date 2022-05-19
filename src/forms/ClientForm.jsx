@@ -9,7 +9,7 @@ import clientsApi from '../api/clientsApi';
 import AuthContext from '../auth/AuthContext';
 import useApi from '../hooks/useApi';
 
-function ClientForm({is_creating, onClose, clients, client, setClients}){
+function ClientForm({is_creating, onClose, clients, client, setClients, updateTable}){
     
     const toast = useToast()
     const[loadingCreate, setLoadingCreate] = useState(false)
@@ -41,6 +41,7 @@ function ClientForm({is_creating, onClose, clients, client, setClients}){
                 })
         }
         else{
+            updateTable()
             toast({
                 title: 'Cliente guardado',
                 status: 'success',
