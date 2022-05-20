@@ -7,13 +7,15 @@ import SvgEdit from  './../dist/Edit'
 import PopoverDelete from '../components/PopoverDelete'
 import clientsApi from '../api/clientsApi'
 import useApi from '../hooks/useApi'
+import useApi2 from '../hooks/useApi2'
 import AuthContext from '../auth/AuthContext'
 
 function ClientsTable(){
 
     const {user, authTokens} = useContext(AuthContext)
     const getClientsApi = useApi(clientsApi.getAllClients);
-    const deleteClientApi = useApi(clientsApi.deleteClient);
+    const getClientsApi2 = useApi2(clientsApi.getAllClients);
+    const deleteClientApi = useApi2(clientsApi.deleteClient);
 
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -24,65 +26,41 @@ function ClientsTable(){
 
     const[filter, setFilter] = useState(true)
 
+    const iniClients = async () => {
+        const {data, error} = await getClientsApi2.request(user,authTokens);
+        error ? console.log('Error fetching...', error) : setClients(data);
+    }
+
     //Clients
-    const handleDelete = (e) =>{
+    const handleDelete = async (e) =>{
         console.log('deleting client: ', e)
-        deleteClientApi.request(e, user,authTokens)
-        if(!deleteClientApi.error){
+        const {error} = await deleteClientApi.request(e, user, authTokens)
+        if(!error){
             toast({
                 title: 'Cliente borrado',
                 status: 'success',
                 duration: 6000,
                 isClosable: true,
-              })
-            setClients(clients.filter(item => item.id!==e))
-            //updateTable()
+            })
+            const newClients = clients.filter((item) => item.id !== e);
+            setClients(newClients)
         }   
         else{
-            console.log('error es:', deleteClientApi.error)
+            console.log('error es:', error)
             toast({
                 title: 'Error al borrar ',
-                description: "Código de error"+ deleteClientApi.error +' intentalo mas tarde' ,
+                description: "Código de error"+ error +' intentalo mas tarde' ,
                 status: 'error',
                 duration: 6000,
                 isClosable: true,
-                })
+            })
         }    
     }
 
     const updateTable = () => {
-        console.log('updating table')
-        getClientsApi.request(user,authTokens)
-        console.log(getClientsApi)
-        if(getClientsApi.error){
-            console.log('Error fetching...', getClientsApi.error)
-        }
-        else{setClients(getClientsApi.data)}
-        console.log(clients)      
+        iniClients()     
     }
 
-    const deleteClient = async (e) => {
-        const response = await fetch('https://plabo.pythonanywhere.com/api/deleteclient/' + e, {method: 'DELETE'})
-        const rstatus = response.status
-        if(rstatus >= 200 && rstatus<300){
-            toast({
-              title: 'Cliente borrado',
-              status: 'success',
-              duration: 6000,
-              isClosable: true,
-            })
-        setClients(getClientsApi.data.filter(item => item.id!==e))
-        }
-        else{
-            toast({
-                title: 'Error al borrar ',
-                description: "Código de error"+ rstatus +' intentalo mas tarde' ,
-                status: 'error',
-                duration: 6000,
-                isClosable: true,
-                })
-            }
-    }
     function handleEdit(e){
         setSClient(e)
         setCreating(false)
@@ -99,14 +77,11 @@ function ClientsTable(){
         else{setFClients(getClientsApi.data)}      
     }
 
-    const morosos = getClientsApi.data?.filter(item => item.moroso===true).length
+    const morosos = getClientsApi.data?.filter(item => item.moroso===true).length;
 
     useEffect(() => {   
-        console.log('calling use effect de clients')
-        updateTable()
-    },[])
-
-    
+        iniClients()
+    },[]) 
 
     return(
         <>
@@ -134,7 +109,8 @@ function ClientsTable(){
                 </Tr>
             </Thead>
             <Tbody>
-                {getClientsApi.data?.map(client=>
+                {clients.map(client=> {
+                return(
                     <Tr key={client.id}>
                         <Td>{client.id}</Td>
                         <Td>{client.name}</Td>
@@ -146,7 +122,7 @@ function ClientsTable(){
                             <PopoverDelete onDelete={handleDelete} id={client.id} />
                         </Td>    
                     </Tr>
-                )}
+                )})}
             </Tbody>
         </Table>
         </TableContainer>
