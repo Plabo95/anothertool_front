@@ -24,7 +24,7 @@ const deleteClient = async (id, user, authTokens) => {
 const createClient = async (client, clientToCreate, user,authTokens) => {
     var url=''
     if(client === undefined){ 
-            url = base_url+'createclient/'}   
+            url = base_url+'createclient'}   
     else{   url = base_url+'updateclient/'+ user.user_id + '/' + client.id}
     const data = await fetch(url,{
         method: 'POST',

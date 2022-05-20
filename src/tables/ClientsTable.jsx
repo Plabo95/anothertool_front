@@ -7,15 +7,13 @@ import SvgEdit from  './../dist/Edit'
 import PopoverDelete from '../components/PopoverDelete'
 import clientsApi from '../api/clientsApi'
 import useApi from '../hooks/useApi'
-import useApi2 from '../hooks/useApi2'
 import AuthContext from '../auth/AuthContext'
 
 function ClientsTable(){
 
     const {user, authTokens} = useContext(AuthContext)
     const getClientsApi = useApi(clientsApi.getAllClients);
-    const getClientsApi2 = useApi2(clientsApi.getAllClients);
-    const deleteClientApi = useApi2(clientsApi.deleteClient);
+    const deleteClientApi = useApi(clientsApi.deleteClient);
 
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -23,12 +21,12 @@ function ClientsTable(){
     const[clients, setClients] = useState([])
     const[sClient, setSClient] = useState()
     const[creating, setCreating] = useState(false)
-
     const[filter, setFilter] = useState(true)
 
     const updateTable = async () => {
-        const {data, error} = await getClientsApi2.request(user,authTokens);
-        error ? console.log('Error fetching...', error) : setClients(data);
+        const {data, error} = await getClientsApi.request(user,authTokens);
+        error? console.log('Error fetching...', error) 
+            : setClients(data)
     }
 
     //Clients
@@ -56,7 +54,6 @@ function ClientsTable(){
             })
         }    
     }
-
     function handleEdit(e){
         setSClient(e)
         setCreating(false)
@@ -69,14 +66,15 @@ function ClientsTable(){
     }
     function handleFilter(){
         setFilter(!filter)
-        if(filter){ setFClients(getClientsApi.data?.filter(item => item.moroso===true)) }
-        else{setFClients(getClientsApi.data)}      
+        if(filter){ setFClients(clients.filter(item => item.moroso===true)) }
+        else{setFClients(clients)}      
     }
 
-    const morosos = getClientsApi.data?.filter(item => item.moroso===true).length;
+    const morosos = clients.filter(item => item.moroso===true).length;
 
     useEffect(() => {   
         updateTable()
+        setFClients(clients)
     },[]) 
 
     return(
@@ -105,7 +103,7 @@ function ClientsTable(){
                 </Tr>
             </Thead>
             <Tbody>
-                {clients.map(client=> {
+                {fClients.map(client=> {
                 return(
                     <Tr key={client.id}>
                         <Td>{client.id}</Td>
