@@ -26,7 +26,7 @@ function ClientsTable(){
 
     const[filter, setFilter] = useState(true)
 
-    const iniClients = async () => {
+    const updateTable = async () => {
         const {data, error} = await getClientsApi2.request(user,authTokens);
         error ? console.log('Error fetching...', error) : setClients(data);
     }
@@ -57,10 +57,6 @@ function ClientsTable(){
         }    
     }
 
-    const updateTable = () => {
-        iniClients()     
-    }
-
     function handleEdit(e){
         setSClient(e)
         setCreating(false)
@@ -80,7 +76,7 @@ function ClientsTable(){
     const morosos = getClientsApi.data?.filter(item => item.moroso===true).length;
 
     useEffect(() => {   
-        iniClients()
+        updateTable()
     },[]) 
 
     return(
