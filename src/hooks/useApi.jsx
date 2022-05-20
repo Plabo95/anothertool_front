@@ -1,42 +1,37 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import AuthContext from "../auth/AuthContext";
 
-export default (apiFunc) => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
+export default function useApi(apiFunc){
+  let data = null;
+  let error = null;
   const {logoutUser} = useContext(AuthContext)
 
   const request = async (...props) => {
-    setLoading(true);
     try {
       const response = await apiFunc(...props)
       if (response.statusText === 'OK') {
-        const newdata = await response.json();
-        setData(newdata);
-        console.log(response)
-        console.log(newdata)
-        setError(null);
-        setLoading(false);
+        if(response.noJson){
+            error = null;
+        }else{
+            data = await response.json();
+            error = null;
+        }
       }
       else if (response.statusText === 'Unauthorized') {
         console.log('No autorizado, loggin out...')
         logoutUser()
       }
       else {
-        setError(response.status, response.statusText);
+        error = {status: response.status, statusText: response.statusText};
       } 
     } catch (err) {
-      setError(err.message || "Error en solicitud post!");
+        error = err.message || "Error en solicitud post!"; 
     } finally {
-      setLoading(false);
+        return {data, error}
     }
   };
   return {
-    data,
-    error,
-    loading,
     request
-  };
+  }
 };
+
