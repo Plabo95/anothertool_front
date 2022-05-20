@@ -106,8 +106,8 @@ export default function Register(){
                                 Estoy de acuerdo con los términos del servicio y la política
                                 de privacidad 
                                 </Text>              
-                            </CheckboxSingleControl>
-                            <Button mt='8' bgColor='blue' color='white' size='md' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
+                            </CheckboxSingleControl> 
+                            <Button className='btn-primary' mt='8' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
                             Registrarse </Button>  
                         </Flex>
                             )}
