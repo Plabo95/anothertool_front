@@ -102,3 +102,21 @@ button:focus {
 .cursor{
   cursor: pointer;
 }
+
+/***************** CHAKRA-UI BTN *************************/
+
+.btn-primary{
+  background-color: #0258FF !important;
+  color: white !important;
+  font-size: 1rem !important;
+  padding: 10px 15px 10px 15px !important;
+  border-radius: 5px !important;
+  transition: 0.5s;
+}
+
+.btn-primary:hover{
+  background-color: #aabcdb !important;
+  color: #001234 !important;
+}
+
+/*.bgColor='blue' color='white' size='md'*/

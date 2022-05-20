@@ -56,13 +56,13 @@ export default function Register(){
     return(
         <Flex w='100%' minH='100vh' direction='column' backgroundImage={bg}>
             
-            <Flex height='8vh' w='100%' p='1%' align='center'>
-                <Flex w='50%' justify='start' ml='3%'>
+            <Flex height='8vh' w='100%' p='1%' align='center' justifyContent='space-between'>
+                <Flex justify='start' ml='3%'>
                     <Flex onClick={() => navigate('/klndr_front/')} cursor='pointer' >
                         <Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading>
                     </Flex>
                 </Flex>
-                <Flex w='50%' justify='end' gap='10' align='center' mr='3%' >
+                <Flex justify='end' gap='10' align='center' mr='3%' ml='3%'>
                     <Text fontWeight='bold' >¿Ya tienes una cuenta?</Text>
                     <Button bg='blue' color='white' size='sm'
                     onClick={() => navigate('/klndr_front/login')}
@@ -70,8 +70,8 @@ export default function Register(){
                 </Flex>
             </Flex>
 
-            <Flex justify='center' align='center' w='100%'>
-                <Flex py='5%'  w='20%' direction='column' align='center' gap='5'>
+            <Flex height='92vh' justify='center' align='center' w='100%'>
+                <Flex py='5%'  w={['80%','75%','400px','400px']} direction='column' align='center' gap='5'>
                     <Flex><Heading size='lg' >another</Heading><Heading size='lg' color={'blue'}>tool</Heading></Flex>
                     <Flex bg='white' w='100%' rounded='xl' direction='column' align='center'  gap='3' py='12%'>
                         <Heading size='md'> ¡Bienvenido! </Heading>
@@ -106,8 +106,8 @@ export default function Register(){
                                 Estoy de acuerdo con los términos del servicio y la política
                                 de privacidad 
                                 </Text>              
-                            </CheckboxSingleControl>
-                            <Button mt='8' bgColor='blue' color='white' size='md' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
+                            </CheckboxSingleControl> 
+                            <Button className='btn-primary' mt='8' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
                             Registrarse </Button>  
                         </Flex>
                             )}
