@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { TwitterPicker } from 'react-color';
 import {Button,  Flex, ButtonGroup,FormLabel,VStack, useToast, Square} from '@chakra-ui/react'
 import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
@@ -6,13 +6,17 @@ import * as Yup from 'yup';
 import {Formik} from "formik";
 import TextField from './TextField';
 import {NumberInputControl} from "formik-chakra-ui";
+import AuthContext from '../auth/AuthContext';
+import useApi from '../hooks/useApi';
+import servicesApi from '../api/servicesApi';
 
-
-function ServiceForm({onClose, service, services, setServices}){  
+function ServiceForm({onClose, service, services, setServices, updateTable}){  
     //Solo inicializo estado si estoy editando un servicio service?
     const[color, setColor] = useState()
     const toast = useToast()
     const[loadingCreate, setLoadingCreate] = useState(false)
+    const {user, authTokens} = useContext(AuthContext)      
+    const createServiceApi = useApi(servicesApi.createService);
  
     useEffect(() => {
         if(service){setColor(service.color)}
@@ -23,7 +27,40 @@ function ServiceForm({onClose, service, services, setServices}){
         setLoadingCreate(false)
         onClose()
     }
-    const handleSubmit = async(values) => {
+
+    const handleSubmit = (values) => {    
+        setLoadingCreate(true)
+        const serviceToCreate ={
+            'name': values.name,
+            'baseprice': values.price,
+            'color': color,
+            'estimed_hours': values.estimed_hours,
+            'estimed_mins': values.estimed_mins,
+            'user': user.user_id,
+        } 
+        createServiceApi.request(service, serviceToCreate, user, authTokens)
+        if(createServiceApi.error){
+            toast({
+                title: 'Error al guardar ',
+                description: "Código de error"+ createServiceApi.error +' intentalo mas tarde' ,
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+                })
+        }
+        else{
+            updateTable()
+            toast({
+                title: 'Cliente guardado',
+                status: 'success',
+                duration: 6000,
+                isClosable: true,
+                }) 
+        }
+        closeDrawer()
+    }
+
+    const handleSubmitt = async(values) => {
     setLoadingCreate(true)
         const serviceToCreate ={
                 'name': values.name,

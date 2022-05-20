@@ -21,7 +21,6 @@ function ClientsTable(){
     const[clients, setClients] = useState([])
     const[sClient, setSClient] = useState()
     const[creating, setCreating] = useState(false)
-
     const[filter, setFilter] = useState(true)
 
     const updateTable = async () => {
@@ -75,6 +74,7 @@ function ClientsTable(){
 
     useEffect(() => {   
         updateTable()
+        setFClients(clients)
     },[]) 
 
     return(

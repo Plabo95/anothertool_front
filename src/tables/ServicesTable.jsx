@@ -12,37 +12,42 @@ function ServicesTable(){
 
     const {user, authTokens} = useContext(AuthContext)
     const getServicesApi = useApi(servicesApi.getAllServices);
+    const deleteServiceApi = useApi(servicesApi.deleteService);
 
     const toast = useToast()
     const {isOpen, onOpen, onClose } = useDisclosure()
     const[services, setServices] = useState([])
     const[sService, setSService] = useState()               //selected service (when edditing)
 
-    useEffect(() => {  
-        getServicesApi.request(user,authTokens)          
-      },[])
+    const updateTable = async () => {
+        const {data, error} = await getServicesApi.request(user,authTokens);
+        error? console.log('Error fetching...', error) 
+            : setServices(data)
+    }
 
-    const deleteService = async (e) => {      
-        const response = await fetch('https://plabo.pythonanywhere.com/api/deleteservice/' +e, {method: 'DELETE'})
-        const rstatus = response.status
-        if(rstatus >= 200 && rstatus<300){
-          toast({
-            title: 'Servicio borrado',
-            status: 'success',
-            duration: 6000,
-            isClosable: true,
-          })
-        setServices(services?.filter(item => item.id!==e))
-        }
-        else{
-        toast({
-            title: 'Error al borrar ',
-            description: "Código de error"+ rstatus +' intentalo mas tarde' ,
-            status: 'error',
-            duration: 6000,
-            isClosable: true,
+    const handleDelete = async (e) =>{
+        console.log('deleting client: ', e)
+        const {error} = await deleteServiceApi.request(e, user, authTokens)
+        if(!error){
+            toast({
+                title: 'Servicio borrado',
+                status: 'success',
+                duration: 6000,
+                isClosable: true,
             })
-        }
+            const newServices = services.filter((item) => item.id !== e);
+            setServices(newServices)
+        }   
+        else{
+            console.log('error es:', error)
+            toast({
+                title: 'Error al borrar ',
+                description: "Código de error"+ error +' intentalo mas tarde' ,
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+            })
+        }    
     }
     
     function handleEdit(e){
@@ -53,6 +58,10 @@ function ServicesTable(){
         setSService()
         onOpen()
     }
+
+    useEffect(() => {  
+        updateTable()        
+      },[])
 
     return(
         <>
@@ -71,7 +80,7 @@ function ServicesTable(){
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {getServicesApi.data?.map(service=>
+                    {services.map(service=>
                         <Tr key={service.id}>
                             <Td>{service.id}</Td>
                             <Td>{service.name}</Td>
@@ -80,7 +89,7 @@ function ServicesTable(){
                             <Td><Square size='18px' bg={service.color} rounded="md"/></Td>
                             <Td>
                                 <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>}  onClick={() => handleEdit(service)} ></IconButton> 
-                                <PopoverDelete onDelete={deleteService} id={service.id} />
+                                <PopoverDelete onDelete={handleDelete} id={service.id} />
                             </Td>    
                         </Tr>
                     )}
@@ -96,7 +105,7 @@ function ServicesTable(){
                 <DrawerContent>
                 <DrawerCloseButton />
                 <DrawerHeader>{sService? 'Editar Servicio': 'Crear Servicio' }</DrawerHeader>
-                <ServiceForm onClose={onClose} service={sService} services={services} setServices={setServices} />
+                <ServiceForm onClose={onClose} service={sService} services={services} setServices={setServices} updateTable={updateTable}/>
                 </DrawerContent>
             </Drawer>                    
       </Flex>
