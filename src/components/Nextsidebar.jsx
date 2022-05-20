@@ -6,18 +6,25 @@ import useApi from '../hooks/useApi';
 import eventsApi from '../api/eventsApi';
 
 function Nextsidebar(){
-    const [nextDates, setNextDates] = useState([])
+    const [nextEvents, setNextEvents] = useState([])
     const {user, authTokens} = useContext(AuthContext)
     const getNextEventsApi = useApi(eventsApi.getNextEvents);
+    
+    const updateList = async () => {
+        const {data, error} = await getNextEventsApi.request(user,authTokens);
+        error? console.log('Error fetching...', error) 
+            : setNextEvents(data)
+    }
+
     useEffect(() => {
-        getNextEventsApi.request(user,authTokens)
+        updateList()
         },[])
 
     return(
         <>
         <Box my='5'>
             <Heading size='lg' my='5' >Para hoy: </Heading>
-            {getNextEventsApi.data?.map(event=>
+            {nextEvents.map(event=>
             <Flex key={event.id}>
                 <Box p='3' my='6' width="280px" boxShadow='xl' borderColor="gray.300" rounded="lg" >
                     <Flex my='5 'align='center' justify='space-between' gap={3}>

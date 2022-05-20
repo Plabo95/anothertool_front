@@ -1,29 +1,31 @@
 import {base_url} from '../environment/global';
 
-const getAllEvents=(user, authTokens)=>(
-    fetch(base_url+"events/"+user.user_id,{
+const getAllEvents= async (user, authTokens)=>{
+    const data = await fetch(base_url+"events/"+user.user_id,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ String(authTokens.access),
+        }})
+    return data;    
+}
+
+const getNextEvents= async (user, authTokens)=>{
+    const data = await fetch(base_url+"nextevents/"+user.user_id,{
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+ String(authTokens.access),
         }})   
-    )
+    return data;
+}
 
-const getNextEvents=(user, authTokens)=>(
-    fetch(base_url+"nextevents/"+user.user_id,{
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ String(authTokens.access),
-        }})   
-    )
-
-const createEvent = (is_creating, event, user,authTokens) => {
+const createEvent = async (is_creating, event, user,authTokens) => {
     var url=''
     if(is_creating){ 
-            url = base_url+'createevent/'+user.user_id+'/'}   
+            url = base_url+'createevent'}   
     else{   url = base_url+'updateevent/'+ user.user_id + '/' +event.id}
-    fetch(url,{
+    const data = await fetch(url,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -31,15 +33,18 @@ const createEvent = (is_creating, event, user,authTokens) => {
         },
         body: JSON.stringify(event)
         })
-    }
-const deleteEvent = (id, user, authTokens) => {
-    fetch(base_url+'deleteevent/'+user.user_id+'/'+id, {
+    return data;
+}
+const deleteEvent = async (id, user, authTokens) => {
+    const data = await fetch(base_url+'deleteevent/'+user.user_id+'/'+id, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+ String(authTokens.access),
-        }}) 
-    }
+        }})
+    data.noJson = true;
+    return data; 
+}
 
 
 export default {

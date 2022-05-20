@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,Flex, IconButton} from '@chakra-ui/react'
+import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,useToast,Flex, IconButton} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {InputGroup, Input, InputLeftAddon} from '@chakra-ui/react'
 import EventFormCrud from '../forms/EventFormCrud'
@@ -22,15 +22,28 @@ function EventsTable(){
     const getClientsApi = useApi(clientsApi.getAllClients);
     const getServicesApi = useApi(servicesApi.getAllServices);
 
+    const toast = useToast()
     const {isOpen, onOpen, onClose } = useDisclosure()
     const[events, setEvents] = useState([])
     const[event, setEvent] = useState()               //selected service (when edditing)
+    const[services, setServices] = useState([])
+    const[clients, setClients] = useState([])
 
-    useEffect(() => { 
-        getEventsApi.request(user,authTokens)  
-        getServicesApi.request(user,authTokens)   
-        getClientsApi.request(user,authTokens) 
-    },[])
+    const updateEvents = async () => {
+        const {data, error} = await getEventsApi.request(user,authTokens);
+        error? console.log('Error fetching events...', error) 
+            : setEvents(data)
+    }
+    const updateClients = async () => {
+        const {data, error} = await getClientsApi.request(user,authTokens);
+        error? console.log('Error fetching clients...', error) 
+            : setClients(data)
+    }
+    const updateServices = async () => {
+        const {data, error} = await getServicesApi.request(user,authTokens);
+        error? console.log('Error fetching services...', error) 
+            : setServices(data)
+    }
     
     function handleEdit(e){
         setEvent(e)
@@ -40,14 +53,34 @@ function EventsTable(){
         setEvent()
         onOpen()
     }
-    function handleDelete(e){
-        console.log('borrar',e)
-        deleteEventApi.request(e,user,authTokens)
+    const handleDelete = async (e) =>{
+        console.log('deleting event: ', e)
+        const {error} = await deleteEventApi.request(e, user, authTokens)
+        if(!error){
+            toast({
+                title: 'Evento borrado',
+                status: 'success',
+                duration: 6000,
+                isClosable: true,
+            })
+            const newEvents = events.filter((item) => item.id !== e);
+            setEvents(newEvents)
+        }   
+        else{
+            console.log('error es:', error)
+            toast({
+                title: 'Error al borrar ',
+                description: "Código de error"+ error +' intentalo mas tarde' ,
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+            })
+        }    
     }
 
     function handleFilter(e){
         var filter = e.target.value.toLowerCase() 
-        setEvents(getEventsApi.data?.filter(item => getClientName(item.client).toLowerCase().includes(filter)))   
+        setEvents(events.filter(item => getClientName(item.client).toLowerCase().includes(filter)))   
     }
     function getClientName(id){
         try {
@@ -76,6 +109,11 @@ function EventsTable(){
             return('No price') 
       }
     }
+    useEffect(() => {
+        updateEvents() 
+        updateServices()
+        updateClients() 
+    },[])
 
     return(
         <>
@@ -101,7 +139,7 @@ function EventsTable(){
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {getEventsApi.data?.map(date=>
+                    {events.map(date=>
                         <Tr key={date.id}>
                             <Td>{date.id}</Td>
                             <Td>{date.title}</Td>
@@ -130,7 +168,7 @@ function EventsTable(){
                 <DrawerContent>
                 <DrawerCloseButton />
                 <DrawerHeader>{event? 'Editar Cita': 'Crear cita' }</DrawerHeader>
-                <EventFormCrud onClose={onClose} event={event} events={events} setEvents={setEvents} servicelist={getServicesApi.data} clientlist={getClientsApi.data} />
+                <EventFormCrud onClose={onClose} event={event} events={events} setEvents={setEvents} servicelist={services} clientlist={clients} updateEvents={updateEvents}/>
                 </DrawerContent>
             </Drawer>                    
       </Flex>

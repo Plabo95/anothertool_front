@@ -18,25 +18,39 @@ export default function CalendarComp({localizer}) {
   const {user, authTokens} = useContext(AuthContext)
 
   //fetch events when page Loads
-  const [myEvents, setEvents] = useState([])
   const[creating, setCreating] = useState(false)
   const {isOpen, onOpen, onClose } = useDisclosure()
   const titleInput = React.useRef()
-  const [sEvent, setSEvent] = useState()  //event selected
+  
   const [bcView, setBCView] = useState('week');
   const [yourDate, setYourDate] = useState();
  
   const getEventsApi = useApi(eventsApi.getAllEvents);
   const getServicesApi = useApi(servicesApi.getAllServices);
   const getClientsApi = useApi(clientsApi.getAllClients);
+ 
+  const [event, setEvent] = useState()  //event selected
+  const [myEvents, setEvents] = useState([])
+  const[services, setServices] = useState([])
+  const[clients, setClients] = useState([])
 
-  useEffect(() => {          
-    getEventsApi.request(user,authTokens)
-    getServicesApi.request(user,authTokens)  
-    getClientsApi.request(user,authTokens) 
-  },[])
+  const updateEvents = async () => {
+    const {data, error} = await getEventsApi.request(user,authTokens);
+    error? console.log('Error fetching events...', error) 
+        : setEvents(data)
+  }
+  const updateClients = async () => {
+      const {data, error} = await getClientsApi.request(user,authTokens);
+      error? console.log('Error fetching clients...', error) 
+          : setClients(data)
+  }
+  const updateServices = async () => {
+      const {data, error} = await getServicesApi.request(user,authTokens);
+      error? console.log('Error fetching services...', error) 
+          : setServices(data)
+  }
 
-  const events = getEventsApi.data?.map((event)=>{
+  const events = myEvents.map((event)=>{
     return {
       id: event.id,
       service: event.service,
@@ -50,24 +64,26 @@ export default function CalendarComp({localizer}) {
   function handleNavigate(date) {
     setYourDate(moment(date).toDate())
   }
-
 //Manage del selection timeframe
-  function handleSelectSlot ({ start, end }){
+  const handleSelectSlot = ({ start, end })=>{
     if(bcView==='month'){
       handleNavigate(start)
       setBCView('day')
     }
     else{
-      if(creating) myEvents.pop()
+      if(creating){
+        myEvents.pop()
+      } 
       onOpen()
       setCreating(true)
       const newevent = {
         'start': (start),
         'end': (end),
       }
-      setSEvent(newevent) 
-      setEvents((myEvents) => [...myEvents, newevent])}
-    }
+      setEvents((myEvents) => [...myEvents, newevent])    
+      setEvent(newevent)    
+      }
+  }
     
 
   const handleSelectEvent = async (e) => {
@@ -76,7 +92,7 @@ export default function CalendarComp({localizer}) {
     if(creating) myEvents.pop()
     onOpen()
     setCreating(false)
-    setSEvent(myEvents.filter(item => item.id===e.id)[0])     //Elijo posicion 0 porque sino me guarda un array
+    setEvent(myEvents.filter(item => item.id===e.id)[0])     //Elijo posicion 0 porque sino me guarda un array
     }
   const { defaultDate, views } = useMemo(
     () => ({
@@ -89,14 +105,14 @@ export default function CalendarComp({localizer}) {
     if(creating){
       myEvents.pop()}
     setCreating(false)
-    setSEvent()
+    setEvent()
     onClose()  
   }
 
   function handleSave(){
     myEvents.pop()
     setCreating(false)
-    setSEvent()
+    setEvent()
     onClose()
   }
 
@@ -105,15 +121,17 @@ export default function CalendarComp({localizer}) {
     let title = 'Untitled';
     let client = ''
     if(e.service){
-      try{title = getServicesApi.data?.filter(item => item.id===e.service)[0].name}
+      try{title = services.filter(item => item.id===e.service)[0].name}
       catch{
         console.log('Nose encuentra name para service ', e.service)
+        updateServices()
       }
     }
     if(e.client){
-      try{client ='  para  '+ getClientsApi.data?.filter(item => item.id===e.client)[0].name}
+      try{client ='  para  '+ clients.filter(item => item.id===e.client)[0].name}
       catch{
         console.log('Nose encuentra name para cliente ', e.client)
+        updateClients()
       }
     }
     return(title+client)
@@ -133,9 +151,10 @@ export default function CalendarComp({localizer}) {
   function eventPropGetter(event, start, end, isSelected) {
     let backgroundColor = 'grey';
     if(event.service){
-      try{backgroundColor = getServicesApi.data?.filter(item => item.id===event.service)[0].color}
+      try{backgroundColor = services.filter(item => item.id===event.service)[0].color}
       catch{
         console.log('Nose ha encontrado color para el servicio', event.service)
+        updateServices()
       }
     }
     const style = {
@@ -150,6 +169,12 @@ export default function CalendarComp({localizer}) {
         style: style
     }
   }
+
+  useEffect(() => {
+    updateEvents() 
+    updateServices()
+    updateClients() 
+  },[])
 
   return (
     <>
@@ -194,7 +219,8 @@ export default function CalendarComp({localizer}) {
       <Drawer placement='right'  onClose={handleClose} initialFocusRef={titleInput} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <EventForm onClose={onClose} handleClose={handleClose} onSave={handleSave} is_creating={creating} event={sEvent} events={getEventsApi.data} servicelist={getServicesApi.data} clientlist={getClientsApi.data} setEvents={setEvents} />
+          <EventForm onClose={onClose} handleClose={handleClose} onSave={handleSave} is_creating={creating} event={event} events={myEvents} 
+          servicelist={services} clientlist={clients} setEvents={setEvents} updateEvents={updateEvents} />
         </DrawerContent>
       </Drawer>    
       </>

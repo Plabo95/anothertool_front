@@ -67,9 +67,9 @@ function ServicesTable(){
         <>
         <Button colorScheme='orange' type="button" onClick={() => handleCreate()}>Crear</Button>
         <Flex w="100%">    
-            <TableContainer mt='5' borderRadius='lg' w="100%">
+            <TableContainer mt='5' borderRadius='lg' w="100%" bg="white">
                 <Table variant='simple'size='md'>
-                <Thead bg='#E9E9E9'>
+                <Thead>
                     <Tr>
                     <Th>Id</Th>
                     <Th>Name</Th>

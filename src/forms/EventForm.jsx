@@ -8,9 +8,8 @@ import PopoverClientForm from './PopoverClientForm'
 import eventsApi from '../api/eventsApi';
 import AuthContext from '../auth/AuthContext';
 import useApi from '../hooks/useApi';
-import { createEvent } from '@testing-library/react';
 
-export default function EventForm({is_creating, onSave, onClose, handleClose, event, events, setEvents, servicelist, clientlist}) {
+export default function EventForm({is_creating, updateEvents, onClose, handleClose, event, events, setEvents, servicelist, clientlist}) {
 
   const {user, authTokens} = useContext(AuthContext)
 
@@ -26,6 +25,7 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
   const[loadingCreate, setLoadingCreate] = useState(false)
 
   const createEventApi = useApi(eventsApi.createEvent);
+  const deleteEventApi = useApi(eventsApi.deleteEvent);
 
   useEffect(() => {
     if(event !== undefined){
@@ -63,77 +63,51 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
             'user': user.user_id,
     }
     createEventApi.request(is_creating, eventToCreate, user, authTokens)
-    if(createEventApi.data){
-          onSave()  //deleteo previsualizacion
-    if(!is_creating){        
-    setEvents(events.filter(item => item.id!==event.id))} //deleteo el que he modificado para updatearlo
-    setEvents((events) => [...events, createEventApi.data]);
-    closeDrawer()
-    }
-    var url = ''
-    if(is_creating){ 
-      url = 'https://plabo.pythonanywhere.com/api/createdate'}   
-    else{url = 'https://plabo.pythonanywhere.com/api/updatedate/' + event.id + '/'}
-    const response = await fetch(url,{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(eventToCreate)
-        })
-    const rstatus = response.status
-    if(rstatus >= 200 && rstatus<300){
+    if(createEventApi.error){
       toast({
-        title: 'Evento guardado',
-        status: 'success',
-        duration: 6000,
-        isClosable: true,
-      }) 
-    const data = await response.json();
-    onSave()  //deleteo previsualizacion
-    if(!is_creating){        
-    setEvents(events.filter(item => item.id!==event.id))} //deleteo el que he modificado para updatearlo
-    setEvents((events) => [...events, data]);
-    closeDrawer()
-    }
-    else{
-      toast({
-        title: 'Error al guardar ',
-        description: "Código de error"+ rstatus +' intentalo mas tarde' ,
-        status: 'error',
-        duration: 6000,
-        isClosable: true,
-        })
-        closeDrawer()
-      }
+          title: 'Error al guardar ',
+          description: "Código de error"+ createEventApi.error +' intentalo mas tarde' ,
+          status: 'error',
+          duration: 6000,
+          isClosable: true,
+          })
   }
-      
-  const deleteDate = async (e) => {
-    setLoadingDelete(true)
-    e.preventDefault()
-    const response = await fetch('https://plabo.pythonanywhere.com/api/deletedate/' + event.id, {method: 'DELETE'})
-    const rstatus = response.status
-    if(rstatus >= 200 && rstatus<300){
-      toast({
-        title: 'Evento borrado',
+  else{
+    updateEvents()
+    toast({
+        title: 'Cliente guardado',
         status: 'success',
         duration: 6000,
         isClosable: true,
-      })
-      setEvents(events.filter(item => item.id!==event.id));
-      closeDrawer()
-      }
-    else{
-      toast({
-        title: 'Error al borrar ',
-        description: "Código de error"+ rstatus +' intentalo mas tarde' ,
-        status: 'error',
-        duration: 6000,
-        isClosable: true,
-        })
-        closeDrawer()
-      }
+        }) 
     }
+    closeDrawer()
+  }
+  
+  const handleDelete = async () =>{
+    const {error} = await deleteEventApi.request(event.id, user, authTokens)
+    if(!error){
+        toast({
+            title: 'Evento borrado',
+            status: 'success',
+            duration: 6000,
+            isClosable: true,
+        })
+        const newEvents = events.filter((item) => item.id !== event.id);
+        setEvents(newEvents)
+    }   
+    else{
+        console.log('error es:', error)
+        toast({
+            title: 'Error al borrar ',
+            description: "Código de error"+ error +' intentalo mas tarde' ,
+            status: 'error',
+            duration: 6000,
+            isClosable: true,
+        })
+      }
+    closeDrawer()    
+  }
     // Event duration calculator
   function duration(){
     const d = moment.duration(moment(event.end).diff(moment(event.start)))
@@ -235,7 +209,7 @@ export default function EventForm({is_creating, onSave, onClose, handleClose, ev
       <DrawerFooter>
         <Flex  justify="right" columnGap="3" my='3'>             
           {!is_creating?
-              <Button variant='ghost' colorScheme='red' size='sm' isLoading={loadingDelete} isDisabled={submitAvailable} loadingText='Borrando' onClick={deleteDate} >Eliminar</Button>
+              <Button variant='ghost' colorScheme='red' size='sm' isLoading={loadingDelete} isDisabled={submitAvailable} loadingText='Borrando' onClick={handleDelete} >Eliminar</Button>
               : 
               <Button variant='ghost' colorScheme='red' size='sm'  onClick={handleClose} >Cancel</Button>
               }

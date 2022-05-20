@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex, Text, Box} from '@chakra-ui/react'
+import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex, Text} from '@chakra-ui/react'
 
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure, Switch} from '@chakra-ui/react'
 import ClientForm from '../forms/ClientForm'
@@ -31,7 +31,6 @@ function ClientsTable(){
 
     //Clients
     const handleDelete = async (e) =>{
-        console.log('deleting client: ', e)
         const {error} = await deleteClientApi.request(e, user, authTokens)
         if(!error){
             toast({
