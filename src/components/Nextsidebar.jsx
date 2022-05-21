@@ -26,7 +26,7 @@ function Nextsidebar(){
             <Heading size='lg' my='5' >Para hoy: </Heading>
             {nextEvents.map(event=>
             <Flex key={event.id}>
-                <Box p='3' my='6' width="280px" boxShadow='xl' borderColor="gray.300" rounded="lg" >
+                <Box p='3' bg='white' my='6' width="280px" boxShadow='xl' borderColor="gray.300" rounded="lg" >
                     <Flex my='5 'align='center' justify='space-between' gap={3}>
                     <Square size='18px' bg={event.service.color} rounded="md"/>  
                     <Text fontSize='xl' >{event.client.car} </Text>
@@ -34,7 +34,7 @@ function Nextsidebar(){
                     </Flex>              
                     <Text fontSize='sm' mt={1}> {event.service.name} </Text>
                 </Box>
-                <Checkbox colorScheme='gray' ml={4} />
+                <Checkbox colorScheme='grey' c='white' ml={4} />
             </Flex>
             )}
         </Box>  

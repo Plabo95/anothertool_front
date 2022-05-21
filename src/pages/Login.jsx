@@ -64,7 +64,7 @@ export default function Login(){
                         <TextField type="password" name="password" placeholder="Contraseña" />
                         <CheckboxSingleControl name="record"> Recuérdame </CheckboxSingleControl>
     
-                        <Button mt='8' bgColor='blue' color='white' size='md' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
+                        <Button mt='8' variant='primary-md' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
                             Iniciar Sesión </Button> 
                         </Flex>
                             )}
