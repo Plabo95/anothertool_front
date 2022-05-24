@@ -21,7 +21,7 @@ function ClientForm({onClose, clients, client, setClients, updateTable}){
         onClose()
     }
     
-    const handleSubmit = (values) => {    
+    const handleSubmit = async (values) => {    
         setLoadingCreate(true)
         const clientToCreate ={
             'name': values.name,
@@ -30,15 +30,16 @@ function ClientForm({onClose, clients, client, setClients, updateTable}){
             'moroso': values.moroso,
             'user': user.user_id,
         }
-        createClientApi.request(client, clientToCreate, user, authTokens)
-        if(createClientApi.error){
+        const {error} = await createClientApi.request(client, clientToCreate, user, authTokens)
+        console.log(error)
+        if(error){
             toast({
                 title: 'Error al guardar ',
-                description: "Código de error"+ createClientApi.error +' intentalo mas tarde' ,
+                description: "Código de error"+ error +' intentalo mas tarde' ,
                 status: 'error',
                 duration: 6000,
                 isClosable: true,
-                })
+            })
         }
         else{
             updateTable()
@@ -52,7 +53,7 @@ function ClientForm({onClose, clients, client, setClients, updateTable}){
         closeDrawer()
     }
 
-    const handleSubmitt = async(values) => {
+    const handleSubmitt = async (values) => {
     setLoadingCreate(true)
         const clientToCreate ={
                 'name': values.name,

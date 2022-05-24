@@ -7,6 +7,7 @@ const getAllClients = async (user, authTokens) => {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+ String(authTokens.access),
         }}) 
+    console.log('getClients:: ',data)
     return data;  
 }
 
@@ -34,6 +35,7 @@ const createClient = async (client, clientToCreate, user,authTokens) => {
         },
         body: JSON.stringify(clientToCreate)
     })
+    console.log(data)
     return data;
 }
 
