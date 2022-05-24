@@ -33,7 +33,6 @@ export default function Landing(){
                     <Flex><Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading></Flex>
                 </Flex>
                 <Flex w='50%' justify='end' gap='10' align='center' mr='3%' >
-                    <Text>Precios</Text>
                     <Button variant='outline' borderColor='blue' color='blue' bg='white' 
                     onClick={() => navigate('login')}
                     >Iniciar sesión</Button>

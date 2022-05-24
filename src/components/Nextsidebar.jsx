@@ -5,25 +5,7 @@ import AuthContext from '../auth/AuthContext';
 import useApi from '../hooks/useApi';
 import eventsApi from '../api/eventsApi';
 
-function Nextsidebar(){
-    const [nextEvents, setNextEvents] = useState([])
-    const {user, authTokens} = useContext(AuthContext)
-    const getNextEventsApi = useApi(eventsApi.getNextEvents);
-    
-    const updateList = async () => {
-        const {data, error} = await getNextEventsApi.request(user,authTokens);
-        error? console.log('Error fetching...', error) 
-            : setNextEvents(data)
-    }
-
-    const deleteEvent = () => {
-        
-    }
-
-    useEffect(() => {
-        updateList()
-        },[])
-
+function Nextsidebar({nextEvents}){
     return(
         <>
         <Box my='5'>

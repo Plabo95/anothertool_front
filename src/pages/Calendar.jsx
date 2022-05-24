@@ -28,9 +28,11 @@ export default function CalendarComp({localizer}) {
   const getEventsApi = useApi(eventsApi.getAllEvents);
   const getServicesApi = useApi(servicesApi.getAllServices);
   const getClientsApi = useApi(clientsApi.getAllClients);
+  const getNextEventsApi = useApi(eventsApi.getNextEvents);
  
   const [event, setEvent] = useState()  //event selected
   const [myEvents, setEvents] = useState([])
+  const [nextEvents, setNextEvents] = useState([])
   const[services, setServices] = useState([])
   const[clients, setClients] = useState([])
 
@@ -39,6 +41,13 @@ export default function CalendarComp({localizer}) {
     error? console.log('Error fetching events...', error) 
         : setEvents(data)
   }
+
+  const updateNextEvents = async () => {
+    const {data, error} = await getNextEventsApi.request(user,authTokens);
+    error? console.log('Error fetching...', error) 
+        : setNextEvents(data)
+  }
+
   const updateClients = async () => {
       const {data, error} = await getClientsApi.request(user,authTokens);
       error? console.log('Error fetching clients...', error) 
@@ -109,13 +118,6 @@ export default function CalendarComp({localizer}) {
     onClose()  
   }
 
-  function handleSave(){
-    myEvents.pop()
-    setCreating(false)
-    setEvent()
-    onClose()
-  }
-
   //Calendar event name display props
   function handleEventName(e){
     let title = 'Untitled';
@@ -170,16 +172,18 @@ export default function CalendarComp({localizer}) {
     }
   }
 
+
   useEffect(() => {
     updateEvents() 
     updateServices()
-    updateClients() 
+    updateClients()
+    updateNextEvents() 
   },[])
 
   return (
     <>
     <Flex w="100%" p="5" gap={6}>
-        <Nextsidebar datelist={myEvents} />    
+        <Nextsidebar nextEvents={nextEvents} />    
       <Calendar
       dayLayoutAlgorithm={'no-overlap'} //algoritmo no overlappin
       defaultDate={defaultDate}
@@ -219,8 +223,9 @@ export default function CalendarComp({localizer}) {
       <Drawer placement='right'  onClose={handleClose} initialFocusRef={titleInput} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <EventForm onClose={onClose} handleClose={handleClose} onSave={handleSave} is_creating={creating} event={event} events={myEvents} 
-          servicelist={services} clientlist={clients} setEvents={setEvents} updateEvents={updateEvents} />
+          <EventForm onClose={onClose} handleClose={handleClose} is_creating={creating} event={event} events={myEvents} 
+          servicelist={services} clientlist={clients} 
+          setEvents={setEvents} updateEvents={updateEvents} updateNextEvents={updateNextEvents}/>
         </DrawerContent>
       </Drawer>    
       </>
