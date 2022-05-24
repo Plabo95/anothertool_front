@@ -65,7 +65,7 @@ function ServicesTable(){
 
     return(
         <>
-        <Button colorScheme='orange' type="button" onClick={() => handleCreate()}>Crear</Button>
+        <Button variant='primary' type="button" onClick={() => handleCreate()}>Crear</Button>
         <Flex w="100%">    
             <TableContainer mt='5' borderRadius='lg' w="100%" bg="white">
                 <Table variant='simple'size='md'>

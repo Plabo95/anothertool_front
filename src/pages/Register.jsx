@@ -96,7 +96,7 @@ export default function Register(){
                         }}
                         >
                         {formik => (
-                        <Flex as="form" direction={'column'} w='80%' justify='space-around' align='center' gap='3'>
+                        <Flex  onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" direction={'column'} w='80%' justify='space-around' align='center' gap='3'>
                             <TextField placeholder="Correo electrónico" name="email" />
                             <TextField placeholder="Usuario" name="username" />
                             <TextField placeholder="Contraseña" name="password" />
