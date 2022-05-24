@@ -119,5 +119,9 @@ button:focus {
   background-color: #aabcdb !important;
   color: #001234 !important;
 }
+body{
+
+  color: rgba(0, 19, 56, 0.3)
+}
 
 /*.bgColor='blue' color='white' size='md'*/

@@ -45,7 +45,7 @@ export default function Login(){
                 </Flex>
                 <Flex justify='end' gap='10' align='center' mr='3%' ml='3%'>
                     <Text fontWeight='bold' >¿Aún no tienes cuenta?</Text>
-                    <Button bg='blue' color='white' size='sm'
+                    <Button variant="primary-s" size='sm'
                     onClick={() => navigate('/klndr_front/register')}
                     >Regístrate</Button>
                 </Flex>
@@ -84,7 +84,7 @@ export default function Login(){
                             <TextField type="password" name="password" placeholder="Contraseña" />
                             <CheckboxSingleControl name="record"> Recuérdame </CheckboxSingleControl>
         
-                            <Button mt='8' variant='primary-md' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
+                            <Button mt='8' variant='primary-s' size='md' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
                                 Iniciar Sesión </Button> 
                             </Flex>
                                 )}
@@ -94,15 +94,15 @@ export default function Login(){
                     {isLogged &&
                         <Flex bg='white' w='100%' rounded='xl' direction='column' align='center'  gap='6' py='12%'>
                         <Heading size='md'> Ya existe una sesión iniciada </Heading>
-                        <Button mt='8' variant='primary-md' onClick={cerrarSesion}>
+                        <Button mt='8' variant='primary-out-s' size='md' onClick={cerrarSesion}>
                                 Cerrar Sesión </Button> 
                         </Flex>
                     }
                     <Flex w='100%' justify='space-between' >
-                        <Text fontSize='xs'  onClick={() => navigate('/klndr_front/register')}>
+                        <Text fontSize='xs' cursor="pointer"  onClick={() => navigate('/klndr_front/register')}>
                             Registrarse
                         </Text>
-                        <Text fontSize='xs'>
+                        <Text fontSize='xs' cursor="pointer">
                             He olvidado mi contraseña
                         </Text>
                     </Flex>

@@ -64,7 +64,7 @@ export default function Register(){
                 </Flex>
                 <Flex justify='end' gap='10' align='center' mr='3%' ml='3%'>
                     <Text fontWeight='bold' >¿Ya tienes una cuenta?</Text>
-                    <Button bg='blue' color='white' size='sm'
+                    <Button variant="primary-s" size='sm'
                     onClick={() => navigate('/klndr_front/login')}
                     >Iniciar Sesión</Button>
                 </Flex>
@@ -107,7 +107,7 @@ export default function Register(){
                                 de privacidad 
                                 </Text>              
                             </CheckboxSingleControl> 
-                            <Button className='btn-primary' mt='8' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
+                            <Button variant="primary-s" size='md' mt='8' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
                             Registrarse </Button>  
                         </Flex>
                             )}

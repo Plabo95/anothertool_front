@@ -11,13 +11,42 @@ const customTheme = extendTheme({
     components: {
         Button: {
             variants: {
-                'primary-md': {
-                    bg: '#0258FF',
+                'primary': {
+                    bg: 'blue',
                     color: 'white',
-                    size: 'md',
                     _hover: {
                         bg: "#aabcdb",
-                        color: "#001234",
+                        color: "darkblue",
+                    }
+                },
+                'primary-s': {
+                    bg: 'blue',
+                    color: 'white',
+                    boxShadow: '4px 4px 4px rgba(2, 88, 255, 0.3)',
+                    _hover: {
+                        bg: "#aabcdb",
+                        color: "darkblue",
+                    }
+                },
+                'primary-out-s': {
+                    bg: 'transparent',
+                    color: 'blue',
+                    border: '2px solid blue',
+                    boxShadow: '4px 4px 4px rgba(2, 88, 255, 0.3)',
+                    _hover: {
+                        bg: "blue",
+                        color: "white",
+                        border: 'none'
+                    }
+                },
+                'primary-out': {
+                    bg: 'transparent',
+                    color: 'blue',
+                    border: '2px solid blue',
+                    _hover: {
+                        bg: "blue",
+                        color: "white",
+                        border: 'none'
                     }
                 },
             }
