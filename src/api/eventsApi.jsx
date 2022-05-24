@@ -25,7 +25,6 @@ const createEvent = async (id, event, user,authTokens) => {
     if(id === undefined){ 
             url = base_url+'createevent'}   
     else{   url = base_url+'updateevent/'+ user.user_id + '/' +id}
-    console.log(id)
     const data = await fetch(url,{
         method: 'POST',
         headers: {

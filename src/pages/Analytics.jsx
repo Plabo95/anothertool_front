@@ -38,7 +38,7 @@ function Analytics(){
     const [analytics, setAnalytics] = useState()
 
     const fetchAnalytics = async () => {
-        const response = await fetch(base_url+'analytics/'+user.user_id)
+        const response = await fetch(base_url+'analytics/'+user.user_id+'/')
         setAnalytics(await response.json())
         }
 
@@ -52,7 +52,7 @@ function Analytics(){
             {analytics&&
             <>
             <Flex align='center' justify='space-between' w='60%' gap='6' >
-            <CircularProgress size='120px' value={67} color='orange.400' thickness='12px' >
+            <CircularProgress size='120px' value={67} color='orange' thickness='12px' >
                 <CircularProgressLabel>67%</CircularProgressLabel>
             </CircularProgress>
             <Text fontWeight={'bold'}> Diagnósticos acertados </Text>
@@ -63,7 +63,7 @@ function Analytics(){
                 </Stat>
                 <Stat   m="5" p="3"  border='1px' borderColor='gray.300' borderRadius="lg">
                     <StatLabel>Citas totales</StatLabel>
-                    <StatNumber>{analytics.total_dates}</StatNumber>
+                    <StatNumber>{analytics.total_events}</StatNumber>
                 </Stat>
             </StatGroup>
             </Flex>

@@ -96,6 +96,7 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
         })
         const newEvents = events.filter((item) => item.id !== event.id);
         setEvents(newEvents)
+        updateEvents()
         updateNextEvents()
     }   
     else{
@@ -149,7 +150,6 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
   const isServiceError = service === undefined
   const isClientError = client === undefined
   const submitAvailable = isServiceError && isClientError
-
   return (
     <>
     <DrawerHeader> 
