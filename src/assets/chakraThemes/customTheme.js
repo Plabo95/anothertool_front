@@ -51,13 +51,6 @@ const customTheme = extendTheme({
                 },
             }
         },
-        Switch: {
-            variants: {
-                'primary': {
-                    color: 'red'
-                }
-            }
-        }
     }
 })
 

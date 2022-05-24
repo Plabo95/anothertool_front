@@ -9,7 +9,7 @@ export default function useApi(apiFunc){
   const request = async (...props) => {
     try {
       const response = await apiFunc(...props)
-      if (response.statusText === 'OK' || response.statusText === 'Created') {
+      if (response.statusText.toUpperCase() !== 'ERROR') {
         if(response.noJson){
             error = null;
         }else{
