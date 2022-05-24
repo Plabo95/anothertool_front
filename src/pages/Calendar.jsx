@@ -243,13 +243,13 @@ const CustomToolbar = (toolbar) => {
   }
 
   const goToBack = () => {
-    toolbar.date.setMonth(toolbar.date.getMonth() - 1);
-    toolbar.onNavigate('prev');
+    //toolbar.date.setMonth(toolbar.date.getMonth() - 1);
+    toolbar.onNavigate('PREV');
   };
 
   const goToNext = () => {
-    toolbar.date.setMonth(toolbar.date.getMonth() + 1);
-    toolbar.onNavigate('next');
+    //toolbar.date.setMonth(toolbar.date.getMonth() + 1);
+    toolbar.onNavigate('NEXT');
   };
 
   const goToCurrent = () => {
@@ -301,7 +301,7 @@ const CustomToolbar = (toolbar) => {
             <span className="cursor" onClick={goToNext}>&gt;</span>
           </Flex>
         </span>
-        <button type="button" onClick={goToCurrent}>Hoy</button>
+        <button type="button" className="btn-hoy" onClick={goToCurrent}>Hoy</button>
         <span className="rbc-btn-group btn-select-view">
           <button type="button" className="btn-mes" onClick={goToMonthView}>Mes</button>
           <button type="button" className="btn-semana active" onClick={goToWeekView}>Semana</button>

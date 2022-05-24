@@ -36,7 +36,7 @@ const customTheme = extendTheme({
                     _hover: {
                         bg: "blue",
                         color: "white",
-                        border: 'none'
+                        border: '2px solid transparent'
                     }
                 },
                 'primary-out': {
@@ -46,11 +46,11 @@ const customTheme = extendTheme({
                     _hover: {
                         bg: "blue",
                         color: "white",
-                        border: 'none'
+                        border: '2px solid transparent'
                     }
                 },
             }
-        }
+        },
     }
 })
 
