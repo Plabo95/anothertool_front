@@ -16,6 +16,10 @@ function Nextsidebar(){
             : setNextEvents(data)
     }
 
+    const deleteEvent = () => {
+        
+    }
+
     useEffect(() => {
         updateList()
         },[])
@@ -25,7 +29,7 @@ function Nextsidebar(){
         <Box my='5'>
             <Heading size='lg' my='5' >Para hoy: </Heading>
             {nextEvents.map(event=>
-            <Flex key={event.id}>
+            <Flex key={event.id} className={'evento-' + event.id}>
                 <Box p='3' bg='white' my='6' width="280px" boxShadow='xl' borderColor="gray.300" rounded="lg" >
                     <Flex my='5 'align='center' justify='space-between' gap={3}>
                     <Square size='18px' bg={event.service.color} rounded="md"/>  
@@ -34,7 +38,7 @@ function Nextsidebar(){
                     </Flex>              
                     <Text fontSize='sm' mt={1}> {event.service.name} </Text>
                 </Box>
-                <Checkbox colorScheme='grey' c='white' ml={4} />
+                <Checkbox colorScheme='grey' ml={4} onClick=''/>
             </Flex>
             )}
         </Box>  

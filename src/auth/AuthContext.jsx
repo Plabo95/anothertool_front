@@ -47,11 +47,11 @@ export const AuthProvider = ({children}) => {
             }
     }
 
-    const logoutUser = () => {
+    const logoutUser = (ini = true) => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
-        navigate('klndr_front/')
+        if (ini) navigate('klndr_front/');
     } 
 
     const updateToken = async() => {
