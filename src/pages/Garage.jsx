@@ -16,9 +16,9 @@ function Garage(){
         <Flex w='80%' align='center' >
         <Tabs variant='unstyled' colorScheme='orange' w='100%'>
             <TabList >
-                <Tab px='10' _selected={{ color: 'white', bg: 'blue', rounded: 'xl' }} >Citas</Tab>
-                <Tab px='10' _selected={{ color: 'white', bg: 'blue', rounded: 'xl' }}>Servicios</Tab>
-                <Tab px='10' _selected={{ color: 'white', bg: 'blue', rounded: 'xl' }}>Clientes</Tab>
+                <Tab px='10' rounded='xl' _selected={{ color: 'white', bg: 'blue', rounded: 'xl' }} >Citas</Tab>
+                <Tab px='10' rounded='xl' _selected={{ color: 'white', bg: 'blue', rounded: 'xl' }}>Servicios</Tab>
+                <Tab px='10' rounded='xl' _selected={{ color: 'white', bg: 'blue', rounded: 'xl' }}>Clientes</Tab>
             </TabList>
             <TabPanels>
                 <TabPanel>

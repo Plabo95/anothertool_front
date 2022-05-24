@@ -9,6 +9,7 @@
 body {
   margin: 0;
   background-color: #F0F0F0 !important;
+  color: rgba(0, 19, 56, 0.3);
 }
 
 code {
@@ -112,11 +113,11 @@ button:focus {
 }
 
 .btn-select-view .active{
-  background: #749FF2 !important;
+  background: #0258FF !important;
   color: white !important;
 }
 .btn-select-view button:hover {
-  background: #0258FF !important;
+  background: #749FF2 !important;
   color: white !important;
 }
 
@@ -130,24 +131,8 @@ button:focus {
   cursor: pointer;
 }
 
-/***************** CHAKRA-UI BTN *************************/
+/***************** CHAKRA-UI SWITCH *************************/
 
-.btn-primary{
-  background-color: #0258FF !important;
-  color: white !important;
-  font-size: 1rem !important;
-  padding: 10px 15px 10px 15px !important;
-  border-radius: 5px !important;
-  transition: 0.5s;
+.css-5eload[aria-checked=true], .css-5eload[data-checked]{
+  background: #42C74F !important;
 }
-
-.btn-primary:hover{
-  background-color: #aabcdb !important;
-  color: #001234 !important;
-}
-body{
-
-  color: rgba(0, 19, 56, 0.3)
-}
-
-/*.bgColor='blue' color='white' size='md'*/

@@ -21,7 +21,6 @@ function ClientsTable(){
     const[clients, setClients] = useState([])
     const[sClient, setSClient] = useState()
     const[creating, setCreating] = useState(false)
-    const[colorMorosos, setColorMorosos] = useState({bg:'white', c:'darkblue'})
     const switchElement = useRef();
 
     const updateTable = async () => {
@@ -65,15 +64,9 @@ function ClientsTable(){
         onOpen()
     }
     async function handleFilter(){
-        console.log('REF::::',switchElement.current.checked,switchElement)
-        if(switchElement.current.checked){ 
-            setFClients(clients.filter(item => item.moroso===true)) 
-            setColorMorosos({bg:'orange', c:'white'})
-        }
-        else{
-            setFClients(clients)
-            setColorMorosos({bg:'white', c:'darkblue'})
-        }      
+        switchElement.current.checked
+            ? setFClients(clients.filter(item => item.moroso===true)) 
+            : setFClients(clients);     
     }
 
     const morosos = clients.filter(item => item.moroso===true).length;
@@ -89,10 +82,10 @@ function ClientsTable(){
     return(
         <>
         <Flex justify={'space-between'}>
-            <Flex p='6' gap='4' direction={'column'} shadow='md' borderRadius={'xl'} alignItems={'center'} bg={colorMorosos.bg}>
-                <Text color={colorMorosos.c}>Morosos</Text>
+            <Flex p='6' gap='4' direction={'column'} shadow='md' borderRadius={'xl'} alignItems={'center'} bg='white'>
+                <Text>Morosos</Text>
                 <Flex gap='4' align={'center'}>
-                    <Text color={colorMorosos.c}> {morosos} </Text>
+                    <Text> {morosos} </Text>
                     <Switch size='sm' ref={switchElement} onChange={()=>handleFilter()} />
                 </Flex>
             </Flex>
