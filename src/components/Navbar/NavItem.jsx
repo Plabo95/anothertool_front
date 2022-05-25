@@ -24,7 +24,7 @@ function NavItem({navSize, icon, title, slash}){
             >
                 <MenuButton w="100%">
                     <Flex>
-                        <IconButton as={icon} bg='none' size='xs' color={active ? "white": "orange" }  />
+                        <IconButton as={icon} bg='none' size='xs' color={active ? "white": "orange" }  className='svg-white' />
                         <Text display={navSize === "small"? "none": "flex"} ml="5" color="whiteAlpha.800" > {title} </Text>
                     </Flex>
                 </MenuButton>

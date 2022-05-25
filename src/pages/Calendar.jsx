@@ -172,13 +172,13 @@ export default function CalendarComp({localizer}) {
     }
   }
 
-
   useEffect(() => {
     updateEvents() 
     updateServices()
     updateClients()
     updateNextEvents() 
   },[])
+
 
   return (
     <>

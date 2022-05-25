@@ -98,22 +98,22 @@ export default function Landing(){
                 </Text>
                 <Flex gap='10'  mt='5%' >
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <AiOutlineCalendar color='blue' size='50%' />
+                        <AiOutlineCalendar className='svg-blue' size='50%' />
                     </Flex>
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <AiOutlineUnorderedList color='orange' size='50%' />
+                        <AiOutlineUnorderedList className='svg-orange' size='50%' />
                     </Flex>
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <MdOutlinePeopleAlt color='orange' size='50%' />
+                        <MdOutlinePeopleAlt className='svg-darkblue' size='50%' />
                     </Flex>
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <RiBookletLine color='blue' size='50%' />
+                        <RiBookletLine className='svg-blue' size='50%' />
                     </Flex>
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <VscGraph color='orange' size='50%' />
+                        <VscGraph className='svg-orange' size='50%' />
                     </Flex>
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <FiTool size='50%' />
+                        <FiTool size='50%' className='svg-darkblue'/>
                     </Flex>
 
                 </Flex>
