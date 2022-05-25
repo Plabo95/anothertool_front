@@ -26,7 +26,7 @@ function ServicesTable(){
     }
 
     const handleDelete = async (e) =>{
-        console.log('deleting client: ', e)
+        console.log('deleting service: ', e)
         const {error} = await deleteServiceApi.request(e, user, authTokens)
         if(!error){
             toast({
@@ -65,7 +65,7 @@ function ServicesTable(){
 
     return(
         <>
-        <Button variant='primary-out-s' onClick={() => handleCreate()}>Crear</Button>
+        <Button variant='primary' type="button" onClick={() => handleCreate()}>Crear</Button>
         <Flex w="100%">    
             <TableContainer mt='5' borderRadius='lg' w="100%" bg="white">
                 <Table variant='simple'size='md'>

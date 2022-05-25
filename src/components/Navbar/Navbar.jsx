@@ -7,6 +7,8 @@ import React, {useState, useContext } from 'react'
 import NavItem from './NavItem';
 import AuthContext from '../../auth/AuthContext'
 
+import {MdOutlineAdminPanelSettings} from 'react-icons/md'; 
+
 function Navbar(){
 
     const [navSize, setNavSize] = useState("small")
@@ -30,6 +32,8 @@ function Navbar(){
                     setNavSize("small")
             }}
             />
+            {user.is_staff && 
+            <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/klndr_front/adminpanel' />}
             <NavItem navSize={navSize} icon={SvgCalendar} title="Calendar" slash='/klndr_front/calendar' />
             <NavItem navSize={navSize} icon={SvgServicios} title="Garage" slash='klndr_front/garage' />      
             <NavItem navSize={navSize} icon={SvgAnalytics} title="Reports" slash='klndr_front/analytics' /> 

@@ -9,7 +9,7 @@ import eventsApi from '../api/eventsApi';
 import AuthContext from '../auth/AuthContext';
 import useApi from '../hooks/useApi';
 
-export default function EventForm({is_creating, updateEvents, onClose, handleClose, event, events, setEvents, servicelist, clientlist}) {
+export default function EventForm({is_creating, updateEvents, updateNextEvents, onClose, handleClose, event, events, setEvents, servicelist, clientlist}) {
 
   const {user, authTokens} = useContext(AuthContext)
 
@@ -62,7 +62,7 @@ export default function EventForm({is_creating, updateEvents, onClose, handleClo
             'title': title,
             'user': user.user_id,
     }
-    createEventApi.request(is_creating, eventToCreate, user, authTokens)
+    createEventApi.request(event.id, eventToCreate, user, authTokens)
     if(createEventApi.error){
       toast({
           title: 'Error al guardar ',
@@ -74,8 +74,9 @@ export default function EventForm({is_creating, updateEvents, onClose, handleClo
   }
   else{
     updateEvents()
+    updateNextEvents()
     toast({
-        title: 'Cliente guardado',
+        title: 'Evento guardado',
         status: 'success',
         duration: 6000,
         isClosable: true,
@@ -95,6 +96,8 @@ export default function EventForm({is_creating, updateEvents, onClose, handleClo
         })
         const newEvents = events.filter((item) => item.id !== event.id);
         setEvents(newEvents)
+        updateEvents()
+        updateNextEvents()
     }   
     else{
         console.log('error es:', error)
@@ -116,7 +119,7 @@ export default function EventForm({is_creating, updateEvents, onClose, handleClo
   }
   function getClientName(id){
     try {
-      return(clients.filter(item => item.id===id)[0].name)
+      return(clients.filter(item => item.id===id)[0]?.name)
     } catch (error) {
       console.log(error)
       return('Except en getclientename')
@@ -124,7 +127,7 @@ export default function EventForm({is_creating, updateEvents, onClose, handleClo
   }
   function getServiceName(id){
     try {
-      return(servicelist.filter(item => item.id===id)[0].name)
+      return(servicelist.filter(item => item.id===id)[0]?.name)
     } catch (error) {
       return('Except en getservicename')
     } 
@@ -147,7 +150,6 @@ export default function EventForm({is_creating, updateEvents, onClose, handleClo
   const isServiceError = service === undefined
   const isClientError = client === undefined
   const submitAvailable = isServiceError && isClientError
-
   return (
     <>
     <DrawerHeader> 

@@ -79,12 +79,13 @@ export default function Login(){
                             }}
                             >
                             {formik => (
-                            <Flex direction={'column'} as="form" w='80%' justify='space-around' align='center' gap='3'>
+                            <Flex direction={'column'} onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" w='80%' justify='space-around' align='center' gap='3'>
                             <TextField name="username" placeholder="Usuario"  />
                             <TextField type="password" name="password" placeholder="Contraseña" />
                             <CheckboxSingleControl name="record"> Recuérdame </CheckboxSingleControl>
         
-                            <Button mt='8' variant='primary-s' size='md' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
+                            <Button mt='8' variant='primary-s' size='md'
+                            onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
                                 Iniciar Sesión </Button> 
                             </Flex>
                                 )}

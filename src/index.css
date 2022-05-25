@@ -135,4 +135,24 @@ button:focus {
 
 /* .css-5eload[aria-checked=true], .css-5eload[data-checked]{
   background: #42C74F !important;
-} */
+}
+
+/******************* SVG **********************************/
+.svg-blue path{
+  color: #0258FF !important;
+}
+.svg-orange path{
+  color: #FF7C02 !important;
+}
+.svg-green path{
+  color: #42C74F !important;
+}
+.svg-red path{
+  color: red !important;
+}
+.svg-darkblue path{
+  color: #001234 !important;
+}
+.svg-white path{
+  color: white !important;
+}

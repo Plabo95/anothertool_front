@@ -20,11 +20,11 @@ const getNextEvents= async (user, authTokens)=>{
     return data;
 }
 
-const createEvent = async (is_creating, event, user,authTokens) => {
+const createEvent = async (id, event, user,authTokens) => {
     var url=''
-    if(is_creating){ 
+    if(id === undefined){ 
             url = base_url+'createevent'}   
-    else{   url = base_url+'updateevent/'+ user.user_id + '/' +event.id}
+    else{   url = base_url+'updateevent/'+ user.user_id + '/' +id}
     const data = await fetch(url,{
         method: 'POST',
         headers: {

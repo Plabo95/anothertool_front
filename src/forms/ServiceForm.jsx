@@ -51,7 +51,7 @@ function ServiceForm({onClose, service, services, setServices, updateTable}){
         else{
             updateTable()
             toast({
-                title: 'Cliente guardado',
+                title: 'Servicio guardado',
                 status: 'success',
                 duration: 6000,
                 isClosable: true,

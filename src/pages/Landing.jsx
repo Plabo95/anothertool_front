@@ -1,6 +1,6 @@
 import {Flex, Heading, Text, Button, Box, Image} from '@chakra-ui/react'
 import AuthContext from '../auth/AuthContext'
-import { useContext } from 'react'
+
 import img1 from '../assets/landing1_img1.png'
 import img2 from '../assets/landing2_img1.png'
 import img3 from '../assets/landing3_img1.png'
@@ -12,6 +12,7 @@ import {VscGraph} from 'react-icons/vsc';
 import {FiTool} from 'react-icons/fi';
 import {RiBookletLine} from 'react-icons/ri';
 import {useNavigate} from 'react-router-dom'
+import { useContext, useEffect } from 'react'
 
 export default function Landing(){
 
@@ -20,10 +21,14 @@ export default function Landing(){
     const h_franja = '75vh'
     const icon_box = '120px'
     const navigate = useNavigate();
-    if(user){
-        //console.log('hay user', user)
-        navigate('calendar')
-    }
+
+    useEffect(() => {
+        if(user){
+            console.log('hay user', user)
+            navigate('calendar')
+        }
+      },[])
+
 
     return(
         <Flex direction='column' w='100%' >
@@ -33,7 +38,6 @@ export default function Landing(){
                     <Flex><Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading></Flex>
                 </Flex>
                 <Flex w='50%' justify='end' gap='10' align='center' mr='3%' >
-                    <Text>Precios</Text>
                     <Button variant='outline' borderColor='blue' color='blue' bg='white' 
                     onClick={() => navigate('login')}
                     >Iniciar sesión</Button>
@@ -94,22 +98,22 @@ export default function Landing(){
                 </Text>
                 <Flex gap='10'  mt='5%' >
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <AiOutlineCalendar color='blue' size='50%' />
+                        <AiOutlineCalendar className='svg-blue' size='50%' />
                     </Flex>
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <AiOutlineUnorderedList color='orange' size='50%' />
+                        <AiOutlineUnorderedList className='svg-orange' size='50%' />
                     </Flex>
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <MdOutlinePeopleAlt color='orange' size='50%' />
+                        <MdOutlinePeopleAlt className='svg-darkblue' size='50%' />
                     </Flex>
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <RiBookletLine color='blue' size='50%' />
+                        <RiBookletLine className='svg-blue' size='50%' />
                     </Flex>
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <VscGraph color='orange' size='50%' />
+                        <VscGraph className='svg-orange' size='50%' />
                     </Flex>
                     <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <FiTool size='50%' />
+                        <FiTool size='50%' className='svg-darkblue'/>
                     </Flex>
 
                 </Flex>
