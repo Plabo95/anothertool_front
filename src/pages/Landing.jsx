@@ -35,7 +35,7 @@ export default function Landing(){
 
             <Flex bg='white' height='8vh' w='100%' p='1%' align='center'>
                 <Flex w='50%' justify='start' ml='3%'>
-                    <Flex><Text>another</Text><Text color={'blue'}>tool</Text></Flex>
+                    <Flex><Text variant='parrafo'>another</Text><Text variant='parrafo' color={'blue'}>tool</Text></Flex>
                 </Flex>
                 <Flex w='50%' justify='end' gap='10' align='center' mr='3%' >
                     <Button variant='primary-out-s' 
@@ -59,7 +59,7 @@ export default function Landing(){
                         </Box> 
                     </Flex>
                     <Heading my='3%' variant='h2' >Software de gestión para tu taller mecánico</Heading>
-                    <Text my='4%' >Administra tu taller online de manera muy intuitiva y sencilla</Text>
+                    <Text variant='parrafo' my='4%' >Administra tu taller online de manera muy intuitiva y sencilla</Text>
                     <Flex>
                         <Button variant='primary-s' size='sm' 
                         onClick={() => navigate('register')}
@@ -76,7 +76,7 @@ export default function Landing(){
             <Flex bg='lightgray' w='100%'  direction='column' align='center' p={p_franja}>
                 <Heading variant='h2' justifyContent='center' >Un software eficiente y organizado</Heading>
                 <Image src={img2}/>        
-                <Text w='50%' textAlign='center' mt='3%' >
+                <Text variant='parrafo' w={['100%','100%','90%','90%','75%',]} textAlign='center' mt='3%' >
                     No pierdas más el tiempo con programas liosos, llenos de pestañas con funciones inservibles.
                     anothertool quiere facilitarte el trabajo con un diseño intuitivo y actual.
                 </Text>
@@ -88,23 +88,23 @@ export default function Landing(){
                 </Flex>
                 <Flex w='50%' direction='column' gap='3'>
                     <Flex>
-                        <Text>Prioriza la experiencia del usuario</Text>
+                        <Text variant='parrafo'>Prioriza la experiencia del usuario</Text>
                     </Flex>
                     <Flex>
-                        <Text>Fácil e intuitivo</Text>
+                        <Text variant='parrafo'>Fácil e intuitivo</Text>
                     </Flex>
                     <Flex>
-                        <Text>Loremipsum loremipsum</Text>
+                        <Text variant='parrafo'>Loremipsum loremipsum</Text>
                     </Flex>
                     <Flex>
-                        <Text>Singelmery singelflery</Text>
+                        <Text variant='parrafo'>Singelmery singelflery</Text>
                     </Flex>
                 </Flex>
             </Flex>
 
             <Flex bg='lightgray' w='100%' direction='column' align='center' p={p_franja}>
                 <Heading variant='h2' mx='5%'>anothertool, tu otra herramienta online</Heading>      
-                <Text mx='5%'>Calendario, seguimiento de trabajos, historial de cliente,s gestión de citas, tareas y servicios
+                <Text variant='parrafo' mx='5%'>Calendario, seguimiento de trabajos, historial de cliente,s gestión de citas, tareas y servicios
                     estadísticas... 
                 </Text>
                 <Flex direction={['column','column','column','row','row']} gap='10' mt='5%' >
@@ -136,7 +136,7 @@ export default function Landing(){
             <Flex bg='white' w='100%' direction={['column','column','column','column','row']}  p={p_franja}>
                 <Flex w={['100%','100%','100%','100%','70%']} ml='5%' direction='column' gap='4' >
                     <Heading variant='h1'>Personalizado a medida para tu negocio</Heading>      
-                    <Text>
+                    <Text variant='parrafo'>
                         Estamos muy comprometidos con el mundo del taller,
                         estando al día de las necesidades de nuestros clientes,
                         actualiándonos día a día.

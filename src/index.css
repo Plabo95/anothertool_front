@@ -2,7 +2,13 @@
 
 *{
   font-family: 'Poppins', Arial, Helvetica !important;
+}
+p,h1,h2,h3,h4,h5,td,th,.rbc-header button span,.rbc-label{
+  font-family: 'Poppins', Arial, Helvetica !important;
   color: #001234;
+}
+.rbc-toolbar button{
+  color: #001234 !important;
 }
 
 

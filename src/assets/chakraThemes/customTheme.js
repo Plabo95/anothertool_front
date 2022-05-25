@@ -25,11 +25,13 @@ const customTheme = extendTheme({
             }
         },
         Text: {
-            baseStyle: {
-                fontFamily: 'Poppins',
+            variants: {
+                'parrafo': {
+                    fontFamily: 'Poppins',
                 fontStyle: 'normal',
                 fontWeight: '400',
                 fontSize: '30px',
+                }
             }
         },
         Button: {

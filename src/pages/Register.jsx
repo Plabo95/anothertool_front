@@ -71,9 +71,9 @@ export default function Register(){
             </Flex>
 
             <Flex height='92vh' justify='center' align='center' w='100%'>
-                <Flex py='5%'  w={['80%','75%','400px','400px']} direction='column' align='center' gap='5'>
+                <Flex py='5%'  w={['80%','65%','400px','400px']} direction='column' align='center' gap='5'>
                     <Flex><Heading size='lg' >another</Heading><Heading size='lg' color={'blue'}>tool</Heading></Flex>
-                    <Flex bg='white' w='100%' rounded='xl' direction='column' align='center'  gap='3' py='12%'>
+                    <Flex bg='white' w='100%' rounded='xl' direction='column' align='center'  gap='3' py='12%' boxShadow='lg'>
                         <Heading size='md'> ¡Bienvenido! </Heading>
                         <Formik
                         initialValues = {{

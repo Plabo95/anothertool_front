@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import { Button, useToast, Flex,VStack, Heading, Text} from '@chakra-ui/react'
+import { Button, useToast, Flex,VStack, Heading, Text, Box} from '@chakra-ui/react'
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import {CheckboxSingleControl}  from "formik-chakra-ui";
@@ -44,10 +44,12 @@ export default function Login(){
                     </Flex>
                 </Flex>
                 <Flex justify='end' gap='10' align='center' mr='3%' ml='3%'>
-                    <Text fontWeight='bold' >¿Aún no tienes cuenta?</Text>
-                    <Button variant="primary-s" size='sm'
-                    onClick={() => navigate('/klndr_front/register')}
-                    >Regístrate</Button>
+                    <Text fontWeight='bold'>¿Aún no tienes cuenta?</Text>
+                    <Box>
+                        <Button variant="primary-s" size='sm'
+                        onClick={() => navigate('/klndr_front/register')}
+                        >Regístrate</Button>
+                    </Box>
                 </Flex>
             </Flex>
 
@@ -56,7 +58,7 @@ export default function Login(){
                 <Flex py='5%'  w={['80%','75%','400px','400px']} direction='column' align='center' gap='5'>
                     <Flex><Heading size='lg' >another</Heading><Heading size='lg' color={'blue'}>tool</Heading></Flex>
                     {!isLogged && 
-                        <Flex bg='white' w='100%' rounded='xl' direction='column' align='center'  gap='6' py='12%'>
+                        <Flex bg='white' w='100%' rounded='xl' direction='column' align='center'  gap='6' py='12%' boxShadow='lg'>
                             <Heading size='md'> ¡Hola de nuevo! </Heading>
                             <Formik
                             initialValues = {{
@@ -93,7 +95,7 @@ export default function Login(){
                         </Flex>
                     }
                     {isLogged &&
-                        <Flex bg='white' w='100%' rounded='xl' direction='column' align='center'  gap='6' py='12%'>
+                        <Flex bg='white' w='100%' rounded='xl' direction='column' align='center'  gap='6' py='12%' boxShadow='lg'>
                         <Heading size='md'> Ya existe una sesión iniciada </Heading>
                         <Button mt='8' variant='primary-out-s' size='md' onClick={cerrarSesion}>
                                 Cerrar Sesión </Button> 
