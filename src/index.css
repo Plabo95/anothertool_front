@@ -9,7 +9,7 @@
 body {
   margin: 0;
   background-color: #F0F0F0 !important;
-  color: rgba(0, 19, 56, 0.3);
+  color: #001234;
 }
 
 code {
@@ -85,14 +85,14 @@ button:focus {
 }
 
 .rbc-btn-group.btn-select-view{
-  border: 2px solid rgba(115, 122, 135, 0.5) !important;
+  border: 2px solid rgba(115, 122, 135) !important;
   border-radius: 10px !important;
   padding: 0px !important;
   overflow: hidden !important;
 }
 
 .btn-hoy{
-  border: 2px solid rgba(115, 122, 135, 0.5) !important;
+  border: 2px solid rgba(115, 122, 135) !important;
   border-radius: 10px !important;
 }
 
@@ -109,7 +109,7 @@ button:focus {
 }
 
 .rbc-btn-group button.btn-dia,.rbc-btn-group button.btn-semana,.rbc-btn-group button.btn-mes{
-  border-right: 2px solid rgba(115, 122, 135, 0.5) !important;
+  border-right: 2px solid rgba(115, 122, 135) !important;
 }
 
 .btn-select-view .active{
@@ -133,6 +133,6 @@ button:focus {
 
 /***************** CHAKRA-UI SWITCH *************************/
 
-.css-5eload[aria-checked=true], .css-5eload[data-checked]{
+/* .css-5eload[aria-checked=true], .css-5eload[data-checked]{
   background: #42C74F !important;
-}
+} */

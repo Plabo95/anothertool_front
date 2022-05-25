@@ -13,39 +13,49 @@ const customTheme = extendTheme({
         Button: {
             variants: {
                 'primary': {
-                    bg: 'blue',
+                    bg: '#0258FF',
                     color: 'white',
+                    fontFamily: 'Poppins',
+                    fontWeight: '400',
                     _hover: {
                         bg: "#aabcdb",
-                        color: "darkblue",
+                        color: "#001234",
                     }
                 },
                 'primary-s': {
-                    bg: 'blue',
+                    bg: '#0258FF',
                     color: 'white',
                     boxShadow: '4px 4px 4px rgba(2, 88, 255, 0.3)',
+                    fontFamily: 'Poppins',
+                    fontWeight: '400',
                     _hover: {
                         bg: "#aabcdb",
-                        color: "darkblue",
+                        color: "#001234",
                     }
                 },
                 'primary-out-s': {
                     bg: 'transparent',
-                    color: 'blue',
-                    border: '2px solid blue',
+                    color: '#0258FF',
+                    border: '2px solid #0258FF',
                     boxShadow: '4px 4px 4px rgba(2, 88, 255, 0.3)',
+                    fontFamily: 'Poppins',
+                    //fontStyle: 'normal',
+                    fontWeight: '400',
+                    //fontSize: '15px',
                     _hover: {
-                        bg: "blue",
+                        bg: "#0258FF",
                         color: "white",
                         border: '2px solid transparent'
                     }
                 },
                 'primary-out': {
                     bg: 'transparent',
-                    color: 'blue',
-                    border: '2px solid blue',
+                    color: '#0258FF',
+                    border: '2px solid #0258FF',
+                    fontFamily: 'Poppins',
+                    fontWeight: '400',
                     _hover: {
-                        bg: "blue",
+                        bg: "#0258FF",
                         color: "white",
                         border: '2px solid transparent'
                     }
