@@ -35,35 +35,46 @@ export default function Landing(){
 
             <Flex bg='white' height='8vh' w='100%' p='1%' align='center'>
                 <Flex w='50%' justify='start' ml='3%'>
-                    <Flex><Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading></Flex>
+                    <Flex><Text>another</Text><Text color={'blue'}>tool</Text></Flex>
                 </Flex>
                 <Flex w='50%' justify='end' gap='10' align='center' mr='3%' >
-                    <Button variant='outline' borderColor='blue' color='blue' bg='white' 
+                    <Button variant='primary-out-s' 
                     onClick={() => navigate('login')}
                     >Iniciar sesión</Button>
-                    <Button bg='blue' color='white' 
+                    <Button variant='primary-s'  
                     onClick={() => navigate('register')}
                     >Pruébalo gratis</Button>
                 </Flex>
             </Flex>
 
-            <Flex bg='white' height={h_franja} w='100%'  p={p_franja} > 
-                <Flex direction='column' w='50%' ml='5%' >
-                    <Flex><Heading size='3xl' >another</Heading><Heading size='3xl' color={'orange'}>day</Heading></Flex>
-                    <Flex><Heading size='3xl'>another</Heading><Heading size='3xl' color={'blue'}>tool</Heading></Flex>
-                    <Heading w='60%' my='3%' size='lg' >Software de gestión para tu taller mecánico</Heading>
+            <Flex bg='white' w='100%'  p={p_franja} > 
+                <Flex direction='column' w={['100%','100%','100%','100%','70%']} ml='5%' >
+                    <Flex justifyContent={['center','center','center','space-between','start']}>
+                        <Box>
+                            <Flex><Heading variant='h1'>another</Heading><Heading variant='h1' color={'orange'}>day</Heading></Flex>
+                            <Flex><Heading variant='h1'>another</Heading><Heading variant='h1' color={'blue'}>tool</Heading></Flex>
+                        </Box>
+                        <Box display={['none','none','none','block','none']}>
+                            <Image h='100%' w='xs' src={img1}/>
+                        </Box> 
+                    </Flex>
+                    <Heading my='3%' variant='h2' >Software de gestión para tu taller mecánico</Heading>
                     <Text my='4%' >Administra tu taller online de manera muy intuitiva y sencilla</Text>
-                    <Button bgColor='blue' color='white' size='sm' h='5vh' w='20%' 
-                    onClick={() => navigate('register')}
-                    >Pruébalo gratis</Button>
+                    <Flex>
+                        <Button variant='primary-s' size='sm' 
+                        onClick={() => navigate('register')}
+                        >Pruébalo gratis</Button>
+                    </Flex>
                 </Flex>
-                <Flex w='50%' p='5%' >
-                <Image src={img1}/>
-                </Flex>   
+                <Flex alignItems='center' display={['none','none','none','none','flex']}>
+                    <Box p='5%'>
+                        <Image src={img1}/>
+                    </Box>   
+                </Flex>
             </Flex>
 
-            <Flex bg='lightgray' height={h_franja} w='100%'  direction='column' align='center' p={p_franja}>
-                <Heading size='lg' >Un software eficiente y organizado</Heading>
+            <Flex bg='lightgray' w='100%'  direction='column' align='center' p={p_franja}>
+                <Heading variant='h2' justifyContent='center' >Un software eficiente y organizado</Heading>
                 <Image src={img2}/>        
                 <Text w='50%' textAlign='center' mt='3%' >
                     No pierdas más el tiempo con programas liosos, llenos de pestañas con funciones inservibles.
@@ -71,7 +82,7 @@ export default function Landing(){
                 </Text>
             </Flex>
 
-            <Flex bg='white' height={h_franja} w='100%' p={p_franja} align='center' >
+            <Flex bg='white' w='100%' p={p_franja} align='center' >
                 <Flex w='50%'>
                     <Image src={img3}/>  
                 </Flex>
@@ -91,46 +102,51 @@ export default function Landing(){
                 </Flex>
             </Flex>
 
-            <Flex bg='lightgray' height={h_franja} w='100%' direction='column' align='center' p={p_franja}>
-                <Heading>anothertool, tu otra herramienta online</Heading>      
-                <Text>Calendario, seguimiento de trabajos, historial de cliente,s gestión de citas, tareas y servicios
+            <Flex bg='lightgray' w='100%' direction='column' align='center' p={p_franja}>
+                <Heading variant='h2' mx='5%'>anothertool, tu otra herramienta online</Heading>      
+                <Text mx='5%'>Calendario, seguimiento de trabajos, historial de cliente,s gestión de citas, tareas y servicios
                     estadísticas... 
                 </Text>
-                <Flex gap='10'  mt='5%' >
-                    <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <AiOutlineCalendar className='svg-blue' size='50%' />
+                <Flex direction={['column','column','column','row','row']} gap='10' mt='5%' >
+                    <Flex gap='10'>
+                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
+                            <AiOutlineCalendar className='svg-blue' size='50%' />
+                        </Flex>
+                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
+                            <AiOutlineUnorderedList className='svg-orange' size='50%' />
+                        </Flex>
+                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
+                            <MdOutlinePeopleAlt className='svg-darkblue' size='50%' />
+                        </Flex>
                     </Flex>
-                    <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <AiOutlineUnorderedList className='svg-orange' size='50%' />
+                    <Flex gap='10'>
+                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
+                            <RiBookletLine className='svg-blue' size='50%' />
+                        </Flex>
+                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
+                            <VscGraph className='svg-orange' size='50%' />
+                        </Flex>
+                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
+                            <FiTool size='50%' className='svg-darkblue'/>
+                        </Flex>
                     </Flex>
-                    <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <MdOutlinePeopleAlt className='svg-darkblue' size='50%' />
-                    </Flex>
-                    <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <RiBookletLine className='svg-blue' size='50%' />
-                    </Flex>
-                    <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <VscGraph className='svg-orange' size='50%' />
-                    </Flex>
-                    <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                        <FiTool size='50%' className='svg-darkblue'/>
-                    </Flex>
-
                 </Flex>
             </Flex>
 
-            <Flex bg='white' height={h_franja} w='100%'  p={p_franja}>
-                <Flex w='60%' ml='5%' direction='column' gap='4' >
-                    <Heading w='70%'>Personalizado a medida para tu negocio</Heading>      
-                    <Text w='70%'>
+            <Flex bg='white' w='100%' direction={['column','column','column','column','row']}  p={p_franja}>
+                <Flex w={['100%','100%','100%','100%','70%']} ml='5%' direction='column' gap='4' >
+                    <Heading variant='h1'>Personalizado a medida para tu negocio</Heading>      
+                    <Text>
                         Estamos muy comprometidos con el mundo del taller,
                         estando al día de las necesidades de nuestros clientes,
                         actualiándonos día a día.
                     </Text>
+                </Flex> 
+                <Flex alignItems='center' justifyContent='center'>
+                    <Box p='5%' w={['70%','60%','50%','40%','100%']}>
+                        <Image src={img5}/>
+                    </Box>   
                 </Flex>
-                <Flex w='40%' mr='5%'>
-                    <Image src={img5}/>
-                </Flex>  
             </Flex>
 
         </Flex>

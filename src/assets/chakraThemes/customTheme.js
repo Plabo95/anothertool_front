@@ -10,6 +10,28 @@ const customTheme = extendTheme({
 
     },
     components: {
+        Heading: {
+            variants: {
+                'h1' :{
+                    fontFamily: 'Poppins',
+                    fontWeight: '700',
+                    fontSize: '80px',
+                },
+                'h2' :{
+                    fontFamily: 'Poppins',
+                    fontWeight: '600',
+                    fontSize: '60px',
+                }
+            }
+        },
+        Text: {
+            baseStyle: {
+                fontFamily: 'Poppins',
+                fontStyle: 'normal',
+                fontWeight: '400',
+                fontSize: '30px',
+            }
+        },
         Button: {
             variants: {
                 'primary': {
