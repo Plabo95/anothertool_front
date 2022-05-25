@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
-import { Button, useToast, Flex,VStack, Text,Heading} from '@chakra-ui/react'
+import { Button, useToast, Flex, Text,Heading} from '@chakra-ui/react'
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import TextField from '../forms/TextField'
 import {SwitchControl} from "formik-chakra-ui";
 import {useNavigate} from 'react-router-dom'
 import {CheckboxSingleControl}  from "formik-chakra-ui";
+import { base_url } from '../environment/global';
 
 import bg from '../assets/register_bg.png'
 
@@ -23,7 +24,7 @@ export default function Register(){
                     'password': values.password,
                     'password2': values.password2,
             }
-        const response = await fetch('http://127.0.0.1:8000/api/register/',{
+        const response = await fetch(base_url+'register/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -39,6 +40,7 @@ export default function Register(){
             isClosable: true,
             })
             setLoadingCreate(false) 
+            navigate('/klndr_front/login')
             }
             else{
                 toast({
@@ -81,13 +83,16 @@ export default function Register(){
                             username: "",
                             password: "",
                             password2: "",
+                            terms: false,
                         }
                         }
                         validationSchema = {Yup.object({
-                            email: Yup.string().required("Nombre es obligatorio"),
-                            username: Yup.string().required("Nombre es obligatorio"),
-                            password: Yup.string().required("Coche es obligatorio"),
-                            password2: Yup.string().required("Coche es obligatorio"),
+                            email: Yup.string().email('Formato de email inválido').required("Email es obligatorio"),
+                            username: Yup.string().required("Usuario es obligatorio"),
+                            password: Yup.string().min(8, 'Contraseña demasiado corta - mínimo 8 caracteres')
+                                        .matches(/[a-zA-Z]/, 'Solo puede contener letras del abecedario'),
+                            password2: Yup.string().oneOf([Yup.ref('password'), null], 'Las contraseñas no coinciden'),
+                            terms: Yup.boolean().equals([true],'Debes aceptar los términos')
                         })}
                         onSubmit= {(values, actions) => {
                             //alert(JSON.stringify(values))
@@ -99,9 +104,14 @@ export default function Register(){
                         <Flex  onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" direction={'column'} w='80%' justify='space-around' align='center' gap='3'>
                             <TextField placeholder="Correo electrónico" name="email" />
                             <TextField placeholder="Usuario" name="username" />
-                            <TextField placeholder="Contraseña" name="password" />
-                            <TextField placeholder="Repite Contraseña" name="password2" />
-                            <CheckboxSingleControl name="record">
+                            <TextField placeholder="Contraseña" name="password" type="password" />
+                            <Flex direction={'column'} align='start'  >
+                                <Text color='gray' fontSize='xs' fontWeight='hairline'>Debe tener al menos 8 caracteres</Text>
+                                <Text color='gray' fontSize='xs' fontWeight='hairline'>No puede ser similar a tu otra información personal</Text>
+                                <Text color='gray' fontSize='xs' fontWeight='hairline'>No puede ser enteramente numérica</Text>
+                            </Flex>
+                            <TextField placeholder="Repite Contraseña" name="password2" type="password" />
+                            <CheckboxSingleControl name="terms">
                                 <Text fontSize='xs' fontWeight='hairline'  >
                                 Estoy de acuerdo con los términos del servicio y la política
                                 de privacidad 
