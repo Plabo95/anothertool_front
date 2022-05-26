@@ -1,4 +1,4 @@
-import {Flex, Divider, Avatar, Heading, Text, IconButton, Button} from '@chakra-ui/react'
+import {Flex, Divider, Avatar, Heading, Text, IconButton, Button, Box} from '@chakra-ui/react'
 import SvgMenu from  '../../dist/Menu'
 import SvgAnalytics from  '../../dist/Analytics'
 import SvgCalendar from  '../../dist/Calendar'
@@ -7,7 +7,9 @@ import React, {useState, useContext } from 'react'
 import NavItem from './NavItem';
 import AuthContext from '../../auth/AuthContext'
 
+import {IconContext} from 'react-icons'; 
 import {MdOutlineAdminPanelSettings} from 'react-icons/md'; 
+import {FiLogOut} from 'react-icons/fi'; 
 
 function Navbar(){
 
@@ -24,14 +26,16 @@ function Navbar(){
         >
         
         <Flex direction="column"  p="5%" align={navSize === "small"? "center": "flex-start"}  >
-            <IconButton size='xs' color="white" background="none" mt="5" _hover={{bg:'none'}} icon={<SvgMenu/>} 
-            onClick={()=> {
-                if (navSize === "small")
-                    setNavSize("large")
-                else 
-                    setNavSize("small")
-            }}
-            />
+            <Box px='3'>
+                <IconButton size='xs' color="white" background="none" mt="5" _hover={{bg:'none'}} icon={<SvgMenu/>} 
+                onClick={()=> {
+                    if (navSize === "small")
+                        setNavSize("large")
+                    else 
+                        setNavSize("small")
+                }}
+                />
+            </Box>
             {user.is_staff && 
             <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/klndr_front/adminpanel' />}
             <NavItem navSize={navSize} icon={SvgCalendar} title="Calendar" slash='/klndr_front/calendar' />
@@ -43,8 +47,12 @@ function Navbar(){
         align={navSize === "small"? "center": "flex-start"}  
         >
             <Divider display={navSize === "small"? "none": "flex"}/>
-            <Button size='sm' onClick={logoutUser} > LG</Button>   
-            <Flex mt="4" align="center"> 
+            <Box px='3'>
+                <Button size='sm' onClick={logoutUser} bg='darkblue' padding='0px' _hover={{bg:'darkblue'}} _focus={{bg:'darkblue'}} >
+                    <FiLogOut style={{ background: 'none', color: 'white', fontSize: '30px', padding: '0px', _hover:{background:'none'}, _focus:{background:'none'} }}/>      
+                </Button>  
+            </Box> 
+            <Flex mt="4" px='3' align="center"> 
                 <Avatar size="sm" /> 
                 <Flex direction="column" ml="4" display={navSize === "small"? "none": "flex"} >
                     <Heading color="whiteAlpha.800" size="sm"> {user.username} </Heading>

@@ -86,7 +86,7 @@ function ClientsTable(){
                 <Text>Morosos</Text>
                 <Flex gap='4' align={'center'}>
                     <Text> {morosos} </Text>
-                    <Switch size='sm' ref={switchElement} onChange={()=>handleFilter()} />
+                    <Switch size='sm' colorScheme='green' ref={switchElement} onChange={()=>handleFilter()} />
                 </Flex>
             </Flex>
             <Button variant='primary-out-s' onClick={()=>handleCreate()}>+ Añadir cliente</Button>
