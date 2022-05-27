@@ -34,7 +34,7 @@ function App() {
           <Routes>
               <Route index element={<Landing/>} />
               <Route path='/' index element={<Landing/>} />  
-              <Route path='klndr_front/register' element={<Register/>} /> 
+              <Route path='/register' element={<Register/>} /> 
               <Route path='klndr_front/login' element={<Login/>} />  
 
               <Route element={<AdminRoute/>}>
