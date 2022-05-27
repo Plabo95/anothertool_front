@@ -33,7 +33,7 @@ function App() {
           <Navbar/>   
           <Routes>
               <Route index element={<Landing/>} />
-              <Route path='klndr_front/' index element={<Landing/>} />  
+              <Route path='/' index element={<Landing/>} />  
               <Route path='klndr_front/register' element={<Register/>} /> 
               <Route path='klndr_front/login' element={<Login/>} />  
 
