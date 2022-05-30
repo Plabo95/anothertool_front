@@ -40,7 +40,7 @@ export default function Register(){
             isClosable: true,
             })
             setLoadingCreate(false) 
-            navigate('/klndr_front/login')
+            navigate('/login')
             }
             else{
                 toast({
@@ -60,14 +60,14 @@ export default function Register(){
             
             <Flex height='8vh' w='100%' p='1%' align='center' justifyContent='space-between'>
                 <Flex justify='start' ml='3%'>
-                    <Flex onClick={() => navigate('/klndr_front/')} cursor='pointer' >
+                    <Flex onClick={() => navigate('/')} cursor='pointer' >
                         <Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading>
                     </Flex>
                 </Flex>
                 <Flex justify='end' gap='10' align='center' mr='3%' ml='3%'>
                     <Text fontWeight='bold' >¿Ya tienes una cuenta?</Text>
                     <Button variant="primary-s" size='sm'
-                    onClick={() => navigate('/klndr_front/login')}
+                    onClick={() => navigate('/login')}
                     >Iniciar Sesión</Button>
                 </Flex>
             </Flex>
