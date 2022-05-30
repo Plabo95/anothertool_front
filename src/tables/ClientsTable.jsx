@@ -19,7 +19,8 @@ function ClientsTable(){
     const { isOpen, onOpen, onClose } = useDisclosure()
     const[fClients, setFClients] = useState([])
     const[clients, setClients] = useState([])
-    const[client, setClient] = useState()
+    const[sClient, setSClient] = useState()
+    const[creating, setCreating] = useState(false)
     const switchElement = useRef();
 
     const updateTable = async () => {
@@ -38,7 +39,8 @@ function ClientsTable(){
                 duration: 6000,
                 isClosable: true,
             })
-            updateTable()
+            const newClients = clients.filter((item) => item.id !== e);
+            setClients(newClients)
         }   
         else{
             console.log('error es:', error)
@@ -52,11 +54,13 @@ function ClientsTable(){
         }    
     }
     function handleEdit(e){
-        setClient(e)
+        setSClient(e)
+        setCreating(false)
         onOpen()
     }
     function handleCreate(){
-        setClient()
+        setSClient()
+        setCreating(true)
         onOpen()
     }
     async function handleFilter(){
@@ -127,8 +131,8 @@ function ClientsTable(){
             <DrawerOverlay />
             <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader>{client? 'Editar Cliente': 'Crear Cliente' }</DrawerHeader>                
-            <ClientForm  onClose={onClose} client={client} clients={fClients} setClients={setFClients} updateTable={updateTable}/>
+            <DrawerHeader>{sClient? 'Editar Cliente': 'Crear Cliente' }</DrawerHeader>                
+            <ClientForm is_creating={creating} onClose={onClose} client={sClient} clients={fClients} setClients={setFClients} updateTable={updateTable}/>
             </DrawerContent>
         </Drawer>                    
      

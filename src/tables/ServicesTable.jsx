@@ -17,7 +17,7 @@ function ServicesTable(){
     const toast = useToast()
     const {isOpen, onOpen, onClose } = useDisclosure()
     const[services, setServices] = useState([])
-    const[service, setService] = useState()               //selected service (when edditing)
+    const[sService, setSService] = useState()               //selected service (when edditing)
 
     const updateTable = async () => {
         const {data, error} = await getServicesApi.request(user,authTokens);
@@ -26,6 +26,7 @@ function ServicesTable(){
     }
 
     const handleDelete = async (e) =>{
+        console.log('deleting service: ', e)
         const {error} = await deleteServiceApi.request(e, user, authTokens)
         if(!error){
             toast({
@@ -50,11 +51,11 @@ function ServicesTable(){
     }
     
     function handleEdit(e){
-        setService(e)
+        setSService(e)
         onOpen()
     }
     function handleCreate(){
-        setService()
+        setSService()
         onOpen()
     }
 
@@ -103,8 +104,8 @@ function ServicesTable(){
                 <DrawerOverlay />
                 <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader>{service? 'Editar Servicio': 'Crear Servicio' }</DrawerHeader>
-                <ServiceForm onClose={onClose} service={service} services={services} setServices={setServices} updateTable={updateTable}/>
+                <DrawerHeader>{sService? 'Editar Servicio': 'Crear Servicio' }</DrawerHeader>
+                <ServiceForm onClose={onClose} service={sService} services={services} setServices={setServices} updateTable={updateTable}/>
                 </DrawerContent>
             </Drawer>                    
       </Flex>

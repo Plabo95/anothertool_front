@@ -31,6 +31,7 @@ function ClientForm({onClose, clients, client, setClients, updateTable}){
             'user': user.user_id,
         }
         const {error} = await createClientApi.request(client, clientToCreate, user, authTokens)
+        console.log(error)
         if(error){
             toast({
                 title: 'Error al guardar ',
