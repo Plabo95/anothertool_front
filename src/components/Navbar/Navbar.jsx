@@ -7,7 +7,6 @@ import React, {useState, useContext } from 'react'
 import NavItem from './NavItem';
 import AuthContext from '../../auth/AuthContext'
 
-import {IconContext} from 'react-icons'; 
 import {MdOutlineAdminPanelSettings} from 'react-icons/md'; 
 import {FiLogOut} from 'react-icons/fi'; 
 

@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import {DrawerBody, DrawerFooter, DrawerHeader,DrawerCloseButton, useToast} from '@chakra-ui/react'
-import {Button,Input, InputGroup, InputLeftElement, Text, Textarea, Stack, Flex, Square, FormControl, FormHelperText, FormErrorMessage} from '@chakra-ui/react'
+import {Button,Box,Input, InputGroup, InputLeftElement, Text, Textarea, Stack, Flex, Square, FormControl, FormHelperText, FormErrorMessage} from '@chakra-ui/react'
 import moment from 'moment';
 import SvgTime from  '../dist/Time'
 import {Select,} from "chakra-react-select";
@@ -8,6 +8,9 @@ import PopoverClientForm from './PopoverClientForm'
 import eventsApi from '../api/eventsApi';
 import AuthContext from '../auth/AuthContext';
 import useApi from '../hooks/useApi';
+import Flatpickr from "react-flatpickr";
+// import "flatpickr/dist/themes/darkblue.css";
+import "../assets/flatpickrThemes/darkblue.css";
 
 export default function EventForm({is_creating, updateEvents, updateNextEvents, onClose, handleClose, event, events, setEvents, servicelist, clientlist}) {
 
@@ -193,6 +196,30 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
         <Flex align='center' justify='start' gap={3}> <SvgTime/>  <Text>{duration()}</Text> </Flex>                 
         <Text> IN  {moment(event.start).format("DD/MM/YYYY, hh:mm")} </Text>
         <Text> OUT {moment(event.end).format("DD/MM/YYYY hh:mm")}</Text>
+        <Box rounded="lg" border="2px" p="2px">
+          <Flex justifyContent="space-between">
+            <Text mr="3px" ml="3px"> IN : </Text>
+            <Flatpickr
+              data-enable-time
+              value={''}
+              onChange={(newdate) => {
+                console.log(newdate)
+              }}
+            />
+          </Flex>
+        </Box>
+        <Box rounded="lg" border="2px" p="2px">
+          <Flex justifyContent="space-between">
+            <Text mr="3px" ml="3px"> OUT : </Text>
+            <Flatpickr
+              data-enable-time
+              value={''}
+              onChange={(newdate) => {
+                console.log(newdate)
+              }}
+            />
+          </Flex>
+        </Box>
         </Flex>  } 
 
         <Stack spacing={4}>
