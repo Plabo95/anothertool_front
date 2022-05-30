@@ -40,7 +40,7 @@ export const AuthProvider = ({children}) => {
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))
                 localStorage.setItem('authTokens',JSON.stringify(data))    //cache?
-                navigate('klndr_front/calendar');
+                navigate('/calendar');
             }
             else{
                 console.log('error de login')
