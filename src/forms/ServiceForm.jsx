@@ -10,7 +10,7 @@ import AuthContext from '../auth/AuthContext';
 import useApi from '../hooks/useApi';
 import servicesApi from '../api/servicesApi';
 
-function ServiceForm({onClose, service, services, setServices, updateTable}){  
+function ServiceForm({onClose, service, updateTable}){  
     //Solo inicializo estado si estoy editando un servicio service?
     const[color, setColor] = useState()
     const toast = useToast()
@@ -28,7 +28,7 @@ function ServiceForm({onClose, service, services, setServices, updateTable}){
         onClose()
     }
 
-    const handleSubmit = (values) => {    
+    const handleSubmit = async (values) => {    
         setLoadingCreate(true)
         const serviceToCreate ={
             'name': values.name,
@@ -38,11 +38,11 @@ function ServiceForm({onClose, service, services, setServices, updateTable}){
             'estimed_mins': values.estimed_mins,
             'user': user.user_id,
         } 
-        createServiceApi.request(service, serviceToCreate, user, authTokens)
-        if(createServiceApi.error){
+        const {error} = await createServiceApi.request(service, serviceToCreate, user, authTokens)
+        if(error){
             toast({
                 title: 'Error al guardar ',
-                description: "Código de error"+ createServiceApi.error +' intentalo mas tarde' ,
+                description: "Código de error"+ error +' intentalo mas tarde' ,
                 status: 'error',
                 duration: 6000,
                 isClosable: true,
@@ -58,53 +58,6 @@ function ServiceForm({onClose, service, services, setServices, updateTable}){
                 }) 
         }
         closeDrawer()
-    }
-
-    const handleSubmitt = async(values) => {
-    setLoadingCreate(true)
-        const serviceToCreate ={
-                'name': values.name,
-                'baseprice': values.price,
-                'color': color,
-                'estimed_hours': values.estimed_hours,
-                'estimed_mins': values.estimed_mins
-        }      
-        var url= ''
-        if(service===undefined){ 
-        url = 'https://plabo.pythonanywhere.com/api/createservice'}   
-        else{url = 'https://plabo.pythonanywhere.com/api/updateservice/' + service.id + '/'}
-        const response = await fetch(url,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(serviceToCreate)
-            })
-        const rstatus = response.status
-        if(rstatus >= 200 && rstatus<300){
-            toast({
-            title: 'Servicio guardado',
-            status: 'success',
-            duration: 6000,
-            isClosable: true,
-            }) 
-        const newdata= await response.json()
-        if(service){
-            setServices(services.filter(item => item.id!==service.id)) //creo una lista con todos menos el editado¡
-        }
-        setServices((services) => [...services, newdata])
-        closeDrawer()
-        }
-        else{
-            toast({
-              title: 'Error al guardar ',
-              description: "Código de error"+ rstatus +' intentalo mas tarde' ,
-              status: 'error',
-              duration: 6000,
-              isClosable: true,
-              })
-              closeDrawer()
-            }
     }
     
     const initialValues = {
