@@ -51,7 +51,7 @@ export const AuthProvider = ({children}) => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
-        if (ini) navigate('klndr_front/');
+        if (ini) navigate('/');
     } 
 
     const updateToken = async() => {
