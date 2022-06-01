@@ -36,10 +36,10 @@ function Navbar(){
                 />
             </Box>
             {user.is_staff && 
-            <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/klndr_front/adminpanel' />}
-            <NavItem navSize={navSize} icon={SvgCalendar} title="Calendar" slash='/klndr_front/calendar' />
-            <NavItem navSize={navSize} icon={SvgServicios} title="Garage" slash='klndr_front/garage' />      
-            <NavItem navSize={navSize} icon={SvgAnalytics} title="Reports" slash='klndr_front/analytics' /> 
+            <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/adminpanel' />}
+            <NavItem navSize={navSize} icon={SvgCalendar} title="Calendar" slash='/calendar' />
+            <NavItem navSize={navSize} icon={SvgServicios} title="Garage" slash='/garage' />      
+            <NavItem navSize={navSize} icon={SvgAnalytics} title="Reports" slash='/analytics' /> 
         </Flex>
 
         <Flex p="5%" flexFlow='column wrap' w="100%" mb={4} gap='3'

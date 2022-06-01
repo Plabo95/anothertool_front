@@ -33,18 +33,18 @@ function App() {
           <Navbar/>   
           <Routes>
               <Route index element={<Landing/>} />
-              <Route path='klndr_front/' index element={<Landing/>} />  
-              <Route path='klndr_front/register' element={<Register/>} /> 
-              <Route path='klndr_front/login' element={<Login/>} />  
+              <Route path='/' index element={<Landing/>} />  
+              <Route path='/register' element={<Register/>} /> 
+              <Route path='/login' element={<Login/>} />  
 
               <Route element={<AdminRoute/>}>
-                <Route path="klndr_front/adminpanel" element={<AdminPanel/>} />
+                <Route path="/adminpanel" element={<AdminPanel/>} />
               </Route>
 
               <Route element={<PrivateRoute/>}>
-                <Route path="klndr_front/calendar" element={<CalendarComp localizer={localizer}/>} />
-                <Route path="klndr_front/garage" element={<Garage/>} />
-                <Route path="klndr_front/analytics" element={<Analytics/>} />
+                <Route path="/calendar" element={<CalendarComp localizer={localizer}/>} />
+                <Route path="/garage" element={<Garage/>} />
+                <Route path="/analytics" element={<Analytics/>} />
               </Route>
 
               <Route path="*" element={<p>There's nothing here: 404!</p>} />

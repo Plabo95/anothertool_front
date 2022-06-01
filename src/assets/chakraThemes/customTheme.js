@@ -15,12 +15,12 @@ const customTheme = extendTheme({
                 'h1' :{
                     fontFamily: 'Poppins',
                     fontWeight: '700',
-                    fontSize: '80px',
+                    fontSize: '60px',
                 },
                 'h2' :{
                     fontFamily: 'Poppins',
                     fontWeight: '600',
-                    fontSize: '60px',
+                    fontSize: '35px',
                 }
             }
         },
@@ -30,7 +30,7 @@ const customTheme = extendTheme({
                     fontFamily: 'Poppins',
                 fontStyle: 'normal',
                 fontWeight: '400',
-                fontSize: '30px',
+                fontSize: '25px',
                 }
             }
         },

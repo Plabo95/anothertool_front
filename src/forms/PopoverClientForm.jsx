@@ -68,7 +68,7 @@ function PopoverClientForm({setClients, setClient}){
         isOpen={isOpen}
         >
         <PopoverTrigger>
-            <Button width={'100px'} onClick={open} colorScheme='orange' size='sm' type="button">Crea Uno</Button>
+            <Button width={'100px'} onClick={open} variant='primary' size='sm' type="button">Crea Uno</Button>
         </PopoverTrigger>
         <PopoverContent w="240px" p='2' boxShadow={'lg'} >
             <PopoverArrow />

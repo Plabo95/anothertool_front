@@ -39,7 +39,7 @@ export default function Login(){
         <Flex w='100%' height='100vh' direction='column' backgroundImage={bg}>
             <Flex height='8vh' w='100%' p='1%' align='center' justifyContent='space-between'>
                 <Flex justify='start' ml='3%'>
-                    <Flex onClick={() => navigate('/klndr_front/')} cursor='pointer'>
+                    <Flex onClick={() => navigate('/')} cursor='pointer'>
                         <Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading>
                     </Flex>
                 </Flex>
@@ -47,7 +47,7 @@ export default function Login(){
                     <Text fontWeight='bold'>¿Aún no tienes cuenta?</Text>
                     <Box>
                         <Button variant="primary-s" size='sm'
-                        onClick={() => navigate('/klndr_front/register')}
+                        onClick={() => navigate('/register')}
                         >Regístrate</Button>
                     </Box>
                 </Flex>
@@ -102,7 +102,7 @@ export default function Login(){
                         </Flex>
                     }
                     <Flex w='100%' justify='space-between' >
-                        <Text fontSize='xs' cursor="pointer"  onClick={() => navigate('/klndr_front/register')}>
+                        <Text fontSize='xs' cursor="pointer"  onClick={() => navigate('/register')}>
                             Registrarse
                         </Text>
                         <Text fontSize='xs' cursor="pointer">
