@@ -163,3 +163,9 @@ button:focus {
 .svg-white path{
   color: white !important;
 }
+
+.css-whqy0f[aria-checked=true], .css-whqy0f[data-checked] {
+  background: #42C74F !important;
+  border-color: #42C74F !important;
+  color: white !important;
+}
