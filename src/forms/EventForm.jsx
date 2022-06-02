@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
-import {DrawerBody, DrawerFooter, DrawerHeader,DrawerCloseButton, useToast} from '@chakra-ui/react'
+import {DrawerBody, DrawerFooter, DrawerHeader,DrawerCloseButton, useToast, InputLeftAddon} from '@chakra-ui/react'
 import {Button,Box,Input, InputGroup, InputLeftElement, Text, Textarea, Stack, Flex, Square, FormControl, FormHelperText, FormErrorMessage} from '@chakra-ui/react'
 import moment from 'moment';
 import SvgTime from  '../dist/Time'
@@ -22,6 +22,8 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
   const[price, setPrice] = useState()
   const[note, setNote] = useState()
   const[duration, setDuration] = useState()
+  const[dateFormatedEnd, setDateFormatedEnd] = useState('')
+  const[dateFormatedStart, setDateFormatedStart] = useState('')
 
   const[clients, setClients] = useState(clientlist)
   const toast = useToast()
@@ -40,6 +42,8 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
         setPrice(event.extraprice)
         setNote(event.note)
         getDuration()
+        formatDateStart()
+        formatDateEnd()
     }
     else{
     setTitle()
@@ -143,6 +147,26 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
     } 
   }
 
+  const formatDateStart = () => {
+    if(event.start !== '' && event.start !== undefined && event.start !== null){
+      const date = new Date(event.start)
+      const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+      const date2 = (new Date(date.getTime() - tzoffset)).toISOString().substring(0, 16)
+      console.log('date-time',event.start,date,date2)
+      setDateFormatedStart(date2)
+    }
+  }
+
+  const formatDateEnd = () => {
+    if(event.end !== '' && event.end !== undefined && event.end !== null){
+      const date = new Date(event.end)
+      const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+      const date2 = (new Date(date.getTime() - tzoffset)).toISOString().substring(0, 16)
+      console.log('date-time',event.end,date,date2)
+      setDateFormatedEnd(date2)
+    }
+  }
+
   //mapeo de clientes para que los lea el select list
   const m_clients = clients.map((client)=>{
     return {
@@ -200,8 +224,28 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
         </Stack> 
         {event &&  
         <Flex direction='column' gap='2' my='6' >
-        <Flex align='center' justify='start' gap={3}> <SvgTime/>  <Text>{duration}</Text> </Flex>                 
-        <Box rounded="lg" border="2px" p="2px">
+        <Flex align='center' justify='start' gap={3}> <SvgTime/>  <Text>{duration}</Text> </Flex>
+        <InputGroup>
+          <InputLeftAddon children='IN:' />
+          <Input type='datetime-local' value={dateFormatedStart}
+              onChange={(newDate) => {
+                const date = new Date(newDate.target.value)
+                event.start = date
+                setDateFormatedStart(newDate.target.value)
+                getDuration()
+              }}/> 
+        </InputGroup>              
+        <InputGroup>
+          <InputLeftAddon children='OUT:' />
+          <Input type='datetime-local' value={dateFormatedEnd}
+              onChange={(newDate) => {
+                const date = new Date(newDate.target.value)
+                event.end = date
+                setDateFormatedEnd(newDate.target.value)
+                getDuration()
+              }}/> 
+        </InputGroup>              
+        {/* <Box rounded="lg" border="2px" p="2px">
           <Flex justifyContent="space-between">
             <Text mr="3px" ml="3px"> IN : </Text>
             <Flatpickr
@@ -228,7 +272,7 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
               }}
             />
           </Flex>
-        </Box>
+        </Box> */}
         </Flex>  } 
 
         <Stack spacing={4}>

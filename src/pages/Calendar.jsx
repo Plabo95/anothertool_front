@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
 import Toolbar from "react-big-calendar/lib/Toolbar";
 import Nextsidebar from '../components/Nextsidebar'
-import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box} from '@chakra-ui/react'
+import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box, DrawerBody} from '@chakra-ui/react'
 import { Flex, Button} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 import useApi from '../hooks/useApi';
@@ -225,14 +225,16 @@ export default function CalendarComp({localizer}) {
       }}
       />
       </Flex>
-      <Drawer placement='right'  onClose={handleClose} initialFocusRef={titleInput} isOpen={isOpen}>
+      <Drawer placement='right' onClose={handleClose} initialFocusRef={titleInput} isOpen={isOpen} size='md'>
         <DrawerOverlay />
         <DrawerContent>
-          <Box>
-          <EventForm onClose={onClose} handleClose={handleClose} is_creating={creating} event={event} events={myEvents} 
-          servicelist={services} clientlist={clients} 
-          setEvents={setEvents} updateEvents={updateEvents} updateNextEvents={updateNextEvents}/>
-          </Box>
+          <DrawerBody>
+            <Box>
+            <EventForm onClose={onClose} handleClose={handleClose} is_creating={creating} event={event} events={myEvents} 
+            servicelist={services} clientlist={clients} 
+            setEvents={setEvents} updateEvents={updateEvents} updateNextEvents={updateNextEvents}/>
+            </Box>
+          </DrawerBody>
         </DrawerContent>
       </Drawer>    
       </>
