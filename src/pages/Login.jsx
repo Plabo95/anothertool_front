@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import { Button, useToast, Flex,VStack, Heading, Text, Box} from '@chakra-ui/react'
+import { Button, useToast, Flex, Heading, Text, Box} from '@chakra-ui/react'
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import {CheckboxSingleControl}  from "formik-chakra-ui";
@@ -18,7 +18,7 @@ export default function Login(){
     const {loginUser, logoutUser, user} = useContext(AuthContext)
 
     const getIsLogged = () => {
-        console.log('Login?: ', user)
+        //console.log('Login?: ', user)
         if (user !== null && user.user_id !== null && user.user_id !== undefined){
             return true
         }
@@ -31,7 +31,6 @@ export default function Login(){
     }
 
     useEffect(()=>{ 
-        console.log('Login?: ', user,isLogged)
         setIsLogged(getIsLogged)
     },[])
 
@@ -77,7 +76,7 @@ export default function Login(){
                                 //alert(JSON.stringify(values))
                                 loginUser(values)
                                 setLoadingCreate(false)                 //es la funcion de login que esta en authcontext
-                                actions.resetForm()
+                                actions.resetForm()                 
                             }}
                             >
                             {formik => (
@@ -85,7 +84,6 @@ export default function Login(){
                             <TextField name="username" placeholder="Usuario"  />
                             <TextField type="password" name="password" placeholder="Contraseña" />
                             <CheckboxSingleControl name="record"> Recuérdame </CheckboxSingleControl>
-        
                             <Button mt='8' variant='primary-s' size='md'
                             onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
                                 Iniciar Sesión </Button> 

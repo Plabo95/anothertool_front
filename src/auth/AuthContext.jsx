@@ -3,6 +3,10 @@ import jwt_decode from "jwt-decode";
 import {useNavigate} from 'react-router-dom'
 import { useEffect } from "react";
 import {base_url} from '../environment/global';
+import {useToast} from '@chakra-ui/react'
+import useApi from '../hooks/useApi'
+import authApi from "../api/authApi";
+
 
 const AuthContext = createContext()
 
@@ -21,6 +25,7 @@ export const AuthProvider = ({children}) => {
 
     //nos dice si el authcontext esta listo para ser cargado
     const [loading,setLoading] = useState(true)  
+    const toast = useToast()
 
     const loginUser = async(e) => {
         const response = await fetch(base_url+'token/',{
@@ -33,18 +38,32 @@ export const AuthProvider = ({children}) => {
                 'password': e.password,
             })
             })
-            const rstatus = response.status
-            if(rstatus >= 200 && rstatus<300){
-
+            if (response.ok) {
                 const data = await response.json();
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))
                 localStorage.setItem('authTokens',JSON.stringify(data))    //cache?
                 navigate('/calendar');
             }
-            else{
-                console.log('error de login')
+            if(response.statusText === 'Unauthorized'){
+                toast({
+                    title: 'Cuenta Inactiva',
+                    description: "Tu cuenta aún está inactiva, nos pondremos en contacto contigo pronto" ,
+                    status: 'error',
+                    duration: 6000,
+                    isClosable: true,
+                    })
             }
+            else{
+                toast({
+                    title: 'Error de login ',
+                    description: "Código de error "+ response.statusText +' intentalo mas tarde' ,
+                    status: 'error',
+                    duration: 6000,
+                    isClosable: true,
+                    })
+            }
+            return (response.statusText)
     }
 
     const logoutUser = (ini = true) => {

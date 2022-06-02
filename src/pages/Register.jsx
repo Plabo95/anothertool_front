@@ -31,8 +31,7 @@ export default function Register(){
             },
             body: JSON.stringify(userToRegister)
             })
-        const rstatus = response.status
-        if(rstatus >= 200 && rstatus<300){
+        if (response.ok){
             toast({
             title: 'Registro exitoso',
             status: 'success',
@@ -42,16 +41,16 @@ export default function Register(){
             setLoadingCreate(false) 
             navigate('/login')
             }
-            else{
-                toast({
-                    title: 'Error al guardar ',
-                    description: "Código de error"+ rstatus +' intentalo mas tarde' ,
-                    status: 'error',
-                    duration: 6000,
-                    isClosable: true,
-                    })
-                setLoadingCreate(false)
-                }
+        else{
+            toast({
+                title: 'Error al guardar ',
+                description: "Código de error "+ response.statusText +' intentalo mas tarde' ,
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+                })
+            setLoadingCreate(false)
+            }
         }
 
 
