@@ -98,6 +98,9 @@ function ClientForm({onClose, clients, client, setClients, updateTable}){
                 closeDrawer()
             }
     }
+    // const isServiceError = service === undefined
+    // const isClientError = client === undefined
+    // const submitAvailable = isServiceError && isClientError
     return(
         <Formik
         initialValues= {{name: client? client.name : '' ,car: client? client.car: '',telf: client? client.telf: '',moroso: client? client.moroso: false }}
@@ -114,24 +117,27 @@ function ClientForm({onClose, clients, client, setClients, updateTable}){
             actions.resetForm()
         }}
         >
-        {formik => (
-        <>
-        <DrawerBody>        
-            <VStack as="form" >
-                <TextField label="Nombre" name="name" />
-                <TextField label="Coche" name="car" />
-                <TextField label="Teléfono" name="telf" />
-                <SwitchControl label="Moroso" name="moroso"  />
-            </VStack>      
-        </DrawerBody>
-        <DrawerFooter>
-          <Flex justify="right" columnGap="3" mt='3'>
-              <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
-              <Button variant='primary' size='sm' onClick={formik.handleSubmit} isLoading={loadingCreate} loadingText='Guardando'>  Guardar </Button>
-          </Flex>  
-        </DrawerFooter>
-        </>
-            )}
+        {formik => {
+            //formik.isInitialValid = false;
+            return(
+                <>
+                <DrawerBody>        
+                    <VStack as="form" >
+                        <TextField label="Nombre" name="name" />
+                        <TextField label="Coche" name="car" />
+                        <TextField label="Teléfono" name="telf" />
+                        <SwitchControl label="Moroso" name="moroso"  />
+                    </VStack>      
+                    {formik.isValid ? 'true' : 'false'}
+                </DrawerBody>
+                <DrawerFooter>
+                <Flex justify="right" columnGap="3" mt='3'>
+                    <Button variant='danger' size='sm' onClick={onClose}>Cancelar</Button>
+                    <Button variant='primary' size='sm' onClick={formik.handleSubmit} isLoading={loadingCreate} loadingText='Guardando'>  Guardar </Button>
+                </Flex>  
+                </DrawerFooter>
+                </>
+        )}}
         </Formik>
     )
 }
