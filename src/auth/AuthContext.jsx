@@ -24,7 +24,7 @@ export const AuthProvider = ({children}) => {
     :null, [])
 
     //nos dice si el authcontext esta listo para ser cargado
-    const [loading,setLoading] = useState(true)  
+    const [loading,setLoading] = useState(false)  
     const toast = useToast()
 
     const loginUser = async(e) => {
@@ -38,7 +38,7 @@ export const AuthProvider = ({children}) => {
                 'password': e.password,
             })
             })
-            if (response.ok) {
+            if(response.ok) {
                 const data = await response.json();
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))
@@ -54,7 +54,7 @@ export const AuthProvider = ({children}) => {
                     isClosable: true,
                     })
             }
-            else{
+            if(!response.ok){
                 toast({
                     title: 'Error de login ',
                     description: "Código de error "+ response.statusText +' intentalo mas tarde' ,
@@ -83,15 +83,14 @@ export const AuthProvider = ({children}) => {
             body: JSON.stringify({
                 'refresh': authTokens?.refresh })
             })
-            const rstatus = response.status
-            if(rstatus >= 200 && rstatus<300){
+            if(response.ok){
                 const data = await response.json();
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))
                 localStorage.setItem('authTokens', JSON.stringify(data))    //cache?
                 console.log('user refreshed', user)
                 }
-            else{
+            if(!response.ok){
                 console.log('error de refresh token')
                 //logoutUser()
             }
@@ -109,12 +108,12 @@ export const AuthProvider = ({children}) => {
     //refresh token cada 4 mins antes de que caduque en 5
     //tambien es importante que obtenga el refresh cada vez que recarga pagina
     useEffect(()=>{ 
-
         if(loading){
             updateToken()
         }
         const interval = setInterval(() => {
             if(authTokens){
+                console.log('hay authtokens', authTokens)
                 updateToken()
             }
         }, 240000)
