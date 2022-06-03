@@ -17,16 +17,25 @@ import { useContext, useEffect } from 'react'
 
 export default function Landing(){
 
-    const {user, authTokens} = useContext(AuthContext)
+    const {user, authTokens, logoutUser} = useContext(AuthContext)
     const p_franja = '5%'
     const h_franja = '85vh'
     const icon_box = '120px'
     const navigate = useNavigate();
 
     useEffect(() => {
+        
         if(user){
-            console.log('hay user', user)
-            navigate('calendar')
+            var now=Date.now();
+            console.log(user.exp - now)
+            if(user.exp - now > 0){
+                console.log('Aun hay tiempo')
+                navigate('calendar')
+            }
+            else{
+                console.log('no time, login out..')
+                logoutUser()
+            }            
         }
       },[])
 
