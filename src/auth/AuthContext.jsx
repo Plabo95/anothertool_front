@@ -74,7 +74,6 @@ export const AuthProvider = ({children}) => {
     } 
 
     const updateToken = async() => {
-        console.log('refreshing token')
         const response = await fetch(base_url+'token/refresh/',{
             method: 'POST',
             headers: {
@@ -88,11 +87,10 @@ export const AuthProvider = ({children}) => {
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))
                 localStorage.setItem('authTokens', JSON.stringify(data))    //cache?
-                console.log('user refreshed', user)
                 }
             if(!response.ok){
-                console.log('error de refresh token')
-                //logoutUser()
+                console.log('Error refreshing token, loggin out...')
+                logoutUser()
             }
             //al terminar de refrescar el token quito loading
             if(loading){
