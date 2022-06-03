@@ -45,7 +45,7 @@ export const AuthProvider = ({children}) => {
                 localStorage.setItem('authTokens',JSON.stringify(data))    //cache?
                 navigate('/calendar');
             }
-            if(response.statusText === 'Unauthorized'){
+            else if(response.statusText === 'Unauthorized'){
                 toast({
                     title: 'Cuenta Inactiva',
                     description: "Tu cuenta aún está inactiva, nos pondremos en contacto contigo pronto" ,
@@ -54,7 +54,7 @@ export const AuthProvider = ({children}) => {
                     isClosable: true,
                     })
             }
-            if(!response.ok){
+            else{
                 toast({
                     title: 'Error de login ',
                     description: "Código de error "+ response.statusText +' intentalo mas tarde' ,
