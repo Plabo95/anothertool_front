@@ -125,14 +125,14 @@ export default function CalendarComp({localizer}) {
     if(e.service){
       try{title = services.filter(item => item.id===e.service)[0].name}
       catch{
-        console.log('Nose encuentra name para service ', e.service)
+        //console.log('Nose encuentra name para service ', e.service)
         updateServices()
       }
     }
     if(e.client){
       try{client ='  para  '+ clients.filter(item => item.id===e.client)[0].name}
       catch{
-        console.log('Nose encuentra name para cliente ', e.client)
+        //console.log('Nose encuentra name para cliente ', e.client)
         updateClients()
       }
     }
@@ -155,7 +155,7 @@ export default function CalendarComp({localizer}) {
     if(event.service){
       try{backgroundColor = services.filter(item => item.id===event.service)[0].color}
       catch{
-        console.log('Nose ha encontrado color para el servicio', event.service)
+        //console.log('Nose ha encontrado color para el servicio', event.service)
         updateServices()
       }
     }
