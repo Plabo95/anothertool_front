@@ -293,7 +293,7 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
           {!is_creating?
               <Button variant='ghost' colorScheme='red' size='sm' isLoading={loadingDelete} isDisabled={submitAvailable} loadingText='Borrando' onClick={handleDelete} >Eliminar</Button>
               : 
-              <Button variant='ghost' colorScheme='red' size='sm'  onClick={handleClose} >Cancel</Button>
+              <Button variant='danger' size='sm'  onClick={handleClose} >Cancelar</Button>
               }
               <Button variant='primary' size='sm' onClick={handleSubmit} isLoading={loadingCreate} isDisabled={submitAvailable} loadingText='Guardando'>  Crear </Button>
         </Flex> 

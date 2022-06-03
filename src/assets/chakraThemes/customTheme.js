@@ -84,6 +84,18 @@ const customTheme = extendTheme({
                         border: '2px solid transparent'
                     }
                 },
+                'danger': {
+                    bg: 'transparent',
+                    color: 'red',
+                    border: 'none',
+                    fontFamily: 'Poppins',
+                    fontWeight: '800',
+                    _hover: {
+                        bg: "#FFF5F5",
+                        color: "white",
+                        border: 'none'
+                    }
+                },
             }
         },
     }
