@@ -3,6 +3,7 @@ import SvgMenu from  '../../dist/Menu'
 import SvgAnalytics from  '../../dist/Analytics'
 import SvgCalendar from  '../../dist/Calendar'
 import SvgServicios from  '../../dist/Servicios'
+import SvgLogo from  '../../dist/Logo'
 import React, {useState, useContext } from 'react'
 import NavItem from './NavItem';
 import AuthContext from '../../auth/AuthContext'
@@ -23,10 +24,23 @@ function Navbar(){
         <Flex bg='darkblue' h="100%" position="fixed" flexFlow='column wrap' justify="space-between"
         w={navSize === "small"? "75px": "200px"}
         >
-        
-        <Flex direction="column"  p="5%" align={navSize === "small"? "center": "flex-start"}  >
+        <Box pos="absolute" top="30px" right="-2" zIndex='100' bg='blue' borderRadius='10' cursor='pointer'
+        onClick={()=> {
+            if (navSize === "small")
+                setNavSize("large")
+            else 
+                setNavSize("small")
+        }}>
+            <Flex alignItems='center' justifyContent='center' color="white" w='17px' h='17px'>
+                { navSize === "small"
+                    ? '>'
+                    : '<'
+                }
+            </Flex>
+        </Box>
+        <Flex direction="column"  p="8px" align={navSize === "small"? "center": "flex-start"}  >
             <Box px='3'>
-                <IconButton size='xs' color="white" background="none" mt="5" _hover={{bg:'none'}} icon={<SvgMenu/>} 
+                <IconButton size='xs' color="white" background="none" mt="5" _hover={{bg:'none'}} icon={<SvgLogo/>} 
                 onClick={()=> {
                     if (navSize === "small")
                         setNavSize("large")
