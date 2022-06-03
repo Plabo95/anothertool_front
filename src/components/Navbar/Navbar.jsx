@@ -4,6 +4,9 @@ import SvgAnalytics from  '../../dist/Analytics'
 import SvgCalendar from  '../../dist/Calendar'
 import SvgServicios from  '../../dist/Servicios'
 import SvgLogo from  '../../dist/Logo'
+import {AiOutlineCalendar} from 'react-icons/ai';
+import {BiWrench} from 'react-icons/bi';
+import {VscGraph} from 'react-icons/vsc';
 import React, {useState, useContext } from 'react'
 import NavItem from './NavItem';
 import AuthContext from '../../auth/AuthContext'
@@ -39,21 +42,37 @@ function Navbar(){
             </Flex>
         </Box>
         <Flex direction="column"  p="8px" align={navSize === "small"? "center": "flex-start"}  >
-            <Box px='3'>
-                <IconButton size='xs' color="white" background="none" mt="5" _hover={{bg:'none'}} icon={<SvgLogo/>} 
-                onClick={()=> {
-                    if (navSize === "small")
-                        setNavSize("large")
-                    else 
-                        setNavSize("small")
-                }}
-                />
+            <Box px='3' pt='10px'>
+                <Flex alignItems='center'>
+                    <Box>
+                        <IconButton align='center' size='xs' pb='20px' color="white" background="none" mt="5" _hover={{bg:'none'}} _focusWithin={{bg:'none'}} icon={<SvgLogo/>} 
+                        onClick={()=> {
+                            if (navSize === "small")
+                                setNavSize("large")
+                            else 
+                                setNavSize("small")
+                        }}
+                        >
+                        </IconButton>
+                    </Box>
+                    { navSize === "large" && 
+                        <Button background="none" _hover={{bg : 'none'}} _focusWithin={{bg:'none'}}
+                        onClick={()=> {
+                            if (navSize === "small")
+                                setNavSize("large")
+                            else 
+                                setNavSize("small")
+                        }}>
+                            <Heading size='sm' color={'white'} >another</Heading><Heading size='sm' color={'blue'}>tool</Heading> 
+                        </Button>
+                    }
+                </Flex>
             </Box>
             {user.is_staff && 
             <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/adminpanel' />}
-            <NavItem navSize={navSize} icon={SvgCalendar} title="Calendar" slash='/calendar' />
-            <NavItem navSize={navSize} icon={SvgServicios} title="Garage" slash='/garage' />      
-            <NavItem navSize={navSize} icon={SvgAnalytics} title="Reports" slash='/analytics' /> 
+            <NavItem navSize={navSize} icon={AiOutlineCalendar} title="Calendar" slash='/calendar' />
+            <NavItem navSize={navSize} icon={BiWrench} title="Garage" slash='/garage' />      
+            <NavItem navSize={navSize} icon={VscGraph} title="Reports" slash='/analytics' /> 
         </Flex>
 
         <Flex p="5%" flexFlow='column wrap' w="100%" mb={4} gap='3'

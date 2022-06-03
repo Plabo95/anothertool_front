@@ -145,23 +145,29 @@ button:focus {
 }
 
 /******************* SVG **********************************/
-.svg-blue path{
+.svg-blue path, .svg-blue g path{
   color: #0258FF !important;
+  /* fill: #0258FF !important; */
 }
-.svg-orange path{
+.svg-orange path, .svg-orange g path{
   color: #FF7C02 !important;
+  /* fill: #FF7C02 !important; */
 }
-.svg-green path{
+.svg-green path, .svg-green g path{
   color: #42C74F !important;
+  /* fill: #42C74F !important; */
 }
-.svg-red path{
+.svg-red path, .svg-red g path{
   color: red !important;
+  /* fill: red !important; */
 }
-.svg-darkblue path{
+.svg-darkblue path, .svg-darkblue g path{
   color: #001234 !important;
+  /* fill: #001234 !important; */
 }
-.svg-white path{
+.svg-white path, .svg-white g path{
   color: white !important;
+  /* fill: white !important; */
 }
 
 .css-whqy0f[aria-checked=true], .css-whqy0f[data-checked] {
