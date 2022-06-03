@@ -6,7 +6,7 @@ function AdminRoute({ children }) {
     const {user} = useContext(AuthContext)
     
     if(!user.is_staff){
-        return <Navigate to="/klndr_front/calendar" />;
+        return <Navigate to="/calendar" />;
     }
     return children ? children : <Outlet/>
 }
