@@ -290,12 +290,11 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
     </DrawerBody>
       <DrawerFooter>
         <Flex  justify="right" columnGap="3" my='3'>             
-          {!is_creating?
-              <Button variant='ghost' colorScheme='red' size='sm' isLoading={loadingDelete} isDisabled={submitAvailable} loadingText='Borrando' onClick={handleDelete} >Eliminar</Button>
-              : 
-              <Button variant='danger' size='sm'  onClick={handleClose} >Cancelar</Button>
-              }
-              <Button variant='primary' size='sm' onClick={handleSubmit} isLoading={loadingCreate} isDisabled={submitAvailable} loadingText='Guardando'>  Crear </Button>
+          {!is_creating
+            ? <Button variant='danger' colorScheme='red' size='sm' isLoading={loadingDelete} isDisabled={submitAvailable} loadingText='Borrando' onClick={handleDelete} >Eliminar</Button>
+            : <Button variant='danger' size='sm'  onClick={handleClose} >Cancelar</Button>
+          }
+            <Button variant='primary' size='sm' onClick={handleSubmit} isLoading={loadingCreate} isDisabled={submitAvailable} loadingText='Guardando'>  Crear </Button>
         </Flex> 
         </DrawerFooter>   
       </Box>
