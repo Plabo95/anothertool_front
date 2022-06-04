@@ -60,7 +60,12 @@ export default function Register(){
 
 
     return(
-        <Flex w='100%' minH='100vh' direction='column' backgroundImage={bg}>
+        <Flex w='100%' minH='100vh' direction='column' 
+            backgroundImage={bg}
+            bgPos='50% 100%'
+            bgAttachment='fixed'
+            bgRepeat='no-repeat'
+            bgSize='100%'>
             
             <Flex height='8vh' w='100%' p='1%' align='center' justifyContent='space-between'>
                 <Flex justify='start' ml='3%'>

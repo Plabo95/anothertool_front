@@ -37,7 +37,12 @@ export default function Login(){
     },[])
 
     return(
-        <Flex w='100%' height='100vh' direction='column' backgroundImage={bg}>
+        <Flex w='100%' height='100vh' direction='column' 
+            bgImage={bg}
+            bgPos='50% 100%'
+            bgAttachment='fixed'
+            bgRepeat='no-repeat'
+            bgSize='100%'>
             <Flex height='8vh' w='100%' p='1%' align='center' justifyContent='space-between'>
                 <Flex justify='start' ml='3%'>
                     <Flex onClick={() => navigate('/')} cursor='pointer'>
