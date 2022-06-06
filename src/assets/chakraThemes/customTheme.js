@@ -92,7 +92,6 @@ const customTheme = extendTheme({
                     fontWeight: '800',
                     _hover: {
                         bg: "#FFF5F5",
-                        color: "white",
                         border: 'none'
                     }
                 },

@@ -21,6 +21,7 @@ function AdminPanel(){
 
     const updateTable = async () => {
         const {data, error} = await getUsersApi.request(user,authTokens);
+        console.log('users::',users)
         error? console.log('Error fetching...', error) 
             : setUsers(data)
     }

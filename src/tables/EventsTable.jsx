@@ -84,7 +84,7 @@ function EventsTable(){
     }
     function getClientName(id){
         try {
-            return(getClientsApi.data?.filter(item => item.id===id)[0].name)
+            return(clients.filter(item => item.id===id)[0].name)
         } catch (error) {
             console.log(error)
             return('No able to get') 
@@ -92,7 +92,7 @@ function EventsTable(){
       }
     function getServiceName(id){
         try {
-            return(getServicesApi.data?.filter(item => item.id===id)[0].name)
+            return(services.filter(item => item.id===id)[0].name)
         } catch (error) {
             console.log(error)
             return('No able to get') 
@@ -100,7 +100,7 @@ function EventsTable(){
       }
     function getTotalPrice(id){
         try {
-            const base = parseFloat(getServicesApi.data?.filter(item => item.id!==id)[0].baseprice, 10)
+            const base = parseFloat(services.filter(item => item.id!==id)[0].baseprice, 10)
             const extra = parseFloat(id.extraprice, 10)
             const total =base+extra
             return(total)

@@ -7,6 +7,7 @@ import SvgLogo from  '../../dist/Logo'
 import {AiOutlineCalendar} from 'react-icons/ai';
 import {BiWrench} from 'react-icons/bi';
 import {VscGraph} from 'react-icons/vsc';
+import {FaUserTie} from 'react-icons/fa';
 import React, {useState, useContext } from 'react'
 import NavItem from './NavItem';
 import AuthContext from '../../auth/AuthContext'
@@ -86,11 +87,14 @@ function Navbar(){
                 <Divider display={navSize === "small"? "none": "flex"}/>
                 <Box px='3'>
                     <Button size='sm' onClick={logoutUser} bg='darkblue' padding='0px' _hover={{bg:'darkblue'}} _focus={{bg:'darkblue'}} >
-                        <FiLogOut style={{ background: 'none', color: 'white', fontSize: '25px', padding: '0px', _hover:{background:'none'}, _focus:{background:'none'} }}/>      
+                        <FiLogOut style={{ background: 'none', color: 'white', fontSize: '25px', padding: '0px', _hover:{background:'none'}, _focus:{background:'none'} }}/> 
+                        <Flex ml="4" display={navSize === "small"? "none": "flex"} >
+                            <Text color="whiteAlpha.800"> Cerrar sesión </Text>
+                        </Flex>     
                     </Button>  
                 </Box> 
                 <Flex mt="4" px='3' align="center"> 
-                    <Avatar size="sm" /> 
+                    <Avatar size="sm" icon={<FaUserTie fontSize='1.5rem' />}/> 
                     <Flex direction="column" ml="4" display={navSize === "small"? "none": "flex"} >
                         <Heading color="whiteAlpha.800" size="sm"> {user.username} </Heading>
                         <Text color="whiteAlpha.800" >Jefe de taller</Text>
