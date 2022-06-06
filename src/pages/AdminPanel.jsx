@@ -78,10 +78,10 @@ function AdminPanel(){
 
     return(
         <>
-        <Flex>    
-            <Box>
-            <TableContainer mt='5%' borderRadius='lg' bg="white">
-                <Table variant='simple' size='md'>
+        <Box w="100%">
+        <Flex w="100%" justify='center' >    
+            <TableContainer mt='5%' borderRadius='lg' w={['80%','80%','80%','80%','90%']} maxW='1400px'>
+                <Table variant='simple'size='md' bg='white'>
                 <Thead>
                     <Tr>
                     <Th>Id</Th>
@@ -103,27 +103,37 @@ function AdminPanel(){
                             <Td>{user.email}</Td>                
                             <Td>{moment(user.last_login).format("DD/MM/YYYY, hh:mm")}</Td>
                             <Td>{moment(user.date_joined).format("DD/MM/YYYY, hh:mm")}</Td>
-                            <Td>{user.is_superuser
-                            ?<AiOutlineCheck className='svg-green' />
-                            : <ImCross className='svg-red'/>}</Td>
-                            <Td>                    
-                                <Switch size='sm' colorScheme='green' 
-                                isChecked={user.is_active} onChange={()=>handleUpdate(user, !user.is_active, user.is_staff)} />
-                            </Td>
-                            <Td>                    
-                                <Switch size='sm' colorScheme='green' 
-                                isChecked={user.is_staff} onChange={()=>handleUpdate(user, user.is_active, !user.is_staff)} />
+                            <Td>
+                                <Flex w="100%" justify='center'>
+                                    {user.is_superuser
+                                        ?<AiOutlineCheck className='svg-green' />
+                                        : <ImCross className='svg-red'/>}
+                                </Flex>
                             </Td>
                             <Td>
-                                <PopoverDelete onDelete={handleDelete} id={user.id} />
+                                <Flex w="100%" justify='center'>             
+                                    <Switch size='sm' colorScheme='green' 
+                                    isChecked={user.is_active} onChange={()=>handleUpdate(user, !user.is_active, user.is_staff)} />
+                                </Flex>
+                            </Td>
+                            <Td> 
+                                <Flex w="100%" justify='center'>                   
+                                    <Switch size='sm' colorScheme='green' 
+                                    isChecked={user.is_staff} onChange={()=>handleUpdate(user, user.is_active, !user.is_staff)} />
+                                </Flex>
+                            </Td>
+                            <Td>
+                                <Flex w="100%" justify='center'>
+                                    <PopoverDelete onDelete={handleDelete} id={user.id} />
+                                </Flex>
                             </Td>
                         </Tr>
                     )}
                 </Tbody>
                 </Table>
-            </TableContainer>  
-            </Box>                
+            </TableContainer>                 
       </Flex>
+      </Box>
       </>
     );
 }
