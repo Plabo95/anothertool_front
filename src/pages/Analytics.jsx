@@ -77,12 +77,14 @@ function Analytics(){
         },[])
 
     return(
-        <Box w="100%" p={5} align="center" minH={'100vh'} >
+        <Flex w="100%" p={5} justify='center' direction='column' minH={'100vh'} >
+            <Flex w="100%" justify='center'>
+                <Heading w='100%' py='10' textAlign='center' > ¿Como va el taller? </Heading>
+            </Flex>
 
-            <Heading w='100%' py='10' > ¿Como va el taller? </Heading>
+            <Flex justify='center' direction={['column','column','column','column','column','row']}>
 
-            <Flex justifyContent='space-between'>
-                <Flex bg='white' direction='column' boxShadow='md' rounded='xl' >
+                <Flex bg='white' direction='column' boxShadow='md' rounded='xl' m={4} >
                     <Flex ml='2em' mt='2em'>
                         <Text > Ganancias</Text>
                     </Flex>
@@ -144,27 +146,27 @@ function Analytics(){
                     </Flex>
                 </Flex>
 
-                <Flex boxShadow='md' rounded='xl' bg='white' direction='column'>
-                <Flex ml='2em' mt='2em'>
+                <Flex boxShadow='md' rounded='xl' bg='white' direction='column' m={4}>
+                    <Flex ml='2em' mt='2em'>
                         <Text > Citas / Servicio</Text>
                     </Flex>
-                <PieChart width={400} height={400}>
-                    <Pie
-                    data={data2}
-                    cx={200}
-                    cy={200}
-                    innerRadius={70}
-                    outerRadius={120}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                    >
-                    {data2.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                    </Pie>
-                </PieChart>
-                <Divider/>
+                    <PieChart width={400} height={400}>
+                        <Pie
+                        data={data2}
+                        cx={200}
+                        cy={200}
+                        innerRadius={70}
+                        outerRadius={120}
+                        fill="#8884d8"
+                        paddingAngle={5}
+                        dataKey="value"
+                        >
+                        {data2.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                        </Pie>
+                    </PieChart>
+                    <Divider/>
                     <Flex  p='2em'>
                         <Flex gap='0.5em'>
                             <Circle bg='tomato' w='40px' h='40px'/>
@@ -189,19 +191,18 @@ function Analytics(){
                         </Flex>                         
                     </Flex>
                 </Flex>
-                
+
             </Flex>
 
-            {analytics&&
-            <>
-            <Flex w='80%' justify='space-evenly' mt='2em'>
-                <Statbox title='Clientes' data={analytics.total_clients} />
-                <Statbox title='Citas ' data={analytics.total_events} />
-                <Statbox title='Ganancias ' data={analytics.total_gains} />
-                <Statbox title='Ganancias / cita ' data={analytics.avg_gains} />
-            </Flex>
-            </>}
-        </Box>
+            {analytics &&
+                <Flex w='100%' justify='space-evenly' mt='2em'>
+                    <Statbox title='Clientes' data={analytics.total_clients} />
+                    <Statbox title='Citas ' data={analytics.total_events} />
+                    <Statbox title='Ganancias ' data={analytics.total_gains} />
+                    <Statbox title='Ganancias / cita ' data={analytics.avg_gains} />
+                </Flex>
+            }
+        </Flex>
         
     );
 }
