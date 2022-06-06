@@ -2,7 +2,7 @@ import moment from 'moment';
 import {momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import React from 'react'
-import {Flex} from '@chakra-ui/react'
+import {Box, Flex} from '@chakra-ui/react'
 
 // Auth Components
 import CalendarComp from "./pages/Calendar";
@@ -26,11 +26,11 @@ const localizer=momentLocalizer(moment)
 
 function App() {
 
-    return (
-        <Flex>
-         <BrowserRouter>
-          <AuthProvider>
-          <Navbar/>   
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Flex w='100%' className='hola1'>
+            <Navbar/>  
           <Routes>
               <Route index element={<Landing/>} />
               <Route path='/' index element={<Landing/>} />  
@@ -38,21 +38,20 @@ function App() {
               <Route path='/login' element={<Login/>} />  
 
               <Route element={<AdminRoute/>}>
-                <Route path="/adminpanel" element={<AdminPanel/>} />
+                <Route path="/adminpanel" element={<AdminPanel/>}/>
               </Route>
 
               <Route element={<PrivateRoute/>}>
-                <Route path="/calendar" element={<CalendarComp localizer={localizer}/>} />
-                <Route path="/garage" element={<Garage/>} />
-                <Route path="/analytics" element={<Analytics/>} />
+                <Route path="/calendar" element={<CalendarComp localizer={localizer}/>}/>
+                <Route path="/garage" element={<Garage/>}/>
+                <Route path="/analytics" element={<Analytics/>}/>
               </Route>
 
               <Route path="*" element={<p>There's nothing here: 404!</p>} />
           </Routes>
-          </AuthProvider> 
-        </BrowserRouter>
-        
         </Flex>
-    );
+      </AuthProvider> 
+    </BrowserRouter>
+  );
 }
 export default App;

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Flex, Heading, Text, Divider, Circle} from '@chakra-ui/react'
+import {Box,Flex, Heading, Text, Divider, Circle} from '@chakra-ui/react'
 import {Stat,StatLabel,StatNumber,StatHelpText,StatArrow,StatGroup} from '@chakra-ui/react'
 import AuthContext from '../auth/AuthContext';
 import {base_url} from '../environment/global';
@@ -77,11 +77,11 @@ function Analytics(){
         },[])
 
     return(
-        <Flex w="100%" p={5} direction="column" align="center" minH={'100vh'} >
+        <Box w="100%" p={5} align="center" minH={'100vh'} >
 
-            <Heading py='10' > ¿Como va el taller? </Heading>
+            <Heading w='100%' py='10' > ¿Como va el taller? </Heading>
 
-            <Flex w='80%' gap='4em'>
+            <Flex justifyContent='space-between'>
                 <Flex bg='white' direction='column' boxShadow='md' rounded='xl' >
                     <Flex ml='2em' mt='2em'>
                         <Text > Ganancias</Text>
@@ -201,7 +201,7 @@ function Analytics(){
                 <Statbox title='Ganancias / cita ' data={analytics.avg_gains} />
             </Flex>
             </>}
-        </Flex>
+        </Box>
         
     );
 }

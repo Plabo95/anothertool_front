@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Switch,Flex, IconButton, useToast} from '@chakra-ui/react'
+import {Box, Table,Thead,Tbody,Tr,Th,Td,TableContainer,Switch,Flex, IconButton, useToast} from '@chakra-ui/react'
 import PopoverDelete from '../components/PopoverDelete'
 import moment from 'moment';
 import adminApi from '../api/adminApi'
@@ -78,9 +78,10 @@ function AdminPanel(){
 
     return(
         <>
-        <Flex w="100%" justify='center' align='center'>    
-            <TableContainer mt='5%' borderRadius='lg' w="80%" bg="white">
-                <Table variant='simple'size='md'>
+        <Flex>    
+            <Box>
+            <TableContainer mt='5%' borderRadius='lg' bg="white">
+                <Table variant='simple' size='md'>
                 <Thead>
                     <Tr>
                     <Th>Id</Th>
@@ -120,7 +121,8 @@ function AdminPanel(){
                     )}
                 </Tbody>
                 </Table>
-            </TableContainer>                  
+            </TableContainer>  
+            </Box>                
       </Flex>
       </>
     );
