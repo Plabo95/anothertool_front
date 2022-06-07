@@ -12,11 +12,9 @@ function PopoverClientForm({setClients, setClient}){
     const open = () => setIsOpen(!isOpen)
 
     const toast = useToast()
-    const[loadingDelete, setLoadingDelete] = useState(false)
     const[loadingCreate, setLoadingCreate] = useState(false)
         
     function closePopover(){
-        setLoadingDelete(false)
         setLoadingCreate(false)
         open()
     }

@@ -97,6 +97,7 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
   }
   
   const handleDelete = async () =>{
+    setLoadingDelete(true)
     const {error} = await deleteEventApi.request(event.id, user, authTokens)
     if(!error){
         toast({
