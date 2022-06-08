@@ -81,7 +81,7 @@ function Navbar(){
                 <NavItem navSize={navSize} icon={VscGraph} title="Reports" slash='/analytics' /> 
             </Flex>
 
-            <Flex p="5%" flexFlow='column wrap' w="100%" mb={4} gap='3'
+            <Flex p='2' flexFlow='column wrap' w="100%" mb={4} gap='3'
             align={navSize === "small"? "center": "flex-start"}  
             >
                 <Divider display={navSize === "small"? "none": "flex"}/>
@@ -93,8 +93,10 @@ function Navbar(){
                         </Flex>     
                     </Button>  
                 </Box> 
-                <Flex mt="4" px='3' align="center"> 
-                    <Avatar size="sm" icon={<FaUserTie fontSize='1.5rem' />}/> 
+                <Flex mt="4" px='3' align="center" h='50px'> 
+                    <Box>
+                        <Avatar size="sm" icon={<FaUserTie fontSize='1.5rem' />}/> 
+                    </Box>
                     <Flex direction="column" ml="4" display={navSize === "small"? "none": "flex"} >
                         <Heading color="whiteAlpha.800" size="sm"> {user.username} </Heading>
                         <Text color="whiteAlpha.800" >Jefe de taller</Text>

@@ -147,7 +147,7 @@ export default function EventFormCrud({onClose, event, events, setEvents, servic
                 <Button colorScheme='orange' size='sm' onClick={updateDate} >  Guardar </Button>
               </>: 
               <>
-              <Button variant='danger' colorScheme='red' size='sm'  onClick={onClose} >Cancel</Button>
+              <Button variant='danger-ghost' colorScheme='red' size='sm'  onClick={onClose} >Cancel</Button>
               <Button variant='primary' size='sm' onClick={createDate} >  Crear </Button>
               </>}
         </Flex> 

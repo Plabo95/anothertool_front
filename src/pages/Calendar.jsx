@@ -187,7 +187,8 @@ export default function CalendarComp({localizer}) {
         <Box>
           <Button variant='primary-s' onClick={()=>{handleSelectSlot({start:'',end:''})}}>+ Añadir cita</Button>
         </Box>
-        <Nextsidebar nextEvents={nextEvents} />  
+        <Nextsidebar nextEvents={nextEvents} events={myEvents} setEvents={setEvents} updateEvents={updateEvents} 
+          updateNextEvents={updateNextEvents}/>  
       </Flex>  
       <Calendar
       dayLayoutAlgorithm={'no-overlap'} //algoritmo no overlappin

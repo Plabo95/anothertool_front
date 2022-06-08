@@ -73,25 +73,25 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
             'title': title,
             'user': user.user_id,
     }
-    createEventApi.request(event.id, eventToCreate, user, authTokens)
-    if(createEventApi.error){
+    const {error} = await createEventApi.request(event.id, eventToCreate, user, authTokens)
+    if(error){
       toast({
           title: 'Error al guardar ',
-          description: "Código de error"+ createEventApi.error +' intentalo mas tarde' ,
+          description: "Código de error"+ error +' intentalo mas tarde' ,
           status: 'error',
           duration: 6000,
           isClosable: true,
           })
-  }
-  else{
-    updateEvents()
-    updateNextEvents()
-    toast({
-        title: 'Evento guardado',
-        status: 'success',
-        duration: 6000,
-        isClosable: true,
-        }) 
+    }
+    else{
+      updateEvents()
+      updateNextEvents()
+      toast({
+          title: 'Evento guardado',
+          status: 'success',
+          duration: 6000,
+          isClosable: true,
+      }) 
     }
     closeDrawer()
   }
@@ -292,8 +292,8 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
       <DrawerFooter>
         <Flex  justify="right" columnGap="3" my='3'>             
           {!is_creating
-            ? <Button variant='danger' size='sm' isLoading={loadingDelete} isDisabled={submitAvailable} loadingText='Borrando' onClick={handleDelete} >Eliminar</Button>
-            : <Button variant='danger' size='sm'  onClick={handleClose} >Cancelar</Button>
+            ? <Button variant='danger-ghost' size='sm' isLoading={loadingDelete} isDisabled={submitAvailable} loadingText='Borrando' onClick={handleDelete} >Eliminar</Button>
+            : <Button variant='danger-ghost' size='sm'  onClick={handleClose} >Cancelar</Button>
           }
             <Button variant='primary' size='sm' onClick={handleSubmit} isLoading={loadingCreate} isDisabled={submitAvailable} loadingText='Guardando'>  Crear </Button>
         </Flex> 

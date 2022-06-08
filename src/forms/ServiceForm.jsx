@@ -153,13 +153,13 @@ function ServiceForm({onClose, service, services, setServices, updateTable}){
 
             <DrawerFooter>
             <ButtonGroup  justify="right" columnGap="3" my='3'>
-                <Button variant='danger' size='sm'  onClick={onClose} >Cancel</Button>
+                <Button variant='danger-ghost' size='sm'  onClick={onClose} >Cancel</Button>
                 <Button variant='primary' size='sm' onClick={formik.handleSubmit} isLoading={loadingCreate} loadingText='Guardando'>  Guardar </Button>
             </ButtonGroup>  
             </DrawerFooter>
-            </>
-                )}
-            </Formik>
+        </>
+        )}
+        </Formik>
     )
 }
 

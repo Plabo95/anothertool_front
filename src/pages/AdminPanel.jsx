@@ -81,7 +81,7 @@ function AdminPanel(){
         <>
         <Box w="100%">
         <Flex w="100%" justify='center' >    
-            <TableContainer mt='5%' borderRadius='lg' w={['80%','80%','80%','80%','90%']} maxW='1400px'>
+            <TableContainer mt='5%' borderRadius='lg' w={['80%','80%','80%','80%','90%']} maxW='1400px' boxShadow='lg'>
                 <Table variant='simple'size='md' bg='white'>
                 <Thead>
                     <Tr>

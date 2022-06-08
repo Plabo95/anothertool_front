@@ -132,7 +132,7 @@ function ClientForm({onClose, clients, client, setClients, updateTable}){
                 </DrawerBody>
                 <DrawerFooter>
                 <Flex justify="right" columnGap="3" mt='3'>
-                    <Button variant='danger' size='sm' onClick={onClose}>Cancelar</Button>
+                    <Button variant='danger-ghost' size='sm' onClick={onClose}>Cancelar</Button>
                     <Button variant='primary' size='sm' onClick={formik.handleSubmit} isLoading={loadingCreate} loadingText='Guardando'>  Guardar </Button>
                 </Flex>  
                 </DrawerFooter>

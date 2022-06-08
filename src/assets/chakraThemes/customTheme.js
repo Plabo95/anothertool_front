@@ -85,6 +85,18 @@ const customTheme = extendTheme({
                     }
                 },
                 'danger': {
+                    bg: 'red',
+                    color: 'white',
+                    border: 'none',
+                    fontFamily: 'Poppins',
+                    fontWeight: '400',
+                    _hover: {
+                        bg: "#FFF5F5",
+                        color: "red",
+                        border: 'none'
+                    }
+                },
+                'danger-ghost': {
                     bg: 'transparent',
                     color: 'red',
                     border: 'none',
@@ -93,6 +105,18 @@ const customTheme = extendTheme({
                     _hover: {
                         bg: "#FFF5F5",
                         border: 'none'
+                    }
+                },
+                'outline': {
+                    bg: 'transparent',
+                    color: '#001234',
+                    border: '1px',
+                    borderColor: '#001234',
+                    fontFamily: 'Poppins',
+                    fontWeight: '500',
+                    _hover: {
+                        bg: "#F0F0F0",
+                        borderColor: '#F0F0F0'
                     }
                 },
             }

@@ -1,27 +1,52 @@
 import React, {useState, useEffect, useContext} from 'react'
 import moment from 'moment';
-import {Box, Text, Checkbox, Square, Flex, Heading} from '@chakra-ui/react'
+import {Box, Text, Checkbox, Square, Flex, Heading, useToast} from '@chakra-ui/react'
 import AuthContext from '../auth/AuthContext';
 import useApi from '../hooks/useApi';
 import eventsApi from '../api/eventsApi';
+import ScaleFadeExEvent from './Calendar/ScaleFadeExEvent'
 
-function Nextsidebar({nextEvents}){
+function Nextsidebar({nextEvents, setEvents, events, updateEvents, updateNextEvents,}){
+    
+    const {user, authTokens} = useContext(AuthContext)
+    
+    const deleteEventApi = useApi(eventsApi.deleteEvent);
+
+    const toast = useToast()
+
+    const handleDelete = async (e) =>{
+        console.log('deleting event: ', e)
+        const {error} = await deleteEventApi.request(e.id, user, authTokens)
+        if(!error){
+            toast({
+                title: 'Evento borrado',
+                status: 'success',
+                duration: 6000,
+                isClosable: true,
+            })
+            const newEvents = events.filter((item) => item.id !== e.id);
+            setEvents(newEvents)
+            updateEvents()
+            updateNextEvents()
+        }   
+        else{
+            console.log('error es:', error)
+            toast({
+                title: 'Error al borrar ',
+                description: "Código de error"+ error +' intentalo mas tarde' ,
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+            })
+        }    
+    }
+
     return(
         <>
         <Box my='5'>
             <Heading size='lg' my='5' minW='150px' >Para hoy </Heading>
-            {nextEvents.map(event=>
-            <Flex key={event.id} className={'evento-' + event.id}>
-                <Box p='3' bg='white' my='6' width="280px" boxShadow='xl' borderColor="gray.300" rounded="lg" >
-                    <Flex my='5 'align='center' justify='space-between' gap={3}>
-                    <Square size='18px' bg={event.service.color} rounded="md"/>  
-                    <Text fontSize='xl' >{event.client.car} </Text>
-                    <Text fontSize='xl'> {moment(event.start).format("hh:mm")} </Text>
-                    </Flex>              
-                    <Text fontSize='sm' mt={1}> {event.service.name} </Text>
-                </Box>
-                <Checkbox colorScheme='grey' ml={4} onClick=''/>
-            </Flex>
+            {nextEvents.map(e=>
+                <ScaleFadeExEvent key={e.id} handleDelete={handleDelete} e={e}></ScaleFadeExEvent>
             )}
         </Box>  
         </>

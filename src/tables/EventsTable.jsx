@@ -124,7 +124,7 @@ function EventsTable(){
         </InputGroup>
         </Flex>
         <Flex w="100%"  >    
-            <TableContainer mt='5' borderRadius='lg' w="100%" bg="white">
+            <TableContainer mt='5' borderRadius='lg' w="100%" bg="white" boxShadow='lg'>
                 <Table variant='simple' size='md'>
                 <Thead>
                     <Tr>

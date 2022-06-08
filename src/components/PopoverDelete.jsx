@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react'
-import {Popover,PopoverTrigger,PopoverContent, PopoverHeader, PopoverBody,PopoverFooter,PopoverArrow,PopoverCloseButton, useDisclosure, ButtonGroup} from '@chakra-ui/react'
+import {Flex,Popover,PopoverTrigger,PopoverContent, PopoverHeader, PopoverBody,PopoverFooter,PopoverArrow,PopoverCloseButton, useDisclosure, ButtonGroup, Box} from '@chakra-ui/react'
 import {Button} from '@chakra-ui/react'
 
 export default function PopoverDelete({onDelete, id}){
@@ -15,17 +15,19 @@ export default function PopoverDelete({onDelete, id}){
             <PopoverTrigger>
                 <Button colorScheme='red' size='xs' type="button">X</Button>
             </PopoverTrigger>
-            <PopoverContent>
+            <PopoverContent boxShadow='lg' rounded='15' w='300px' p='2'>
                 <PopoverArrow />
                 <PopoverCloseButton />
-                <PopoverBody>Seguro que quieres borrarlo?</PopoverBody>
-                <PopoverFooter border='0' d='flex' alignItems='center' justifyContent='flex-end' pb={4}>
-                <ButtonGroup>
-                <Button variant='outline' size='sm' colorScheme='orange' onClick={onClose} > Cancelar </Button>
-                <Button variant='ghost' size='sm' colorScheme='red' ref={initialFocusRef} onClick={() => onDelete(id)}>
-                Sí
-                </Button>
-                </ButtonGroup>                        
+                <PopoverBody>¿Seguro que quieres borrarlo?</PopoverBody>
+                <PopoverFooter border='0' d='flex' alignItems='center' justifyContent='center' pb={4}>
+                    <ButtonGroup w='100%'>
+                        <Flex w='100%' justify='space-evenly'>
+                            <Button variant='outline' size='sm' w='90px' onClick={onClose} > Cancelar </Button>
+                            <Button size='sm' fontWeight='400' colorScheme='red' w='90px' ref={initialFocusRef} onClick={() => onDelete(id)}>
+                            Sí
+                            </Button>
+                        </Flex>
+                    </ButtonGroup>                        
                 </PopoverFooter>
             </PopoverContent>
             </>
