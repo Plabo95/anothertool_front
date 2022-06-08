@@ -12,12 +12,13 @@ function NavItem({navSize, icon, title, slash}){
         mt={15}
         direction = "column"
         w="100%"
-        align={navSize === "small"? "center": "flex-start"}
+        align={navSize === "small"? "flex-start": "flex-start"}
     >
         <Menu>
             <Link
             //backgroundColor={active && "blue"}
-            p="3"
+            py="3"
+            pl='4' pr='3'
             borderRadius={8}
             _hover={{bg:'blue'}}
             onMouseOver={()=>{setIsHover(true)}}

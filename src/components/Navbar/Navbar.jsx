@@ -16,6 +16,8 @@ import {MdOutlineAdminPanelSettings} from 'react-icons/md';
 import {FiLogOut} from 'react-icons/fi'; 
 
 function Navbar(){
+    const [show, setShow] = useState(false)
+    const handleToggle = () => setShow(!show)
 
     const [navSize, setNavSize] = useState("small")
     const {user, logoutUser} = useContext(AuthContext)
@@ -24,7 +26,7 @@ function Navbar(){
     return(
         <>
         <Box bg='transparent' h="100vh" w={navSize === "small"? "75px": "200px"}>
-            <Flex direction="column"  p="8px" align={navSize === "small"? "center": "flex-start"}  >
+            <Flex direction="column"  p={navSize === "small"? "11px": "16px"} align={navSize === "small"? "flex-start": "flex-start"}  >
                 <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/none' />
                 <NavItem navSize={navSize} icon={AiOutlineCalendar} title="Calendar" slash='/none' />
                 <NavItem navSize={navSize} icon={BiWrench} title="Garage" slash='/none' />      
@@ -47,8 +49,8 @@ function Navbar(){
                     }
                 </Flex>
             </Box>
-            <Flex direction="column"  p="8px" align={navSize === "small"? "center": "flex-start"}  >
-                <Box px='3' pt='10px'>
+            <Flex direction="column"  p="8px" align={navSize === "small"? "flex-start": "flex-start"}  >
+                <Box pl='4' pr='3' pt='10px'>
                     <Flex alignItems='center'>
                         <Box>
                             <IconButton align='center' size='xs' pb='20px' color="white" background="none" mt="5" _hover={{bg:'none'}} _focusWithin={{bg:'none'}} icon={<SvgLogo/>} 
@@ -82,12 +84,14 @@ function Navbar(){
             </Flex>
 
             <Flex p='2' flexFlow='column wrap' w="100%" mb={4} gap='3'
-            align={navSize === "small"? "center": "flex-start"}  
+            align={navSize === "small"? "flex-start": "flex-start"}  
             >
                 <Divider display={navSize === "small"? "none": "flex"}/>
-                <Box px='3'>
-                    <Button size='sm' onClick={logoutUser} bg='darkblue' padding='0px' _hover={{bg:'darkblue'}} _focus={{bg:'darkblue'}} >
-                        <FiLogOut style={{ background: 'none', color: 'white', fontSize: '25px', padding: '0px', _hover:{background:'none'}, _focus:{background:'none'} }}/> 
+                <Box pl='2' pr='3'>
+                    <Button size='sm' onClick={logoutUser} bg='darkblue' padding='0px' _hover={{bg:'darkblue'}} _focus={{bg:'darkblue'}} justify='flex-start'>
+                        <Box pl='2'>
+                            <FiLogOut style={{ background: 'none', color: 'white', fontSize: '25px', padding: '0px', _hover:{background:'none'}, _focus:{background:'none'} }}/> 
+                        </Box>
                         <Flex ml="4" display={navSize === "small"? "none": "flex"} >
                             <Text color="whiteAlpha.800"> Cerrar sesión </Text>
                         </Flex>     
