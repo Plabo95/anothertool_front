@@ -8,9 +8,15 @@ function ScaleFadeExEvent({handleDelete, e}) {
     const [ isOpen2, setIsOpen2 ] = useState(true)
 
     const change = () => {
-        handleDelete(e);
-        setIsOpen(false);
-        setTimeout(()=>{setIsOpen2(false);},200)
+        setTimeout(()=>{
+            setIsOpen(false);
+            setTimeout(()=>{
+                setIsOpen2(false);
+                setTimeout(()=>{
+                    handleDelete(e);
+                },200)
+            },200)
+        },200)
     } 
 
     useEffect(() => {
@@ -30,7 +36,12 @@ function ScaleFadeExEvent({handleDelete, e}) {
                     </Flex>              
                     <Text fontSize='sm' mt={1}> {e.service.name} </Text>
                 </Box>
-                <Checkbox colorScheme='grey' ml={4} onChange={change}/>
+                <Flex align='center'>
+                    <Box>
+                        <Checkbox bg='white' _checked={{bg:'blue', borderColor:'blue', color:'white'}} 
+                        ml={4} onChange={change} boxShadow='lg'/>
+                    </Box>
+                </Flex>
             </Flex>
         </ScaleFade>
       </Collapse >

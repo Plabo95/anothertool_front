@@ -57,7 +57,7 @@ export default function Landing(){
                 </Flex>
             </Flex>
 
-            <Flex bg='white' w='100%'  p={p_franja} height={h_franja}> 
+            <Flex bg='white' w='100%'  p={p_franja} /* height={h_franja} */> 
                 <Flex direction='column' w={['100%','100%','100%','100%','70%']} ml='5%' >
                     <Flex justifyContent={['center','center','center','space-between','start']}>
                         <Box>
@@ -83,7 +83,7 @@ export default function Landing(){
                 </Flex>
             </Flex>
 
-            <Flex bg='lightgray' w='100%' height={h_franja} p={p_franja}  direction='column' align='center'>
+            <Flex bg='lightgray' w='100%' /* height={h_franja} */ p={p_franja}  direction='column' align='center'>
                 <Heading variant='h2' justifyContent='center' >Un software eficiente y organizado</Heading>
                 <Image src={img2}/>        
                 <Text variant='parrafo' w={['100%','100%','90%','90%','75%',]} textAlign='center' mt='3%' >
@@ -92,7 +92,7 @@ export default function Landing(){
                 </Text>
             </Flex>
 
-            <Flex bg='white' w='100%' p={p_franja} height={h_franja} align='center' >
+            <Flex bg='white' w='100%' p={p_franja} /* height={h_franja} */ align='center' >
                 <Flex w='50%'>
                     <Image src={img3}/>  
                 </Flex>
@@ -112,7 +112,7 @@ export default function Landing(){
                 </Flex>
             </Flex>
 
-            <Flex bg='lightgray' w='100%' direction='column' align='center' height={h_franja} p={p_franja}>
+            <Flex bg='lightgray' w='100%' direction='column' align='center' /* height={h_franja} */ p={p_franja}>
                 <Heading variant='h2' mx='5%'>anothertool, tu otra herramienta online</Heading>      
                 <Text variant='parrafo' mx='5%'>Calendario, seguimiento de trabajos, historial de cliente,s gestión de citas, tareas y servicios
                     estadísticas... 
@@ -143,7 +143,7 @@ export default function Landing(){
                 </Flex>
             </Flex>
 
-            <Flex bg='white' w='100%' height={h_franja} direction={['column','column','column','column','row']}  p={p_franja}>
+            <Flex bg='white' w='100%' /* height={h_franja} */ direction={['column','column','column','column','row']}  p={p_franja}>
                 <Flex w={['100%','100%','100%','100%','70%']} ml='5%' direction='column' gap='4' >
                     <Heading variant='h1'>Personalizado a medida para tu negocio</Heading>      
                     <Text variant='parrafo'>
