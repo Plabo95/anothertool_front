@@ -107,6 +107,17 @@ button:focus {
   box-shadow: 0px 4px 10px rgb(202, 202, 202);
 }
 
+.btn-hoy:hover{
+  background: #749FF2 !important;
+  color: white !important;
+  box-shadow: 0px 4px 10px rgb(202, 202, 202) !important;
+}
+.btn-hoy:focus{
+  background: #0258FF !important;
+  color: white !important;
+  box-shadow: 0px 4px 10px rgb(202, 202, 202) !important;
+}
+
 .btn-mes,.btn-semana,.btn-dia,.btn-agenda{
   background: white !important;
   box-shadow: 0px 4px 10px rgb(202, 202, 202);
