@@ -41,13 +41,20 @@ function Nextsidebar({nextEvents, setEvents, events, updateEvents, updateNextEve
         }    
     }
 
+    useEffect(()=>{
+        console.log('holaa',nextEvents)
+    },[])
+
     return(
         <>
         <Box my='5'>
             <Heading size='lg' my='5' minW='150px' >Para hoy </Heading>
-            {nextEvents.map(e=>
-                <ScaleFadeExEvent key={e.id} handleDelete={handleDelete} e={e}></ScaleFadeExEvent>
-            )}
+            {nextEvents.length === 0
+                ?   <Text>¡Aún no tienes ninguna cita asignada para hoy!</Text>
+                :   nextEvents.map(e=>
+                        <ScaleFadeExEvent key={e.id} handleDelete={handleDelete} e={e}></ScaleFadeExEvent>
+                    )
+            }
         </Box>  
         </>
     )
