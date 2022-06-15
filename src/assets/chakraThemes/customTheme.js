@@ -42,8 +42,9 @@ const customTheme = extendTheme({
                     fontFamily: 'Poppins',
                     fontWeight: '400',
                     _hover: {
-                        bg: "#aabcdb",
-                        color: "#001234",
+                        // bg: "#aabcdb",
+                        // color: "#001234",
+                        bg: "#749FF2",
                     }
                 },
                 'primary-s': {
@@ -53,8 +54,9 @@ const customTheme = extendTheme({
                     fontFamily: 'Poppins',
                     fontWeight: '400',
                     _hover: {
-                        bg: "#aabcdb",
-                        color: "#001234",
+                        // bg: "#aabcdb",
+                        // color: "#001234",
+                        bg: "#749FF2",
                     }
                 },
                 'primary-out-s': {

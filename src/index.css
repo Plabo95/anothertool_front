@@ -199,3 +199,21 @@ button.btn-mes,button.btn-semana,button.btn-dia{
   border-color: #42C74F !important;
   color: white !important;
 } */
+
+/******************* Analiticas **********************/
+
+.analytics-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding: 5px;
+  font-size: 17px;
+  font-weight: 800;
+}
+.analytics-select::-ms-expand {
+  display: none;
+}
+
+.period.active{
+  color: #0258FF !important;
+}
