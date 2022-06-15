@@ -24,6 +24,7 @@ function EventsTable(){
 
     const toast = useToast()
     const {isOpen, onOpen, onClose } = useDisclosure()
+    const[eventsFilter, setEventsFilter] = useState([])
     const[events, setEvents] = useState([])
     const[event, setEvent] = useState()               //selected service (when edditing)
     const[services, setServices] = useState([])
@@ -31,18 +32,21 @@ function EventsTable(){
 
     const updateEvents = async () => {
         const {data, error} = await getEventsApi.request(user,authTokens);
-        error? console.log('Error fetching events...', error) 
-            : setEvents(data)
+        error
+            ?   console.log('Error fetching events...', error) 
+            :   setEvents(data)
     }
     const updateClients = async () => {
         const {data, error} = await getClientsApi.request(user,authTokens);
-        error? console.log('Error fetching clients...', error) 
-            : setClients(data)
+        error
+            ?   console.log('Error fetching clients...', error) 
+            :   setClients(data)
     }
     const updateServices = async () => {
         const {data, error} = await getServicesApi.request(user,authTokens);
-        error? console.log('Error fetching services...', error) 
-            : setServices(data)
+        error
+            ?   console.log('Error fetching services...', error) 
+            :   setServices(data)
     }
     
     function handleEdit(e){
@@ -80,8 +84,20 @@ function EventsTable(){
 
     function handleFilter(e){
         var filter = e.target.value.toLowerCase() 
-        setEvents(events.filter(item => getClientName(item.client).toLowerCase().includes(filter)))   
+        setEventsFilter(events.filter(item => filterEvent(item, filter)))
     }
+
+    const filterEvent = (e, filter) => {
+        return getClientName(e.client).toLowerCase().includes(filter)
+                ||  getServiceName(e.service).toLowerCase().includes(filter)
+                ||  getTotalPrice(e).toLowerCase().includes(filter)
+                ||  String(e.id).toLowerCase().includes(filter)
+                ||  String(e.title).toLowerCase().includes(filter)
+                ||  String(moment(e.start).format("DD/MM/YYYY, hh:mm")).toLowerCase().includes(filter)
+                    ?   true
+                    :   false   
+    }
+
     function getClientName(id){
         try {
             return(clients.filter(item => item.id===id)[0].name)
@@ -103,7 +119,7 @@ function EventsTable(){
             const base = parseFloat(services.filter(item => item.id!==id)[0].baseprice, 10)
             const extra = parseFloat(id.extraprice, 10)
             const total =base+extra
-            return(total)
+            return(total.toString())
         } catch (error) {
             console.log(error)
             return('No price') 
@@ -114,6 +130,10 @@ function EventsTable(){
         updateServices()
         updateClients() 
     },[])
+
+    useEffect(() => {
+        setEventsFilter(events) 
+    },[events])
 
     return(
         <>
@@ -139,7 +159,7 @@ function EventsTable(){
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {events.map(date=>
+                    {eventsFilter.map(date=>
                         <Tr key={date.id}>
                             <Td>{date.id}</Td>
                             <Td>{date.title}</Td>
