@@ -9,17 +9,17 @@ export default function useApi(apiFunc){
   const request = async (...props) => {
     try {
       const response = await apiFunc(...props)
-      if (response.statusText.toUpperCase() !== 'ERROR') {
+      if (response.statusText === 'Unauthorized') {
+        console.log('No autorizado, loggin out...')
+        logoutUser()
+      }
+      else if (response.statusText.toUpperCase() !== 'ERROR') {
         if(response.noJson){
             error = null;
         }else{
             data = await response.json();
             error = null;
         }
-      }
-      else if (response.statusText === 'Unauthorized') {
-        console.log('No autorizado, loggin out...')
-        logoutUser()
       }
       else {
         error = {status: response.status, statusText: response.statusText};

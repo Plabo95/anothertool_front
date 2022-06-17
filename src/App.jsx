@@ -1,7 +1,7 @@
 import moment from 'moment';
 import {momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import {Box, Flex} from '@chakra-ui/react'
 
 // Auth Components
@@ -20,6 +20,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import PrivateRoute from './auth/PrivateRoute'
 import AdminRoute from './auth/AdminRoute';
 import {AuthProvider} from './auth/AuthContext'
+import AuthContext from './auth/AuthContext'
 
 require('moment/locale/es.js')
 const localizer=momentLocalizer(moment)
@@ -29,6 +30,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <RefreshToken/>
         <Flex w='100%' className='hola1'>
             <Navbar/>  
           <Routes>
@@ -54,4 +56,12 @@ function App() {
     </BrowserRouter>
   );
 }
+
+const RefreshToken = () => {
+  const contextData = useContext(AuthContext)
+  useEffect(()=>{
+    contextData?.updateToken()
+  },[])
+};
+
 export default App;
