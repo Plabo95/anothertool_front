@@ -87,7 +87,7 @@ export const AuthProvider = ({children}) => {
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))
                 localStorage.setItem('authTokens', JSON.stringify(data))    //cache?
-                }
+            }
             if(!response.ok){
                 console.log('Error refreshing token, loggin out...')
                 logoutUser()
@@ -102,6 +102,7 @@ export const AuthProvider = ({children}) => {
         authTokens: authTokens,
         loginUser: loginUser,
         logoutUser: logoutUser,
+        updateToken: updateToken
     }
     //refresh token cada 4 mins antes de que caduque en 5
     //tambien es importante que obtenga el refresh cada vez que recarga pagina
@@ -116,7 +117,7 @@ export const AuthProvider = ({children}) => {
             }
         }, 240000)
         return ()=> clearInterval(interval)
-    },[authTokens, loading])
+    },[authTokens])
     
     return(
         <AuthContext.Provider value={contextData} >

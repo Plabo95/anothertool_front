@@ -74,7 +74,7 @@ function Analytics(){
     }
 
     const fetchAnalytics = async () => {
-        const response = await fetch(base_url+'analytics/'+user.user_id+'/')
+        const response = await fetch(base_url+'analytics/'+user.user_id)
         setAnalytics(await response.json())
         }
 

@@ -26,7 +26,7 @@ export default function Register(){
                     'password': values.password,
                     'password2': values.password2,
             }
-        const response = await fetch(base_url+'register/',{
+        const response = await fetch(base_url+'register',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
