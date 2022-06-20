@@ -28,7 +28,7 @@ export const AuthProvider = ({children}) => {
     const toast = useToast()
 
     const loginUser = async(e) => {
-        const response = await fetch(base_url+'token',{
+        const response = await fetch(base_url+'token/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -74,7 +74,7 @@ export const AuthProvider = ({children}) => {
     } 
 
     const updateToken = async() => {
-        const response = await fetch(base_url+'token/refresh',{
+        const response = await fetch(base_url+'token/refresh/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
