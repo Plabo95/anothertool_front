@@ -47,7 +47,7 @@ function Nextsidebar({nextEvents, setEvents, events, updateEvents, updateNextEve
             {nextEvents.length === 0
                 ?   <Text>¡Aún no tienes ninguna cita asignada para hoy!</Text>
                 :   nextEvents.map(e=>
-                        <ScaleFadeExEvent key={e.id} handleDelete={handleDelete} e={e}></ScaleFadeExEvent>
+                        <ScaleFadeExEvent key={e.id} handleDelete={handleDelete} e={e} ></ScaleFadeExEvent>
                     )
             }
         </Box>  

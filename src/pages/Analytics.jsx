@@ -5,19 +5,28 @@ import AuthContext from '../auth/AuthContext';
 import {base_url} from '../environment/global';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 import { PieChart, Pie, Sector, Cell } from 'recharts';
+import useApi from '../hooks/useApi';
+import analyticsApi from '../api/analyticsApi';
 
 //Components
 import Statbox from '../components/Analytics/Statbox';
+import { transform } from 'framer-motion';
 
 function Analytics(){
 
     const {user, authTokens} = useContext(AuthContext)
+
     const [analytics, setAnalytics] = useState()
+    const [data, setData] = useState({})
+    const [graphicLine, setGraphicLine] = useState({name: 'citas', color: '#8884d8'})
+
     const [period, setPeriod] = useState('month')
     const [periodDay, setPeriodDay] = useState()
     const [periodWeek, setPeriodWeek] = useState({})
     const [periodMonth, setPeriodMonth] = useState({})
     const [periodYear, setPeriodYear] = useState()
+
+    const getAnalyticsApi = useApi(analyticsApi.getWeekAnalytics);
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -27,18 +36,18 @@ function Analytics(){
     ];
 
     const optionsPeriodMonthM = [
-        {val: 'January',label: 'Enero'},
-        {val: 'February',label: 'Febrero'},
-        {val: 'March',label: 'Marzo'},
-        {val: 'April',label: 'Abril'},
-        {val: 'May',label: 'Mayo'},
-        {val: 'June',label: 'Junio'},
-        {val: 'July',label: 'Julio'},
-        {val: 'August',label: 'Agosto'},
-        {val: 'September',label: 'Septiembre'},
-        {val: 'October',label: 'Octubre'},
-        {val: 'November',label: 'Noviembre'},
-        {val: 'December',label: 'Diciembre'},
+        {val: 0, label: 'Enero'},
+        {val: 1, label: 'Febrero'},
+        {val: 2, label: 'Marzo'},
+        {val: 3, label: 'Abril'},
+        {val: 4, label: 'Mayo'},
+        {val: 5, label: 'Junio'},
+        {val: 6, label: 'Julio'},
+        {val: 7, label: 'Agosto'},
+        {val: 8, label: 'Septiembre'},
+        {val: 9, label: 'Octubre'},
+        {val: 10, label: 'Noviembre'},
+        {val: 11, label: 'Diciembre'},
     ]
 
     const iniDateParams = () => {
@@ -51,11 +60,25 @@ function Analytics(){
         console.log('2:',mondayNextWeek)
         setPeriodWeek({
             iniDay: monday.getDate(), 
-            iniMonth: monthNombres[monday.getMonth()].substr(0,3),
+            iniMonth: monday.getMonth(),
+            iniYear: monday.getFullYear(),
             endDay: mondayNextWeek.getDate(), 
-            endMonth: monthNombres[mondayNextWeek.getMonth()].substr(0,3)
+            endMonth: mondayNextWeek.getMonth(),
+            endYear: mondayNextWeek.getFullYear()
         })
-        setPeriodMonth({month: monthNames[today.getMonth()], year: today.getFullYear()})
+        //setPeriodMonth({month: monthNames[today.getMonth()], year: today.getFullYear()})
+        let dateNextMonth;
+        today.getMonth() === 11
+            ?   dateNextMonth = new Date(today.getFullYear() + 1, 0, 1)
+            :   dateNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+        setPeriodMonth({
+            iniDay: '01', 
+            iniMonth: today.getMonth(),
+            iniYear: today.getFullYear(),
+            endDay: '01', 
+            endMonth: dateNextMonth.getMonth(),
+            endYear: dateNextMonth.getFullYear()
+        })
         setPeriodYear(today.getFullYear())
     }
 
@@ -68,60 +91,80 @@ function Analytics(){
     }
 
     const ChangePeriodMonthM = ({ target }) => {
-        setPeriodMonth({month: target.value, year: periodMonth.year})
-        console.log(periodMonth)
+        let newPeriodMonth = JSON.parse(JSON.stringify(periodMonth));
+        newPeriodMonth.iniMonth = Number(target.value)
+        setPeriodMonth(newPeriodMonth)
+        console.log(newPeriodMonth,periodMonth)
 
+    }
+
+    
+    const handlePeriod = (period) => {
+        let start_date;
+        let end_date;
+        const periods = {
+            'day': ()=>{},
+            'week': ()=>{
+                start_date = `${periodWeek.iniYear}-${periodWeek.iniMonth}-${periodWeek.iniDay}`
+                end_date = `${periodWeek.endYear}-${periodWeek.endMonth}-${periodWeek.endDay}`
+            },
+            'month': ()=>{},
+            'year': ()=>{}
+        };
+        (periods[period])()
+        setPeriod(period)
+        getDatos(start_date, end_date)
     }
 
     const fetchAnalytics = async () => {
         const response = await fetch(base_url+'analytics/'+user.user_id)
         setAnalytics(await response.json())
-        }
+    }
 
-        const data = [
-            {
-              name: 'Enero',
-              uv: 4000,
-              pv: 2400,
-              amt: 2400,
-            },
-            {
-              name: 'Febrero',
-              uv: 3000,
-              pv: 1398,
-              amt: 2210,
-            },
-            {
-              name: 'Marzo',
-              uv: 2000,
-              pv: 9800,
-              amt: 2290,
-            },
-            {
-              name: 'Abril',
-              uv: 2780,
-              pv: 3908,
-              amt: 2000,
-            },
-            {
-              name: 'Mayo',
-              uv: 1890,
-              pv: 4800,
-              amt: 2181,
-            },
-            {
-              name: 'Junio',
-              uv: 2390,
-              pv: 3800,
-              amt: 2500,
-            },
-            {
-              name: 'Julio',
-              uv: 3490,
-              pv: 4300,
-              amt: 2100,
-            },
-          ];
+        // const data = [
+        //     {
+        //       name: 'Enero',
+        //       uv: 4000,
+        //       pv: 2400,
+        //       amt: 2400,
+        //     },
+        //     {
+        //       name: 'Febrero',
+        //       uv: 3000,
+        //       pv: 1398,
+        //       amt: 2210,
+        //     },
+        //     {
+        //       name: 'Marzo',
+        //       uv: 2000,
+        //       pv: 9800,
+        //       amt: 2290,
+        //     },
+        //     {
+        //       name: 'Abril',
+        //       uv: 2780,
+        //       pv: 3908,
+        //       amt: 2000,
+        //     },
+        //     {
+        //       name: 'Mayo',
+        //       uv: 1890,
+        //       pv: 4800,
+        //       amt: 2181,
+        //     },
+        //     {
+        //       name: 'Junio',
+        //       uv: 2390,
+        //       pv: 3800,
+        //       amt: 2500,
+        //     },
+        //     {
+        //       name: 'Julio',
+        //       uv: 3490,
+        //       pv: 4300,
+        //       amt: 2100,
+        //     },
+        //   ];
 
           const data2 = [
             { name: 'Group A', value: 400 },
@@ -130,9 +173,19 @@ function Analytics(){
           ];
           const COLORS = ['tomato', '#81e5d9', '#805ad4'];
 
+    const getDatos = async (start_date, end_date) => {
+        const {data, error} = await getAnalyticsApi.request(user, authTokens, {start_date, end_date})
+        error 
+            ? console.log(error)
+            : setAnalytics(data)
+        setData(data.day)
+        console.log(data)
+    }
+
     useEffect(() => {
-        fetchAnalytics();
+        // fetchAnalytics();
         iniDateParams();
+        getDatos();
     },[])
 
     return(
@@ -156,13 +209,13 @@ function Analytics(){
                                 {period === 'week' &&
                                     <Center>
                                         <Text className='analytics-select period-week'
-                                        >{`${periodWeek.iniDay}-${periodWeek.iniMonth} ${periodWeek.endDay}-${periodWeek.endMonth}`}</Text>
+                                        >{`${periodWeek.iniDay}-${monthNombres[periodWeek.iniMonth].substr(0,3)} ${periodWeek.endDay}-${monthNombres[periodWeek.endMonth].substr(0,3)}`}</Text>
                                     </Center>
                                 }
                                 {period === 'month' &&
                                     <>
                                     <select className='analytics-select period-month'
-                                        value={periodMonth.month}
+                                        value={periodMonth.iniMonth}
                                         onChange={ChangePeriodMonthM}
                                         >
                                         {optionsPeriodMonthM.map(({ val, label }, index) => <option value={val} >{label}</option>)}
@@ -183,13 +236,13 @@ function Analytics(){
                             </Flex>
                             <Flex w='60%' justify='space-around' bg='white' boxShadow='lg' rounded='xl' m={4} mb={2}>
                                 <Button bg='white' className={period === 'day' ? 'period active' : 'period'}
-                                    onClick={()=>{setPeriod('day')}}>Dia</Button>
+                                    onClick={()=>{handlePeriod('day')}}>Dia</Button>
                                 <Button bg='white' className={period === 'week' ? 'period active' : 'period'}
-                                    onClick={()=>{setPeriod('week')}}>Semana</Button>
+                                    onClick={()=>{handlePeriod('week')}}>Semana</Button>
                                 <Button bg='white' className={period === 'month' ? 'period active' : 'period'}
-                                    onClick={()=>{setPeriod('month')}}>Mes</Button>
+                                    onClick={()=>{handlePeriod('month')}}>Mes</Button>
                                 <Button bg='white' className={period === 'year' ? 'period active' : 'period'}
-                                    onClick={()=>{setPeriod('year')}}>Año</Button>
+                                    onClick={()=>{handlePeriod('year')}}>Año</Button>
                             </Flex>
                         </Flex>
                         
@@ -207,27 +260,33 @@ function Analytics(){
                                         <Heading>40</Heading>
                                         <Text>Citas este mes</Text>
                                     </Flex>
+                                    <Flex direction='column'>
+                                        {graphicLine.name === 'ganancias'
+                                            ?   <Button bg='#8884d8' color='white' onClick={()=>{setGraphicLine({name:'citas', color:'#8884d8'})}}>Citas</Button>
+                                            :   <Button bg='#82ca9d' onClick={()=>{setGraphicLine({name:'ganancias', color:'#82ca9d'})}}>Ganancias</Button>
+                                        }
+                                    </Flex>
                                 </Flex>
-
-                                <LineChart
-                                width={500}
-                                height={250}
-                                data={data}
-                                margin={{
-                                    top: 5,
-                                    right: 10,
-                                    left: 20,
-                                    bottom: 5,
-                                }}
-                                >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-                                </LineChart>
+                                <Flex  direction='column'>
+                                    <LineChart
+                                        width={500}
+                                        height={270}
+                                        data={data}
+                                        margin={{
+                                            top: 5,
+                                            right: 10,
+                                            left: 20,
+                                            bottom: 5,
+                                    }}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Legend />
+                                        <Line type="monotone" dataKey={graphicLine.name} stroke={graphicLine.color} activeDot={{ r: 8 }} />
+                                        {/* <Line type="monotone" dataKey="gains" stroke="#82ca9d" /> */}
+                                    </LineChart>
+                                </Flex>
                             </Flex>
                             <Divider/>
                             <Flex  p='1em' align='center'>
@@ -294,10 +353,10 @@ function Analytics(){
 
                 {analytics &&
                     <Flex m={4} justify='space-between'>
-                        <Statbox title='Clientes' data={analytics.total_clients} />
-                        <Statbox title='Citas ' data={analytics.total_events} />
-                        <Statbox title='Ganancias ' data={analytics.total_gains} />
-                        <Statbox title='Ganancias / cita ' data={analytics.avg_gains} />
+                        <Statbox title='Clientes' data={analytics.total.total_clients} />
+                        <Statbox title='Citas ' data={analytics.total.total_events} />
+                        <Statbox title='Ganancias ' data={analytics.total.total_gains} />
+                        <Statbox title='Ganancias / cita ' data={analytics.total.avg_gains} />
                     </Flex>
                 }
             </Flex>
