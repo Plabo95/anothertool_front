@@ -116,11 +116,6 @@ function Analytics(){
         getDatos(start_date, end_date)
     }
 
-    const fetchAnalytics = async () => {
-        const response = await fetch(base_url+'analytics/'+user.user_id)
-        setAnalytics(await response.json())
-    }
-
         // const data = [
         //     {
         //       name: 'Enero',
@@ -174,7 +169,9 @@ function Analytics(){
           const COLORS = ['tomato', '#81e5d9', '#805ad4'];
 
     const getDatos = async (start_date, end_date) => {
-        const {data, error} = await getAnalyticsApi.request(user, authTokens, {start_date, end_date})
+        const daterange = {"start_date": start_date,
+                            "end_date" : end_date,} 
+        const {data, error} = await getAnalyticsApi.request(user, authTokens, daterange)
         error 
             ? console.log(error)
             : setAnalytics(data)
