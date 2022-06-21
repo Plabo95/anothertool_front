@@ -21,6 +21,10 @@ function Analytics(){
     const [graphicLine, setGraphicLine] = useState({name: 'citas', color: '#8884d8'})
 
     const [period, setPeriod] = useState('month')
+    const [iniPeriodDay, setIniPeriodDay] = useState()
+    const [iniPeriodWeek, setIniPeriodWeek] = useState({})
+    const [iniPeriodMonth, setIniPeriodMonth] = useState({})
+    const [iniPeriodYear, setIniPeriodYear] = useState()
     const [periodDay, setPeriodDay] = useState()
     const [periodWeek, setPeriodWeek] = useState({})
     const [periodMonth, setPeriodMonth] = useState({})
@@ -36,18 +40,18 @@ function Analytics(){
     ];
 
     const optionsPeriodMonthM = [
-        {val: 0, label: 'Enero'},
-        {val: 1, label: 'Febrero'},
-        {val: 2, label: 'Marzo'},
-        {val: 3, label: 'Abril'},
-        {val: 4, label: 'Mayo'},
-        {val: 5, label: 'Junio'},
-        {val: 6, label: 'Julio'},
-        {val: 7, label: 'Agosto'},
-        {val: 8, label: 'Septiembre'},
-        {val: 9, label: 'Octubre'},
-        {val: 10, label: 'Noviembre'},
-        {val: 11, label: 'Diciembre'},
+        {val: 1, label: 'Enero'},
+        {val: 2, label: 'Febrero'},
+        {val: 3, label: 'Marzo'},
+        {val: 4, label: 'Abril'},
+        {val: 5, label: 'Mayo'},
+        {val: 6, label: 'Junio'},
+        {val: 7, label: 'Julio'},
+        {val: 8, label: 'Agosto'},
+        {val: 9, label: 'Septiembre'},
+        {val: 10, label: 'Octubre'},
+        {val: 11, label: 'Noviembre'},
+        {val: 12, label: 'Diciembre'},
     ]
 
     const iniDateParams = () => {
@@ -55,15 +59,21 @@ function Analytics(){
         setPeriodDay(today)
         const monday = getMondayOfCurrentWeek();
         let mondayNextWeek = new Date(monday);
-        console.log('1:',mondayNextWeek)
         mondayNextWeek.setDate(monday.getDate() + 7); 
-        console.log('2:',mondayNextWeek)
         setPeriodWeek({
             iniDay: monday.getDate(), 
-            iniMonth: monday.getMonth(),
+            iniMonth: monday.getMonth() + 1,
             iniYear: monday.getFullYear(),
             endDay: mondayNextWeek.getDate(), 
-            endMonth: mondayNextWeek.getMonth(),
+            endMonth: mondayNextWeek.getMonth() + 1,
+            endYear: mondayNextWeek.getFullYear()
+        })
+        setIniPeriodWeek({
+            iniDay: monday.getDate(), 
+            iniMonth: monday.getMonth() + 1,
+            iniYear: monday.getFullYear(),
+            endDay: mondayNextWeek.getDate(), 
+            endMonth: mondayNextWeek.getMonth() + 1,
             endYear: mondayNextWeek.getFullYear()
         })
         //setPeriodMonth({month: monthNames[today.getMonth()], year: today.getFullYear()})
@@ -73,13 +83,22 @@ function Analytics(){
             :   dateNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
         setPeriodMonth({
             iniDay: '01', 
-            iniMonth: today.getMonth(),
+            iniMonth: today.getMonth() + 1,
             iniYear: today.getFullYear(),
             endDay: '01', 
-            endMonth: dateNextMonth.getMonth(),
+            endMonth: dateNextMonth.getMonth() + 1,
+            endYear: dateNextMonth.getFullYear()
+        })
+        setIniPeriodMonth({
+            iniDay: '01', 
+            iniMonth: today.getMonth() + 1,
+            iniYear: today.getFullYear(),
+            endDay: '01', 
+            endMonth: dateNextMonth.getMonth() + 1,
             endYear: dateNextMonth.getFullYear()
         })
         setPeriodYear(today.getFullYear())
+        setIniPeriodYear(today.getFullYear())
     }
 
     const getMondayOfCurrentWeek = () => {
@@ -105,8 +124,9 @@ function Analytics(){
         const periods = {
             'day': ()=>{},
             'week': ()=>{
-                start_date = `${periodWeek.iniYear}-${periodWeek.iniMonth}-${periodWeek.iniDay}`
-                end_date = `${periodWeek.endYear}-${periodWeek.endMonth}-${periodWeek.endDay}`
+                setPeriodWeek(iniPeriodWeek)
+                start_date = `${iniPeriodWeek.iniYear}-${iniPeriodWeek.iniMonth}-${iniPeriodWeek.iniDay}`
+                end_date = `${iniPeriodWeek.endYear}-${iniPeriodWeek.endMonth}-${iniPeriodWeek.endDay}`
             },
             'month': ()=>{},
             'year': ()=>{}
@@ -114,6 +134,57 @@ function Analytics(){
         (periods[period])()
         setPeriod(period)
         getDatos(start_date, end_date)
+        console.log('handlePeriod',periodWeek)
+    }
+
+    const nextPrevPeriod = async (nextPrev) => {
+        console.log('periodWeek fin: ',periodWeek)
+        let start_date;
+        let end_date;
+        const nextPeriod = {
+            'day': ()=>{},
+            'week': ()=>{
+                const date = new Date(`${periodWeek.endYear}-${periodWeek.endMonth}-${periodWeek.endDay}`);
+                date.setDate(date.getDate() + 7);
+                start_date = `${periodWeek.endYear}-${periodWeek.endMonth}-${periodWeek.endDay}`
+                end_date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+                setPeriodWeek({
+                    iniDay: start_date.split('-')[2], 
+                    iniMonth: start_date.split('-')[1],
+                    iniYear: start_date.split('-')[0],
+                    endDay: end_date.split('-')[2], 
+                    endMonth: end_date.split('-')[1],
+                    endYear: end_date.split('-')[0]
+                })
+            },
+            'month': ()=>{},
+            'year': ()=>{}
+        }
+        const prevPeriod = {
+            'day': ()=>{},
+            'week': ()=>{
+                const actualDate = new Date(`${periodWeek.iniYear}-${periodWeek.iniMonth}-${periodWeek.iniDay}`);
+                let date = new Date();
+                date.setDate(actualDate.getDate() - 7); 
+                start_date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+                end_date = `${periodWeek.iniYear}-${periodWeek.iniMonth}-${periodWeek.iniDay}`
+                setPeriodWeek({
+                    iniDay: start_date.split('-')[2], 
+                    iniMonth: start_date.split('-')[1],
+                    iniYear: start_date.split('-')[0],
+                    endDay: end_date.split('-')[2], 
+                    endMonth: end_date.split('-')[1],
+                    endYear: end_date.split('-')[0]
+                })
+            },
+            'month': ()=>{},
+            'year': ()=>{}
+        }
+        nextPrev === 'next'
+            ?   await (nextPeriod[period])()
+            :   await (prevPeriod[period])()
+        await getDatos(start_date, end_date)
+        console.log('periodWeek fin: ',periodWeek)
     }
 
     const fetchAnalytics = async () => {
@@ -186,6 +257,7 @@ function Analytics(){
         // fetchAnalytics();
         iniDateParams();
         getDatos();
+        console.log('useEffect')
     },[])
 
     return(
@@ -199,7 +271,7 @@ function Analytics(){
                     <Flex width='100%' direction='column'>
                         <Flex justify='space-between'>
                             <Flex W='30%' bg='white' boxShadow='lg' rounded='xl' m={4} mb={2} >
-                                <Button bg='white'>&lt;</Button>
+                                <Button bg='white' onClick={()=>{nextPrevPeriod('prev')}}>&lt;</Button>
                                 {period === 'day' &&
                                     <Center>
                                         <Text className='analytics-select period-day'
@@ -209,7 +281,7 @@ function Analytics(){
                                 {period === 'week' &&
                                     <Center>
                                         <Text className='analytics-select period-week'
-                                        >{`${periodWeek.iniDay}-${monthNombres[periodWeek.iniMonth].substr(0,3)} ${periodWeek.endDay}-${monthNombres[periodWeek.endMonth].substr(0,3)}`}</Text>
+                                        >{`${periodWeek.iniDay}-${monthNombres[periodWeek.iniMonth-1].substr(0,3)} ${periodWeek.endDay}-${monthNombres[periodWeek.endMonth-1].substr(0,3)}`}</Text>
                                     </Center>
                                 }
                                 {period === 'month' &&
@@ -232,7 +304,7 @@ function Analytics(){
                                     </select>
                                     </>
                                 }
-                                <Button bg='white'>&gt;</Button>
+                                <Button bg='white' onClick={()=>{nextPrevPeriod('next')}}>&gt;</Button>
                             </Flex>
                             <Flex w='60%' justify='space-around' bg='white' boxShadow='lg' rounded='xl' m={4} mb={2}>
                                 <Button bg='white' className={period === 'day' ? 'period active' : 'period'}
@@ -262,8 +334,8 @@ function Analytics(){
                                     </Flex>
                                     <Flex direction='column'>
                                         {graphicLine.name === 'ganancias'
-                                            ?   <Button bg='#8884d8' color='white' onClick={()=>{setGraphicLine({name:'citas', color:'#8884d8'})}}>Citas</Button>
-                                            :   <Button bg='#82ca9d' onClick={()=>{setGraphicLine({name:'ganancias', color:'#82ca9d'})}}>Ganancias</Button>
+                                            ?   <Button bg='#8884d8' color='white' _hover={{bg: 'white', color: '#001234'}} onClick={()=>{setGraphicLine({name:'citas', color:'#8884d8'})}}>Citas</Button>
+                                            :   <Button bg='#82ca9d' _hover={{bg: 'white', color: '#001234'}} onClick={()=>{setGraphicLine({name:'ganancias', color:'#82ca9d'})}}>Ganancias</Button>
                                         }
                                     </Flex>
                                 </Flex>
