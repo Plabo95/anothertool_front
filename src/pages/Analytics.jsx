@@ -30,6 +30,8 @@ function Analytics(){
     const [periodMonth, setPeriodMonth] = useState({})
     const [periodYear, setPeriodYear] = useState()
 
+    const [optionsPeriodMonthY, setOptionsPeriodMonthY] = useState([])
+
     const getAnalyticsApi = useApi(analyticsApi.getWeekAnalytics);
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -37,6 +39,13 @@ function Analytics(){
     ];
     const monthNombres = [
     "Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
+    ];
+    const optionsPeriodMonthYear = [
+        {val: 2022, label: '2022'},
+        {val: 2022, label: '2022'},
+        {val: 2022, label: '2022'},
+        {val: 2022, label: '2022'},
+        {val: 2022, label: '2022'},
     ];
 
     const optionsPeriodMonthM = [
@@ -53,6 +62,19 @@ function Analytics(){
         {val: 11, label: 'Noviembre'},
         {val: 12, label: 'Diciembre'},
     ]
+
+    const iniOptions = () => {
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        let i = 0;
+        for (const Y of optionsPeriodMonthYear){
+            Y.val = currentYear - i;
+            Y.label = (currentYear - i).toString();
+            i++;
+        }
+        console.log('options',optionsPeriodMonthY) 
+        setOptionsPeriodMonthY(optionsPeriodMonthYear)
+    }
 
     const iniDateParams = () => {
         const today = new Date();
@@ -111,11 +133,37 @@ function Analytics(){
     }
 
     const ChangePeriodMonthM = ({ target }) => {
-        let newPeriodMonth = JSON.parse(JSON.stringify(periodMonth));
-        newPeriodMonth.iniMonth = Number(target.value)
-        setPeriodMonth(newPeriodMonth)
-        console.log(newPeriodMonth,periodMonth)
+        const iniDate = new Date(`${periodMonth.iniYear}-${Number(target.value)}-${1}`);
+        const endDate = new Date(`${periodMonth.iniYear}-${Number(target.value)}-${1}`);
+        endDate.setMonth(endDate.getMonth() + 1);
+        setPeriodMonth({
+            iniDay: '01', 
+            iniMonth: iniDate.getMonth() + 1,
+            iniYear: iniDate.getFullYear(),
+            endDay: '01', 
+            endMonth: endDate.getMonth() + 1,
+            endYear: endDate.getFullYear()
+        })
+        const star_date = `${iniDate.getFullYear()}-${iniDate.getMonth() + 1}-${1}`;
+        const end_date = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${1}`;
+        getDatos(star_date, end_date);
+    }
 
+    const ChangePeriodMonthY = ({ target }) => {
+        const iniDate = new Date(`${Number(target.value)}-${periodMonth.iniMonth}-${1}`);
+        const endDate = new Date(`${Number(target.value)}-${periodMonth.iniMonth}-${1}`);
+        endDate.setMonth(endDate.getMonth() + 1);
+        setPeriodMonth({
+            iniDay: '01', 
+            iniMonth: periodMonth.iniMonth,
+            iniYear: iniDate.getFullYear(),
+            endDay: '01', 
+            endMonth: endDate.getMonth() + 1,
+            endYear: endDate.getFullYear()
+        })
+        const star_date = `${iniDate.getFullYear()}-${periodMonth.iniMonth}-${1}`;
+        const end_date = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${1}`;
+        getDatos(star_date, end_date);
     }
 
     
@@ -143,7 +191,7 @@ function Analytics(){
     }
 
     const nextPrevPeriod = async (nextPrev) => {
-        console.log('periodWeek fin: ',periodWeek)
+        console.log('periodWeek fin: ',periodMonth,period)
         let start_date;
         let end_date;
         const nextPeriod = {
@@ -165,6 +213,7 @@ function Analytics(){
             'month': ()=>{
                 const date = new Date(`${periodMonth.endYear}-${periodMonth.endMonth}-${1}`);
                 date.setMonth(date.getMonth() + 1);
+                console.log('next month', date)
                 start_date = `${periodMonth.endYear}-${periodMonth.endMonth}-${1}`
                 end_date = `${date.getFullYear()}-${date.getMonth() + 1}-${1}`
                 console.log('month', start_date, end_date)
@@ -196,11 +245,11 @@ function Analytics(){
                 })
             },
             'month': ()=>{
-                const date = new Date(`${periodMonth.iniYear}-${periodMonth.iniMonth}-${periodMonth.iniDay}`);
-                date.setDate(date.getDate() - 7); 
-                start_date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-                end_date = `${periodMonth.iniYear}-${periodMonth.iniMonth}-${periodMonth.iniDay}`
-                setPeriodWeek({
+                const date = new Date(`${periodMonth.iniYear}-${periodMonth.iniMonth}-${1}`);
+                date.setMonth(date.getMonth() - 1); 
+                start_date = `${date.getFullYear()}-${date.getMonth() + 1}-${1}`
+                end_date = `${periodMonth.iniYear}-${periodMonth.iniMonth}-${1}`
+                setPeriodMonth({
                     iniDay: '01', 
                     iniMonth: start_date.split('-')[1],
                     iniYear: start_date.split('-')[0],
@@ -215,7 +264,6 @@ function Analytics(){
             ?   await (nextPeriod[period])()
             :   await (prevPeriod[period])()
         await getDatos(start_date, end_date)
-        console.log('periodWeek fin: ',periodWeek)
     }
 
     const data2 = [
@@ -237,6 +285,7 @@ function Analytics(){
 
     useEffect(() => {
         iniDateParams();
+        iniOptions();
     },[])
 
     return(
@@ -268,11 +317,14 @@ function Analytics(){
                                     <select className='analytics-select period-month'
                                         value={periodMonth.iniMonth}
                                         onChange={ChangePeriodMonthM}
-                                        >
+                                    >
                                         {optionsPeriodMonthM.map(({ val, label }, index) => <option value={val} >{label}</option>)}
                                     </select>
-                                    <select id="analytics-select-year" className='analytics-select period-month'>
-                                        <option value="2022" selected>2022</option>
+                                    <select id="analytics-select-year" className='analytics-select period-month'
+                                        value={periodMonth.iniYear}
+                                        onChange={ChangePeriodMonthY}
+                                    >
+                                        {optionsPeriodMonthY.map(({ val, label }, index) => <option value={val} >{label}</option>)}
                                     </select>
                                     </>
                                 }
