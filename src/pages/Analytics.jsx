@@ -97,6 +97,7 @@ function Analytics(){
             endMonth: dateNextMonth.getMonth() + 1,
             endYear: dateNextMonth.getFullYear()
         })
+        getDatos(`${today.getFullYear()}-${today.getMonth() + 1}-${1}`,`${dateNextMonth.getFullYear()}-${dateNextMonth.getMonth() + 1}-${1}`);
         setPeriodYear(today.getFullYear())
         setIniPeriodYear(today.getFullYear())
     }
@@ -118,7 +119,7 @@ function Analytics(){
     }
 
     
-    const handlePeriod = (period) => {
+    const handlePeriod = async (period) => {
         let start_date;
         let end_date;
         const periods = {
@@ -128,12 +129,16 @@ function Analytics(){
                 start_date = `${iniPeriodWeek.iniYear}-${iniPeriodWeek.iniMonth}-${iniPeriodWeek.iniDay}`
                 end_date = `${iniPeriodWeek.endYear}-${iniPeriodWeek.endMonth}-${iniPeriodWeek.endDay}`
             },
-            'month': ()=>{},
+            'month': ()=>{
+                setPeriodMonth(iniPeriodMonth)
+                start_date = `${iniPeriodMonth.iniYear}-${iniPeriodMonth.iniMonth}-${iniPeriodMonth.iniDay}`
+                end_date = `${iniPeriodMonth.endYear}-${iniPeriodMonth.endMonth}-${iniPeriodMonth.endDay}`
+            },
             'year': ()=>{}
         };
-        (periods[period])()
+        await (periods[period])()
         setPeriod(period)
-        getDatos(start_date, end_date)
+        await getDatos(start_date, end_date)
         console.log('handlePeriod',periodWeek)
     }
 
@@ -157,15 +162,28 @@ function Analytics(){
                     endYear: end_date.split('-')[0]
                 })
             },
-            'month': ()=>{},
+            'month': ()=>{
+                const date = new Date(`${periodMonth.endYear}-${periodMonth.endMonth}-${1}`);
+                date.setMonth(date.getMonth() + 1);
+                start_date = `${periodMonth.endYear}-${periodMonth.endMonth}-${1}`
+                end_date = `${date.getFullYear()}-${date.getMonth() + 1}-${1}`
+                console.log('month', start_date, end_date)
+                setPeriodMonth({
+                    iniDay: '01', 
+                    iniMonth: start_date.split('-')[1],
+                    iniYear: start_date.split('-')[0],
+                    endDay: '01', 
+                    endMonth: end_date.split('-')[1],
+                    endYear: end_date.split('-')[0]
+                })
+            },
             'year': ()=>{}
         }
         const prevPeriod = {
             'day': ()=>{},
             'week': ()=>{
-                const actualDate = new Date(`${periodWeek.iniYear}-${periodWeek.iniMonth}-${periodWeek.iniDay}`);
-                let date = new Date();
-                date.setDate(actualDate.getDate() - 7); 
+                const date = new Date(`${periodWeek.iniYear}-${periodWeek.iniMonth}-${periodWeek.iniDay}`);
+                date.setDate(date.getDate() - 7); 
                 start_date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
                 end_date = `${periodWeek.iniYear}-${periodWeek.iniMonth}-${periodWeek.iniDay}`
                 setPeriodWeek({
@@ -177,7 +195,20 @@ function Analytics(){
                     endYear: end_date.split('-')[0]
                 })
             },
-            'month': ()=>{},
+            'month': ()=>{
+                const date = new Date(`${periodMonth.iniYear}-${periodMonth.iniMonth}-${periodMonth.iniDay}`);
+                date.setDate(date.getDate() - 7); 
+                start_date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+                end_date = `${periodMonth.iniYear}-${periodMonth.iniMonth}-${periodMonth.iniDay}`
+                setPeriodWeek({
+                    iniDay: '01', 
+                    iniMonth: start_date.split('-')[1],
+                    iniYear: start_date.split('-')[0],
+                    endDay: '01', 
+                    endMonth: end_date.split('-')[1],
+                    endYear: end_date.split('-')[0]
+                })
+            },
             'year': ()=>{}
         }
         nextPrev === 'next'
@@ -187,61 +218,15 @@ function Analytics(){
         console.log('periodWeek fin: ',periodWeek)
     }
 
-        // const data = [
-        //     {
-        //       name: 'Enero',
-        //       uv: 4000,
-        //       pv: 2400,
-        //       amt: 2400,
-        //     },
-        //     {
-        //       name: 'Febrero',
-        //       uv: 3000,
-        //       pv: 1398,
-        //       amt: 2210,
-        //     },
-        //     {
-        //       name: 'Marzo',
-        //       uv: 2000,
-        //       pv: 9800,
-        //       amt: 2290,
-        //     },
-        //     {
-        //       name: 'Abril',
-        //       uv: 2780,
-        //       pv: 3908,
-        //       amt: 2000,
-        //     },
-        //     {
-        //       name: 'Mayo',
-        //       uv: 1890,
-        //       pv: 4800,
-        //       amt: 2181,
-        //     },
-        //     {
-        //       name: 'Junio',
-        //       uv: 2390,
-        //       pv: 3800,
-        //       amt: 2500,
-        //     },
-        //     {
-        //       name: 'Julio',
-        //       uv: 3490,
-        //       pv: 4300,
-        //       amt: 2100,
-        //     },
-        //   ];
-
-          const data2 = [
-            { name: 'Group A', value: 400 },
-            { name: 'Group B', value: 300 },
-            { name: 'Group C', value: 300 },
-          ];
-          const COLORS = ['tomato', '#81e5d9', '#805ad4'];
+    const data2 = [
+        { name: 'Group A', value: 400 },
+        { name: 'Group B', value: 300 },
+        { name: 'Group C', value: 300 },
+    ];
+    const COLORS = ['tomato', '#81e5d9', '#805ad4'];
 
     const getDatos = async (start_date, end_date) => {
-        const daterange = {"start_date": start_date,
-                            "end_date" : end_date,} 
+        const daterange = {start_date, end_date} 
         const {data, error} = await getAnalyticsApi.request(user, authTokens, daterange)
         error 
             ? console.log(error)
@@ -251,10 +236,7 @@ function Analytics(){
     }
 
     useEffect(() => {
-        // fetchAnalytics();
         iniDateParams();
-        getDatos();
-        console.log('useEffect')
     },[])
 
     return(
