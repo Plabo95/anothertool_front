@@ -119,7 +119,7 @@ function Analytics(){
             endMonth: dateNextMonth.getMonth() + 1,
             endYear: dateNextMonth.getFullYear()
         })
-        getDatos(`${today.getFullYear()}-${today.getMonth() + 1}-${1}`,`${dateNextMonth.getFullYear()}-${dateNextMonth.getMonth() + 1}-${1}`);
+        getDatos(`${today.getFullYear()}-${today.getMonth() + 1}-${1}`,`${dateNextMonth.getFullYear()}-${dateNextMonth.getMonth() + 1}-${1}`, 'month');
         setPeriodYear(today.getFullYear())
         setIniPeriodYear(today.getFullYear())
     }
@@ -146,7 +146,7 @@ function Analytics(){
         })
         const star_date = `${iniDate.getFullYear()}-${iniDate.getMonth() + 1}-${1}`;
         const end_date = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${1}`;
-        getDatos(star_date, end_date);
+        getDatos(star_date, end_date, 'month');
     }
 
     const ChangePeriodMonthY = ({ target }) => {
@@ -163,7 +163,7 @@ function Analytics(){
         })
         const star_date = `${iniDate.getFullYear()}-${periodMonth.iniMonth}-${1}`;
         const end_date = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${1}`;
-        getDatos(star_date, end_date);
+        getDatos(star_date, end_date, 'month');
     }
 
     
@@ -182,16 +182,18 @@ function Analytics(){
                 start_date = `${iniPeriodMonth.iniYear}-${iniPeriodMonth.iniMonth}-${iniPeriodMonth.iniDay}`
                 end_date = `${iniPeriodMonth.endYear}-${iniPeriodMonth.endMonth}-${iniPeriodMonth.endDay}`
             },
-            'year': ()=>{}
+            'year': ()=>{
+                setPeriodYear(iniPeriodYear)
+                start_date = `${iniPeriodYear}-1-1`
+                end_date = `${iniPeriodYear + 1}-1-1`
+            }
         };
         await (periods[period])()
         setPeriod(period)
-        await getDatos(start_date, end_date)
-        console.log('handlePeriod',periodWeek)
+        await getDatos(start_date, end_date, period)
     }
 
     const nextPrevPeriod = async (nextPrev) => {
-        console.log('periodWeek fin: ',periodMonth,period)
         let start_date;
         let end_date;
         const nextPeriod = {
@@ -226,7 +228,12 @@ function Analytics(){
                     endYear: end_date.split('-')[0]
                 })
             },
-            'year': ()=>{}
+            'year': ()=>{
+                const year = periodYear + 1;
+                setPeriodYear(periodYear + 1)
+                start_date = `${year}-1-1`
+                end_date = `${year + 1}-1-1`
+            }
         }
         const prevPeriod = {
             'day': ()=>{},
@@ -258,12 +265,17 @@ function Analytics(){
                     endYear: end_date.split('-')[0]
                 })
             },
-            'year': ()=>{}
+            'year': ()=>{
+                const year = periodYear - 1;
+                setPeriodYear(periodYear - 1)
+                start_date = `${year}-1-1`
+                end_date = `${year + 1}-1-1`
+            }
         }
         nextPrev === 'next'
             ?   await (nextPeriod[period])()
             :   await (prevPeriod[period])()
-        await getDatos(start_date, end_date)
+        await getDatos(start_date, end_date, period)
     }
 
     const data2 = [
@@ -273,14 +285,15 @@ function Analytics(){
     ];
     const COLORS = ['tomato', '#81e5d9', '#805ad4'];
 
-    const getDatos = async (start_date, end_date) => {
+    const getDatos = async (start_date, end_date, period) => {
         const daterange = {start_date, end_date} 
-        const {data, error} = await getAnalyticsApi.request(user, authTokens, daterange)
+        // const daterange = {start_date:'2022-1-1', end_date:'2023-1-1', period: 'year'} 
+        const {data, error} = await getAnalyticsApi.request(user, authTokens, {period, ...daterange})
         error 
             ? console.log(error)
             : setAnalytics(data)
-        setData(data.day)
-        console.log(data)
+        setData(data.period)
+        console.log('Datooooos',data)
     }
 
     useEffect(() => {
