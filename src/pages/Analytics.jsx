@@ -469,10 +469,10 @@ function Analytics(){
 
                 {analytics &&
                     <Flex m={4} justify='space-between'>
-                        <Statbox title='Clientes' data={analytics.total.total_clients} />
-                        <Statbox title='Citas ' data={analytics.total.total_events} />
-                        <Statbox title='Ganancias ' data={analytics.total.total_gains} />
-                        <Statbox title='Ganancias / cita ' data={analytics.total.avg_gains} />
+                        <Statbox title='Clientes' dataTotal={analytics.total.total_clients} dataComparations={analytics.comparations.total_clients} />
+                        <Statbox title='Citas ' dataTotal={analytics.total.total_events} dataComparations={analytics.comparations.total_events} />
+                        <Statbox title='Ganancias ' dataTotal={analytics.total.total_gains} dataComparations={analytics.comparations.total_gains} />
+                        <Statbox title='Ganancias / cita ' dataTotal={analytics.total.avg_gains} dataComparations={analytics.comparations.avg_gains} />
                     </Flex>
                 }
             </Flex>
