@@ -4,9 +4,6 @@ import {useNavigate} from 'react-router-dom'
 import { useEffect } from "react";
 import {base_url} from '../environment/global';
 import {useToast} from '@chakra-ui/react'
-import useApi from '../hooks/useApi'
-import authApi from "../api/authApi";
-
 
 const AuthContext = createContext()
 
@@ -112,7 +109,7 @@ export const AuthProvider = ({children}) => {
         }
         const interval = setInterval(() => {
             if(authTokens){
-                console.log('hay authtokens', authTokens)
+                //console.log('hay authtokens', authTokens)
                 updateToken()
             }
         }, 240000)

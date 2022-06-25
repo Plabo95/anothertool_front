@@ -67,6 +67,7 @@ export default function CalendarComp({localizer}) {
       start: new Date(event.start),
       end: new Date(event.end),
       allDay: false,
+      name : event.service_name + ' para ' + event.client_name,
       }
       })
 
@@ -120,23 +121,7 @@ export default function CalendarComp({localizer}) {
 
   //Calendar event name display props
   function handleEventName(e){
-    let title = 'Untitled';
-    let client = ''
-    if(e.service){
-      try{title = services.filter(item => item.id===e.service)[0].name}
-      catch{
-        //console.log('Nose encuentra name para service ', e.service)
-        updateServices()
-      }
-    }
-    if(e.client){
-      try{client ='  para  '+ clients.filter(item => item.id===e.client)[0].name}
-      catch{
-        //console.log('Nose encuentra name para cliente ', e.client)
-        updateClients()
-      }
-    }
-    return(title+client)
+    return(e.name)
   }
   //Formatting the date
   let formats = {

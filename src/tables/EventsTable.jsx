@@ -88,8 +88,8 @@ function EventsTable(){
     }
 
     const filterEvent = (e, filter) => {
-        return getClientName(e.client).toLowerCase().includes(filter)
-                ||  getServiceName(e.service).toLowerCase().includes(filter)
+        return e.client_name.toLowerCase().includes(filter)
+                ||  e.service_name.toLowerCase().includes(filter)
                 ||  getTotalPrice(e).toLowerCase().includes(filter)
                 ||  String(e.id).toLowerCase().includes(filter)
                 ||  String(e.title).toLowerCase().includes(filter)
@@ -97,23 +97,6 @@ function EventsTable(){
                     ?   true
                     :   false   
     }
-
-    function getClientName(id){
-        try {
-            return(clients.filter(item => item.id===id)[0].name)
-        } catch (error) {
-            console.log(error)
-            return('No able to get') 
-        }
-      }
-    function getServiceName(id){
-        try {
-            return(services.filter(item => item.id===id)[0].name)
-        } catch (error) {
-            console.log(error)
-            return('No able to get') 
-        }
-      }
     function getTotalPrice(id){
         try {
             const base = parseFloat(services.filter(item => item.id!==id)[0].baseprice, 10)
@@ -164,8 +147,8 @@ function EventsTable(){
                             <Td>{date.id}</Td>
                             <Td>{date.title}</Td>
                             <Td>{moment(date.start).format("DD/MM/YYYY, hh:mm")}</Td>
-                            <Td>{getClientName(date.client)}</Td>
-                            <Td>{getServiceName(date.service)}</Td>
+                            <Td>{date.client_name}</Td>
+                            <Td>{date.service_name}</Td>
                             <Td textAlign={'center'}> 
                                 {getTotalPrice(date)}
                             </Td>
