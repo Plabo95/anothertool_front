@@ -7,6 +7,8 @@ import Nextsidebar from '../components/Nextsidebar'
 import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box, DrawerBody} from '@chakra-ui/react'
 import { Flex, Button} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
+
+//Api
 import useApi from '../hooks/useApi';
 import eventsApi from '../api/eventsApi';
 import servicesApi from '../api/servicesApi';
@@ -68,6 +70,7 @@ export default function CalendarComp({localizer}) {
       end: new Date(event.end),
       allDay: false,
       name : event.service_name + ' para ' + event.client_name,
+      color: event.service_color,
       }
       })
 
@@ -136,14 +139,7 @@ export default function CalendarComp({localizer}) {
     weekdayFormat: 'dddd'
   }
   function eventPropGetter(event, start, end, isSelected) {
-    let backgroundColor = 'grey';
-    if(event.service){
-      try{backgroundColor = services.filter(item => item.id===event.service)[0].color}
-      catch{
-        //console.log('Nose ha encontrado color para el servicio', event.service)
-        updateServices()
-      }
-    }
+    const backgroundColor = event.color
     const style = {
         backgroundColor: backgroundColor,
         borderRadius: '8px',

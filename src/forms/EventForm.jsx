@@ -246,34 +246,6 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
                 getDuration()
               }}/> 
         </InputGroup>              
-        {/* <Box rounded="lg" border="2px" p="2px">
-          <Flex justifyContent="space-between">
-            <Text mr="3px" ml="3px"> IN : </Text>
-            <Flatpickr
-              data-enable-time
-              value={event.start}
-              onChange={(newdate) => {
-                console.log(newdate)
-                event.start = newdate[0];
-                getDuration()
-              }}
-            />
-          </Flex>
-        </Box>
-        <Box rounded="lg" border="2px" p="2px">
-          <Flex justifyContent="space-between">
-            <Text mr="3px" ml="3px"> OUT : </Text>
-            <Flatpickr
-              data-enable-time
-              value={event.end}
-              onChange={(newdate) => {
-                console.log(newdate)
-                event.end = newdate[0];
-                getDuration()
-              }}
-            />
-          </Flex>
-        </Box> */}
         </Flex>  } 
 
         <Stack spacing={4}>
