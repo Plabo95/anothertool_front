@@ -41,6 +41,10 @@ function Nextsidebar({nextEvents, setEvents, events, updateEvents, updateNextEve
         }    
     }
 
+    useEffect(() => {
+        console.log('nextEvents',nextEvents)
+    },[nextEvents])
+
     return(
         <Box my='5'>
             <Heading size='lg' my='5' minW='150px' >Para hoy </Heading>

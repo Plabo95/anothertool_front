@@ -43,7 +43,7 @@ export default function Landing(){
     return(
         <Flex direction='column' w='100%' >
 
-            <Flex bg='white' height='8vh' w='100%' p='1%' align='center'>
+            <Flex bg='white' height='8vh' w='100%' p='1%' align='center' position='fixed' zIndex={3}>
                 <Flex w='50%' justify='start' ml='3%'>
                     <Box>
                         <Image src={imgLogo}/>
