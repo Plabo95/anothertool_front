@@ -11,7 +11,7 @@ export default function Statbox({title, dataTotal, dataComparations}){
                 <Heading>{dataTotal}</Heading>
 
                 <StatHelpText>
-                    {dataComparations > 0
+                    {dataComparations >= 0
                         ?   <StatArrow type='increase' />
                         :   <StatArrow type='decrease' />
                     }
