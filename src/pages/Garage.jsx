@@ -1,8 +1,13 @@
 import React, {useEffect, useContext} from 'react'
+
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Flex, Text, Heading } from '@chakra-ui/react'
+
+
+//components
+import EventsTable from '../tables/EventsTable'
 import ClientsTable from '../tables/ClientsTable'
 import ServicesTable from '../tables/ServicesTable'
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Flex, Text, Heading } from '@chakra-ui/react'
-import EventsTable from '../tables/EventsTable'
+import CarsTable from '../tables/CarsTable'
 
 
 function Garage(){
@@ -19,6 +24,7 @@ function Garage(){
                 <Tab px='10' rounded='5px' _selected={{ color: 'white', bg: 'blue', rounded: '5px' }}>Citas</Tab>
                 <Tab px='10' rounded='5px' _selected={{ color: 'white', bg: 'blue', rounded: '5px' }}>Servicios</Tab>
                 <Tab px='10' rounded='5px' _selected={{ color: 'white', bg: 'blue', rounded: '5px' }}>Clientes</Tab>
+                <Tab px='10' rounded='5px' _selected={{ color: 'white', bg: 'blue', rounded: '5px' }}>Coches</Tab>
             </TabList>
             <TabPanels>
                 <TabPanel>
@@ -29,6 +35,9 @@ function Garage(){
                 </TabPanel>
                 <TabPanel>
                     <ClientsTable/>
+                </TabPanel>
+                <TabPanel>
+                    <CarsTable/>
                 </TabPanel>
             </TabPanels>
             </Tabs>

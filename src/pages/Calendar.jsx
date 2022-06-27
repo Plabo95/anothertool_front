@@ -7,6 +7,8 @@ import Nextsidebar from '../components/Nextsidebar'
 import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box, DrawerBody} from '@chakra-ui/react'
 import { Flex, Button} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
+
+//Api
 import useApi from '../hooks/useApi';
 import eventsApi from '../api/eventsApi';
 import servicesApi from '../api/servicesApi';
@@ -67,6 +69,8 @@ export default function CalendarComp({localizer}) {
       start: new Date(event.start),
       end: new Date(event.end),
       allDay: false,
+      name : event.service_name + ' para ' + event.client_name,
+      color: event.service_color,
       }
       })
 
@@ -120,23 +124,7 @@ export default function CalendarComp({localizer}) {
 
   //Calendar event name display props
   function handleEventName(e){
-    let title = 'Untitled';
-    let client = ''
-    if(e.service){
-      try{title = services.filter(item => item.id===e.service)[0].name}
-      catch{
-        //console.log('Nose encuentra name para service ', e.service)
-        updateServices()
-      }
-    }
-    if(e.client){
-      try{client ='  para  '+ clients.filter(item => item.id===e.client)[0].name}
-      catch{
-        //console.log('Nose encuentra name para cliente ', e.client)
-        updateClients()
-      }
-    }
-    return(title+client)
+    return(e.name)
   }
   //Formatting the date
   let formats = {
@@ -151,14 +139,7 @@ export default function CalendarComp({localizer}) {
     weekdayFormat: 'dddd'
   }
   function eventPropGetter(event, start, end, isSelected) {
-    let backgroundColor = 'grey';
-    if(event.service){
-      try{backgroundColor = services.filter(item => item.id===event.service)[0].color}
-      catch{
-        //console.log('Nose ha encontrado color para el servicio', event.service)
-        updateServices()
-      }
-    }
+    const backgroundColor = event.color
     const style = {
         backgroundColor: backgroundColor,
         borderRadius: '8px',
