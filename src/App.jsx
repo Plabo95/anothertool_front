@@ -31,7 +31,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <RefreshToken/>
-        <Flex w='100%' className='hola1'>
+        <Flex w='100%'>
             <Navbar/>  
           <Routes>
               <Route index element={<Landing/>} />

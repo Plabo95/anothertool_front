@@ -77,7 +77,8 @@ function Navbar(){
                     </Flex>
                 </Box>
                 {user.is_staff && 
-                <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/adminpanel' />}
+                    <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/adminpanel' />
+                }
                 <NavItem navSize={navSize} icon={AiOutlineCalendar} title="Calendar" slash='/calendar' />
                 <NavItem navSize={navSize} icon={BiWrench} title="Garage" slash='/garage' />      
                 <NavItem navSize={navSize} icon={VscGraph} title="Reports" slash='/analytics' /> 
