@@ -387,7 +387,7 @@ function Analytics(){
                             </Flex>
                         </Flex>
                         
-                        <Flex  bg='white' direction='column' boxShadow='lg' rounded='xl' m={4}>
+                        <Flex  bg='white' direction='column' boxShadow='lg' rounded='xl'  m={4} mb={[0,0,0,4,4]}>
                             {/* <Flex ml='2em' mt='15px'>
                                 <Text fontWeight='800' fontSize='17px'> Ganancias</Text>
                             </Flex> */}
@@ -468,8 +468,9 @@ function Analytics(){
                             </Wrap>
                         </Flex>
                     </Flex>
-                                
-                    <Flex boxShadow='lg' m={4} mt={[4,4,4,4,'80px','80px']} w={'500px'} rounded='xl' bg='white' direction='column' justify='space-between' h='100%'>
+
+                    <Flex pt={[0,0,0,0,'63px','63px']} justify="center">      
+                    <Flex boxShadow='lg' m={4} rounded='xl' bg='white' direction='column' justify='space-between'>
                         <Flex m='1.5em'>
                             {graphicLine.name === 'citas' 
                                 ?   <Text>Citas / Servicio</Text>
@@ -522,6 +523,7 @@ function Analytics(){
                                 ))    
                             }                       
                         </Wrap>
+                    </Flex>
                     </Flex>
 
                 </Flex>
