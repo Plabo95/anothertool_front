@@ -327,7 +327,7 @@ function Analytics(){
     },[])
 
     return(
-        <Container maxW='1250px'>
+        <Container maxW='1750px'>
             <Flex w="100%" p={5} direction='column' minH={'100vh'} >
                 <Flex justify='start'>
                     <Heading pt='1' m={4} textAlign='center' > ¿Como va el taller? </Heading>
@@ -422,7 +422,7 @@ function Analytics(){
                                         </Button> 
                                     </Flex>
                                 </Flex>
-                                <Flex  direction='column' mt='3'>
+                                <Flex flex='1' justify='center' mt='3'>
                                     <LineChart
                                         width={570}
                                         height={280}

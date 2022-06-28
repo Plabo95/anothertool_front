@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
 import Toolbar from "react-big-calendar/lib/Toolbar";
 import Nextsidebar from '../components/Nextsidebar'
-import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box, DrawerBody} from '@chakra-ui/react'
+import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box, DrawerBody, Container} from '@chakra-ui/react'
 import { Flex, Button} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 
@@ -163,7 +163,7 @@ export default function CalendarComp({localizer}) {
 
 
   return (
-    <>
+    <Container maxW='1750px'>
     <Flex w="100%" p="5" m='5' gap={6}>
       <Flex flexDirection='column'>
         <Box>
@@ -220,7 +220,7 @@ export default function CalendarComp({localizer}) {
           </DrawerBody>
         </DrawerContent>
       </Drawer>    
-      </>
+      </Container>
     )
 }
 
