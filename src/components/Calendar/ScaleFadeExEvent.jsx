@@ -3,7 +3,7 @@ import {Collapse,ScaleFade, Button, Box, Text, Checkbox, Square, Flex, Heading, 
 import moment from 'moment';
 import ModalDatosEvent from './ModalDatosEvent'
 
-function ScaleFadeExEvent({handleDelete, e}) {
+function ScaleFadeExEvent({handleUpdate, e, handleToDoDone}) {
     //const { isOpen, onToggle } = useDisclosure({defaultIsOpen: true})
     const [ isOpen1, setIsOpen ] = useState(true)
     const [ isOpen2, setIsOpen2 ] = useState(true)
@@ -15,7 +15,8 @@ function ScaleFadeExEvent({handleDelete, e}) {
             setTimeout(()=>{
                 setIsOpen2(false);
                 setTimeout(()=>{
-                    handleDelete(e);
+                    handleToDoDone()
+                    handleUpdate(e);
                 },200)
             },200)
         },200)
@@ -33,7 +34,7 @@ function ScaleFadeExEvent({handleDelete, e}) {
         <Collapse in={isOpen2} animateOpacity>
             <ScaleFade initialScale={0.9} in={isOpen1}>
                 <Flex key={e.id} className={'evento-' + e.id}>
-                    <Box cursor='pointer' _hover={{bg: e.service.color}} p='3' bg='white' my='6' width="280px" boxShadow='lg' borderColor="gray.300" rounded="lg" onClick={()=>{onOpen()}}>
+                    <Box opacity={e.done ? '0.5' : '1'} cursor='pointer' _hover={{bg: e.service.color}} p='3' bg='white' my='6' width="280px" boxShadow='lg' borderColor="gray.300" rounded="lg" onClick={()=>{onOpen()}}>
                         <Flex my='5 'align='center' justify='space-between' gap={3}>
                         <Square size='18px' bg={e.service.color} rounded="md"/>  
                         <Text fontSize='xl'>{   e.title
@@ -47,7 +48,7 @@ function ScaleFadeExEvent({handleDelete, e}) {
                     </Box>
                     <Flex align='center'>
                         <Box>
-                            <Checkbox bg='white' _checked={{bg:'blue', borderColor:'blue', color:'white'}} 
+                            <Checkbox bg='white' opacity={e.done ? '0.5' : '1'} _checked={{bg:'blue', borderColor:'blue', color:'white'}} isChecked={e.done} 
                             ml={4} onChange={change} boxShadow='lg'/>
                         </Box>
                     </Flex>

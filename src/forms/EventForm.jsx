@@ -31,6 +31,7 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
   const[loadingCreate, setLoadingCreate] = useState(false)
 
   const createEventApi = useApi(eventsApi.createEvent);
+  const updateEventApi = useApi(eventsApi.updateEvent);
   const deleteEventApi = useApi(eventsApi.deleteEvent);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
     setPrice()
     setNote()
     }
-    }, [event]);
+  }, [event]);
 
   function closeDrawer(){
     setLoadingDelete(false)
@@ -63,34 +64,38 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
     setLoadingCreate(true)
     e.preventDefault()
     console.log('handl',event)
-    const eventToCreate ={
-            'start': moment(event.start),
-            'end': moment(event.end),
-            'client': client,
-            'extraprice': price,
-            'service': service,
-            'note': note,
-            'title': title,
-            'user': user.user_id,
+    const eventToCreate = {
+      'start': moment(event.start),
+      'end': moment(event.end),
+      'client': client,
+      'extraprice': price,
+      'service': service,
+      'note': note,
+      'title': title,
+      'user': user.user_id,
     }
-    const {error} = await createEventApi.request(event.id, eventToCreate, user, authTokens)
+    let error
+    event.id === undefined
+      ?   {error} = await createEventApi.request(eventToCreate, authTokens)
+      :   {error} = await updateEventApi.request(event.id, eventToCreate, user, authTokens)
+    
     if(error){
       toast({
-          title: 'Error al guardar ',
-          description: "Código de error"+ error +' intentalo mas tarde' ,
-          status: 'error',
-          duration: 6000,
-          isClosable: true,
-          })
+        title: 'Error al guardar ',
+        description: "Código de error"+ error +' intentalo mas tarde' ,
+        status: 'error',
+        duration: 6000,
+        isClosable: true,
+      })
     }
     else{
       updateEvents()
       updateNextEvents()
       toast({
-          title: 'Evento guardado',
-          status: 'success',
-          duration: 6000,
-          isClosable: true,
+        title: 'Evento guardado',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
       }) 
     }
     closeDrawer()
@@ -173,14 +178,14 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
     return {
       value: client.id,
       label: client.name,
-      }
-      })
+    }
+  })
   const services = servicelist.map((service)=>{
     return {
       value: service.id,
       label: <Flex align='center' gap={3} ><Square size='18px' bg={service.color} rounded="md"/> {service.name}</Flex> ,
-      }
-      })
+    }
+  })
 
   const isServiceError = service === undefined
   const isClientError = client === undefined

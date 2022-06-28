@@ -71,13 +71,14 @@ export default function CalendarComp({localizer}) {
       allDay: false,
       name : event.service_name + ' para ' + event.client_name,
       color: event.service_color,
-      }
-      })
+    }
+  })
 
   function handleNavigate(date) {
     setYourDate(moment(date).toDate())
   }
-//Manage del selection timeframe
+
+  //Manage del selection timeframe
   const handleSelectSlot = ({ start, end })=>{
     if(bcView==='month'){
       handleNavigate(start)
@@ -95,7 +96,7 @@ export default function CalendarComp({localizer}) {
       }
       setEvents((myEvents) => [...myEvents, newevent])    
       setEvent(newevent)    
-      }
+    }
   }
     
 
@@ -106,17 +107,17 @@ export default function CalendarComp({localizer}) {
     onOpen()
     setCreating(false)
     setEvent(myEvents.filter(item => item.id===e.id)[0])     //Elijo posicion 0 porque sino me guarda un array
-    }
-  const { defaultDate, views } = useMemo(
-    () => ({
-      defaultDate: new Date(),
-      views: [Views.MONTH, Views.DAY, Views.WEEK, Views.AGENDA],
-    }),
-    []
-  ) 
+  }
+
+  const { defaultDate, views } = useMemo(() => ({
+    defaultDate: new Date(),
+    views: [Views.MONTH, Views.DAY, Views.WEEK, Views.AGENDA],
+  }),[])
+
   function handleClose(){
     if(creating){
-      myEvents.pop()}
+      myEvents.pop()
+    }
     setCreating(false)
     setEvent()
     onClose()  
