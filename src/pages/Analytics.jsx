@@ -3,7 +3,7 @@ import {Center,Container,Button,Box,Flex, Heading, Text, Divider, Circle, Wrap, 
 import {Stat,StatLabel,StatNumber,StatHelpText,StatArrow,StatGroup} from '@chakra-ui/react'
 import AuthContext from '../auth/AuthContext';
 import {base_url} from '../environment/global';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area} from 'recharts';
 import { PieChart, Pie, Sector, Cell } from 'recharts';
 import useApi from '../hooks/useApi';
 import analyticsApi from '../api/analyticsApi';
@@ -422,8 +422,26 @@ function Analytics(){
                                         </Button> 
                                     </Flex>
                                 </Flex>
-                                <Flex flex='1' justify='center' mt='3'>
-                                    <LineChart
+                                <Flex justify='center' mt='3' h='300px' w={['500px','500px','500px','650px','600px','800px']}>
+                                    <ResponsiveContainer>
+                                    <AreaChart
+                                        data={data}
+                                        margin={{
+                                        top: 10,
+                                        right: 30,
+                                        left: 0,
+                                        bottom: 0,
+                                        }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Area type="monotone" dataKey={graphicLine.name} stroke={graphicLine.color} fill={graphicLine.color} />
+                                    </AreaChart>
+                                    </ResponsiveContainer>
+                                
+                                    {/* <LineChart
                                         width={570}
                                         height={280}
                                         data={data}
@@ -439,8 +457,8 @@ function Analytics(){
                                         <Tooltip />
                                         <Legend />
                                         <Line type="monotone" dataKey={graphicLine.name} stroke={graphicLine.color} activeDot={{ r: 8 }} />
-                                        {/* <Line type="monotone" dataKey="gains" stroke="#82ca9d" /> */}
-                                    </LineChart>
+                                        <Line type="monotone" dataKey="gains" stroke="#82ca9d" />
+                                    </LineChart> */}
                                 </Flex>
                             </Flex>
                             <Divider/>
