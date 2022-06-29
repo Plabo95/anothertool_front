@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Center,Container,Button,Box,Flex, Heading, Text, Divider, Circle, Wrap, WrapItem} from '@chakra-ui/react'
+import {Center,Container,Button,Box,Flex, Heading, Text, Divider, Circle, Wrap, WrapItem, useMediaQuery} from '@chakra-ui/react'
 import {Stat,StatLabel,StatNumber,StatHelpText,StatArrow,StatGroup} from '@chakra-ui/react'
 import AuthContext from '../auth/AuthContext';
 import {base_url} from '../environment/global';
@@ -14,6 +14,9 @@ import Statbox from '../components/Analytics/Statbox';
 import { transform } from 'framer-motion';
 
 function Analytics(){
+
+    const [isLargerThan2000] = useMediaQuery('(min-width: 2000px)')
+    
 
     const {user, authTokens} = useContext(AuthContext)
 
@@ -301,12 +304,14 @@ function Analytics(){
         const citasPerService = analyticsData.eps.map(serv => {
             return {name: serv.name, value: serv.count}
         })
-        setCitasService(citasPerService)
+        console.log('citasPerService: ', citasPerService?.filter(e => e.value !== 0))
+        setCitasService(citasPerService?.filter(e => e.value !== 0))
 
         const gainsPerService = analyticsData.eps.map(serv => {
             return {name: serv.name, value: serv.gains}
         })
-        setGainsService(gainsPerService)
+        console.log('gainsPerService: ', gainsPerService?.filter(e => e.value !== 0))
+        setGainsService(gainsPerService?.filter(e => e.value !== 0))
     }
 
     const getDatos = async (start_date, end_date, period) => {
@@ -325,9 +330,15 @@ function Analytics(){
         iniDateParams();
         iniOptions();
     },[])
+    
+    const [isLargerThan] = useMediaQuery('(min-width: 1400px)')
+    useEffect(() => {
+        console.log('isLargerThan2000',isLargerThan2000)
+        console.log('isLargerThan',isLargerThan)
+    },[isLargerThan2000,isLargerThan])
 
     return(
-        <Container maxW='1750px'>
+        <Container maxW={isLargerThan2000 ? '1750px' : ()=>(isLargerThan ? '1360px' : '1200px')}>
             <Flex w="100%" p={5} direction='column' minH={'100vh'} >
                 <Flex justify='start'>
                     <Heading pt='1' m={4} textAlign='center' > ¿Como va el taller? </Heading>
@@ -422,7 +433,7 @@ function Analytics(){
                                         </Button> 
                                     </Flex>
                                 </Flex>
-                                <Flex justify='center' mt='3' h='300px' w={['500px','500px','500px','650px','600px','800px']}>
+                                <Flex justify='center' mt='3' h='300px' w={['500px','500px','500px','650px',isLargerThan ? '600px' : '500px',isLargerThan2000 ? '800px' : '650px']}>
                                     <ResponsiveContainer>
                                     <AreaChart
                                         data={data}
@@ -487,8 +498,8 @@ function Analytics(){
                         </Flex>
                     </Flex>
 
-                    <Flex pt={[0,0,0,0,'63px','63px']} justify="center" maxW='500px'>      
-                        <Flex boxShadow='lg' m={4} rounded='xl' bg='white' direction='column' justify='space-between'>
+                    <Flex pt={[0,0,0,0,'63px','63px']} justify="center" maxW={['1500px','1500px','1500px','1500px','500px','500px']} minW='350px'>      
+                        <Flex w={'100%'} boxShadow='lg' m={4} rounded='xl' bg='white' direction='column' justify='space-between'>
                             <Flex m='1.5em'>
                                 {graphicLine.name === 'citas' 
                                     ?   <Text>Citas / Servicio</Text>
@@ -556,7 +567,6 @@ function Analytics(){
                 }
             </Flex>
         </Container >
-        
     );
 }
 

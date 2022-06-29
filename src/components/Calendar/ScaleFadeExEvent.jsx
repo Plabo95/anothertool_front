@@ -25,7 +25,6 @@ function ScaleFadeExEvent({handleUpdate, e, handleToDoDone}) {
     useEffect(() => {
         setIsOpen(true);
         setIsOpen2(true);
-        console.log(e)
     },[])
   
     return (
@@ -34,16 +33,18 @@ function ScaleFadeExEvent({handleUpdate, e, handleToDoDone}) {
         <Collapse in={isOpen2} animateOpacity>
             <ScaleFade initialScale={0.9} in={isOpen1}>
                 <Flex key={e.id} className={'evento-' + e.id}>
-                    <Box opacity={e.done ? '0.5' : '1'} cursor='pointer' _hover={{bg: e.service.color}} p='3' bg='white' my='6' width="280px" boxShadow='lg' borderColor="gray.300" rounded="lg" onClick={()=>{onOpen()}}>
+                    <Box opacity={e.done ? '0.5' : '1'} cursor='pointer' _hover={{bg: e.service.color}} p='3' bg='white' my='2' width="280px" boxShadow='lg' borderColor="gray.300" rounded="lg" onClick={()=>{onOpen()}}>
                         <Flex my='5 'align='center' justify='space-between' gap={3}>
                         <Square size='18px' bg={e.service.color} rounded="md"/>  
-                        <Text fontSize='xl'>{   e.title
-                                                    ?   e.title
-                                                    :   e.client.car
-                                            }
+                        <Text fontSize='xl'>
+                            { e.title 
+                                ?   e.title
+                                :   e.service.name
+                            }
                         </Text>
                         <Text fontSize='xl'> {moment(e.start).format("hh:mm")} </Text>
                         </Flex>              
+                        <Text fontSize='sm' mt={1}> {e.service.name} </Text>
                         <Text fontSize='sm' mt={1}> {e.service.name} </Text>
                     </Box>
                     <Flex align='center'>

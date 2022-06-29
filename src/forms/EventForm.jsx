@@ -52,6 +52,7 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
     setPrice()
     setNote()
     }
+    console.log('event Form',event)
   }, [event]);
 
   function closeDrawer(){
@@ -203,7 +204,7 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
       <Input  variant='flushed' onChange={e => setTitle(e.target.value)} placeholder={!is_creating? event.title  : 'Añadir título'}/> 
 
       <FormControl isInvalid={isServiceError}>      
-      <Select onChange={e => setService(e.value)} noOptionsMessage={()=>'No hay servicios'}  maxMenuHeight={120} placeholder={'Servicio'} defaultInputValue={!is_creating? getServiceName(event.service)  : ''} options={services} />
+      <Select onChange={e => setService(e.value)} noOptionsMessage={()=>'No hay servicios'}  maxMenuHeight={120} placeholder={!is_creating? event.service_name  : 'Servicio'}  options={services} />
       {!isServiceError ? (
         <FormHelperText>
           Elige un servicio
@@ -214,7 +215,7 @@ export default function EventForm({is_creating, updateEvents, updateNextEvents, 
       </FormControl> 
 
       <FormControl isInvalid={isClientError}>
-      <Select onChange={e => setClient(e.value)} noOptionsMessage={()=>'No hay clientes'}  maxMenuHeight={120} placeholder={'Cliente'} defaultInputValue={!is_creating? getClientName(client)  : ''} options={m_clients} />
+      <Select onChange={e => setClient(e.value)} noOptionsMessage={()=>'No hay clientes'}  maxMenuHeight={120} placeholder={!is_creating? event.client_name  : 'Cliente'} options={m_clients} />
       {!isClientError ? (
         <FormHelperText>
           Elige un cliente o crea uno rápido

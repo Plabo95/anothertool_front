@@ -164,7 +164,7 @@ export default function CalendarComp({localizer}) {
 
   return (
     <Container maxW='1750px'>
-    <Flex w="100%" p="5" m='5' gap={6}>
+    <Flex p="5" m='5' gap={6}>
       <Flex flexDirection='column'>
         <Box>
           <Button variant='primary-s' onClick={()=>{handleSelectSlot({start:'',end:''})}}>+ Añadir cita</Button>

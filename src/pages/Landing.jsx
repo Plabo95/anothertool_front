@@ -34,7 +34,7 @@ export default function Landing(){
             }
             else{
                 console.log('no time, login out..')
-                logoutUser()
+                // logoutUser()
             }            
         }
       },[])
