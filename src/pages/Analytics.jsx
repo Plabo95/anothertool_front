@@ -487,61 +487,61 @@ function Analytics(){
                         </Flex>
                     </Flex>
 
-                    <Flex pt={[0,0,0,0,'63px','63px']} justify="center">      
-                    <Flex boxShadow='lg' m={4} rounded='xl' bg='white' direction='column' justify='space-between'>
-                        <Flex m='1.5em'>
-                            {graphicLine.name === 'citas' 
-                                ?   <Text>Citas / Servicio</Text>
-                                :   <Text>Ganancias / Servicio</Text>
-                            }
-                        </Flex>
-                        <Flex w='100%' justify='center' align='center' >
-                            <PieChart width={200} height={200}>
-                                <Pie
-                                data={graphicLine.name === 'citas' 
-                                        ?   citasService
-                                        :   gainsService
-                                }
-                                cx={95}
-                                cy={95}
-                                innerRadius={50}
-                                outerRadius={90}
-                                fill="#8884d8"
-                                paddingAngle={5}
-                                dataKey="value"
-                                >
+                    <Flex pt={[0,0,0,0,'63px','63px']} justify="center" maxW='500px'>      
+                        <Flex boxShadow='lg' m={4} rounded='xl' bg='white' direction='column' justify='space-between'>
+                            <Flex m='1.5em'>
                                 {graphicLine.name === 'citas' 
+                                    ?   <Text>Citas / Servicio</Text>
+                                    :   <Text>Ganancias / Servicio</Text>
+                                }
+                            </Flex>
+                            <Flex w='100%' justify='center' align='center' >
+                                <PieChart width={200} height={200}>
+                                    <Pie
+                                    data={graphicLine.name === 'citas' 
+                                            ?   citasService
+                                            :   gainsService
+                                    }
+                                    cx={95}
+                                    cy={95}
+                                    innerRadius={50}
+                                    outerRadius={90}
+                                    fill="#8884d8"
+                                    paddingAngle={5}
+                                    dataKey="value"
+                                    >
+                                    {graphicLine.name === 'citas' 
+                                        ?   citasService.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={servicesColors[index % servicesColors.length]} />
+                                            ))
+                                        :   gainsService.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={servicesColors[index % servicesColors.length]} />
+                                            ))
+                                    }
+                                    </Pie>
+                                </PieChart>
+                            </Flex>
+                            <Wrap  p='1.5em' justify='center'>
+                                {graphicLine.name === 'citas'
                                     ?   citasService.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={servicesColors[index % servicesColors.length]} />
+                                            <WrapItem gap='0.5em' w='80px'>
+                                                <Circle bg={servicesColors[index % servicesColors.length]} w='40px' h='40px'/>
+                                                <Flex alignItems='center' mr={2} h='100%'>
+                                                    <Text>{Math.round(100*entry.value/analytics.total.total_events)}%</Text>
+                                                </Flex>
+                                            </WrapItem>
                                         ))
                                     :   gainsService.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={servicesColors[index % servicesColors.length]} />
-                                        ))
-                                }
-                                </Pie>
-                            </PieChart>
-                        </Flex>
-                        <Wrap  p='1.5em' justify='center'>
-                            {graphicLine.name === 'citas'
-                                ?   citasService.map((entry, index) => (
                                         <WrapItem gap='0.5em' w='80px'>
                                             <Circle bg={servicesColors[index % servicesColors.length]} w='40px' h='40px'/>
                                             <Flex alignItems='center' mr={2} h='100%'>
-                                                <Text>{Math.round(100*entry.value/analytics.total.total_events)}%</Text>
+                                                <Text>{Math.round(100*entry.value/analytics.total.total_gains)}%</Text>
                                             </Flex>
                                         </WrapItem>
-                                    ))
-                                :   gainsService.map((entry, index) => (
-                                    <WrapItem gap='0.5em' w='80px'>
-                                        <Circle bg={servicesColors[index % servicesColors.length]} w='40px' h='40px'/>
-                                        <Flex alignItems='center' mr={2} h='100%'>
-                                            <Text>{Math.round(100*entry.value/analytics.total.total_gains)}%</Text>
-                                        </Flex>
-                                    </WrapItem>
-                                ))    
-                            }                       
-                        </Wrap>
-                    </Flex>
+                                    ))    
+                                }                       
+                            </Wrap>
+                        </Flex>
                     </Flex>
 
                 </Flex>
