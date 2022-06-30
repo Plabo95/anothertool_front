@@ -69,21 +69,20 @@ function Nextsidebar({nextEvents, setEvents, events, updateEvents, updateNextEve
     },[nextEventsToDo,nextEventsDone])
 
     return(
-        <Box my='5'>
-            <Heading size='lg' my='5' minW='150px' >Para hoy </Heading>
-            {nextEvents.length === 0 &&
-                <Text>¡Aún no tienes ninguna cita asignada para hoy!</Text>
-            }
-            {nextEventsToDo !== undefined &&
-               nextEventsToDo?.map(e=>
-                    <ScaleFadeExEvent key={e.id} handleUpdate={handleUpdate} handleToDoDone={iniNextEvents} e={e}></ScaleFadeExEvent>
-                )
-            }
-            {nextEventsDone !== undefined &&
-               nextEventsDone?.map(e=>
-                    <ScaleFadeExEvent key={e.id} handleUpdate={handleUpdate} handleToDoDone={iniNextEvents} e={e}></ScaleFadeExEvent>
-                )
-            }
+        <Box h='100%' pt='100px' my='5'  className='toDosCalendar' w='320px'>
+                {nextEvents.length === 0 &&
+                    <Text>¡Aún no tienes ninguna cita asignada para hoy!</Text>
+                }
+                {nextEventsToDo !== undefined &&
+                nextEventsToDo?.map(e=>
+                        <ScaleFadeExEvent key={e.id} handleUpdate={handleUpdate} handleToDoDone={iniNextEvents} e={e}></ScaleFadeExEvent>
+                    )
+                }
+                {nextEventsDone !== undefined &&
+                nextEventsDone?.map(e=>
+                        <ScaleFadeExEvent key={e.id} handleUpdate={handleUpdate} handleToDoDone={iniNextEvents} e={e}></ScaleFadeExEvent>
+                    )
+                }
         </Box>  
     )
 }

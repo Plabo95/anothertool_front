@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
 import Toolbar from "react-big-calendar/lib/Toolbar";
 import Nextsidebar from '../components/Nextsidebar'
-import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box, DrawerBody, Container} from '@chakra-ui/react'
+import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box, DrawerBody, Container, Heading} from '@chakra-ui/react'
 import { Flex, Button} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 
@@ -163,11 +163,12 @@ export default function CalendarComp({localizer}) {
 
 
   return (
-    <Container maxW='1750px'>
-    <Flex p="5" m='5' gap={6}>
-      <Flex flexDirection='column'>
-        <Box>
+    <Container maxW='1750px' h='100vh'>
+    <Flex px="5" py="7" mx='5' my='0' gap={6} h='100%' className='primer-Flex' position={'relative'}>
+      <Flex flexDirection='column' h='100%' position={'relative'}>
+        <Box position={'fixed'} bg='#F0F0F0' w='330px' zIndex={50}>
           <Button variant='primary-s' onClick={()=>{handleSelectSlot({start:'',end:''})}}>+ Añadir cita</Button>
+          <Heading size='lg' my='5' minW='150px' >Para hoy </Heading>
         </Box>
         <Nextsidebar nextEvents={nextEvents} events={myEvents} setEvents={setEvents} updateEvents={updateEvents} 
           updateNextEvents={updateNextEvents}/>  
@@ -194,7 +195,7 @@ export default function CalendarComp({localizer}) {
       max= {new Date(2022, 10, 0, 22, 0, 0)}
       step={15}
       timeslots={4}
-      style={{ height: 800,width: '100%' }}
+      style={{ height: '100%',width: '100%' }}
       messages={{
         next: ">>",
         previous: "<<",

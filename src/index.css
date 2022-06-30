@@ -157,6 +157,18 @@ button.btn-mes,button.btn-semana,button.btn-dia{
   font-size: x-large;
 }
 
+/***************** TODOS CALENDAR *************************/
+
+.toDosCalendar::-webkit-scrollbar {
+  display: none;
+}
+
+.toDosCalendar{
+  scrollbar-width: none !important;
+  overflow-y: scroll;
+  width: 100% !important;
+}
+
 /***************** CURSOR POINTER *************************/
 .cursor{
   cursor: pointer;
