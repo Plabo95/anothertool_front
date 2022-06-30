@@ -1,11 +1,11 @@
-import {Flex, Heading, Text, Button, Box, Image} from '@chakra-ui/react'
+import {Flex, Heading, Text, Button, Box, Image, IconButton} from '@chakra-ui/react'
 import AuthContext from '../auth/AuthContext'
 
+import imgLogo from '../assets/logo_navbar.png'
 import img1 from '../assets/landing1_img1.png'
 import img2 from '../assets/landing2_img1.png'
 import img3 from '../assets/landing3_img1.png'
 import img5 from '../assets/landing5_img1.png'
-
 
 import {AiOutlineCalendar, AiOutlineUnorderedList} from 'react-icons/ai';
 import {MdOutlinePeopleAlt} from 'react-icons/md';
@@ -34,7 +34,7 @@ export default function Landing(){
             }
             else{
                 console.log('no time, login out..')
-                logoutUser()
+                // logoutUser()
             }            
         }
       },[])
@@ -43,9 +43,11 @@ export default function Landing(){
     return(
         <Flex direction='column' w='100%' >
 
-            <Flex bg='white' height='8vh' w='100%' p='1%' align='center'>
+            <Flex bg='white' height='8vh' w='100%' p='1%' align='center' position='fixed' zIndex={3}>
                 <Flex w='50%' justify='start' ml='3%'>
-                    <Flex><Text variant='parrafo'>another</Text><Text variant='parrafo' color={'blue'}>tool</Text></Flex>
+                    <Box>
+                        <Image src={imgLogo}/>
+                    </Box>
                 </Flex>
                 <Flex w='50%' justify='end' gap='10' align='center' mr='3%' >
                     <Button variant='primary-out-s' 

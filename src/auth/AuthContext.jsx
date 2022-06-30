@@ -22,6 +22,7 @@ export const AuthProvider = ({children}) => {
 
     //nos dice si el authcontext esta listo para ser cargado
     const [loading,setLoading] = useState(false)  
+    const [isLogged,setIsLogged] = useState(false)  
     const toast = useToast()
 
     const loginUser = async(e) => {
@@ -71,32 +72,42 @@ export const AuthProvider = ({children}) => {
     } 
 
     const updateToken = async() => {
-        const response = await fetch(base_url+'token/refresh',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'refresh': authTokens?.refresh })
+        if(localStorage.getItem('authTokens')) {
+            const localAuthToken = await JSON.parse(localStorage.getItem('authTokens'))
+            const response = await fetch(base_url+'token/refresh',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'refresh': localAuthToken.refresh })
             })
             if(response.ok){
+                setIsLogged(true)
                 const data = await response.json();
                 setAuthTokens(data)
                 setUser(jwt_decode(data.access))
                 localStorage.setItem('authTokens', JSON.stringify(data))    //cache?
+                console.log('Token obtenido',data)
             }
             if(!response.ok){
                 console.log('Error refreshing token, loggin out...')
+                setIsLogged(false)
                 logoutUser()
             }
             //al terminar de refrescar el token quito loading
             if(loading){
                 setLoading(false)
             }
+        }else {
+            console.log('No hay token en localStorage')
+        }          
+        
     }
     const contextData = {
         user: user,
         authTokens: authTokens,
+        isLogged: isLogged,
         loginUser: loginUser,
         logoutUser: logoutUser,
         updateToken: updateToken

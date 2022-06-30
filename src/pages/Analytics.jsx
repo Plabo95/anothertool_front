@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Center,Container,Button,Box,Flex, Heading, Text, Divider, Circle} from '@chakra-ui/react'
+import {Center,Container,Button,Box,Flex, Heading, Text, Divider, Circle, Wrap, WrapItem, useMediaQuery} from '@chakra-ui/react'
 import {Stat,StatLabel,StatNumber,StatHelpText,StatArrow,StatGroup} from '@chakra-ui/react'
 import AuthContext from '../auth/AuthContext';
 import {base_url} from '../environment/global';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area} from 'recharts';
 import { PieChart, Pie, Sector, Cell } from 'recharts';
 import useApi from '../hooks/useApi';
 import analyticsApi from '../api/analyticsApi';
+import servicesApi from '../api/servicesApi';
 
 //Components
 import Statbox from '../components/Analytics/Statbox';
@@ -14,11 +15,19 @@ import { transform } from 'framer-motion';
 
 function Analytics(){
 
+    const [isLargerThan2000] = useMediaQuery('(min-width: 2000px)')
+    
+
     const {user, authTokens} = useContext(AuthContext)
 
     const [analytics, setAnalytics] = useState()
     const [data, setData] = useState({})
     const [graphicLine, setGraphicLine] = useState({name: 'citas', color: '#8884d8'})
+
+    const[services, setServices] = useState([])
+    const[citasService, setCitasService] = useState([])
+    const[gainsService, setGainsService] = useState([])
+    const[servicesColors, setServicesColors] = useState([])
 
     const [period, setPeriod] = useState('month')
     const [iniPeriodDay, setIniPeriodDay] = useState()
@@ -285,6 +294,26 @@ function Analytics(){
     ];
     const COLORS = ['tomato', '#81e5d9', '#805ad4'];
 
+    const getDataServices = async (analyticsData) => {
+        
+        const colors = analyticsData.eps.map(serv => {
+            return serv.color
+        })
+        setServicesColors(colors)
+        
+        const citasPerService = analyticsData.eps.map(serv => {
+            return {name: serv.name, value: serv.count}
+        })
+        console.log('citasPerService: ', citasPerService?.filter(e => e.value !== 0))
+        setCitasService(citasPerService?.filter(e => e.value !== 0))
+
+        const gainsPerService = analyticsData.eps.map(serv => {
+            return {name: serv.name, value: serv.gains}
+        })
+        console.log('gainsPerService: ', gainsPerService?.filter(e => e.value !== 0))
+        setGainsService(gainsPerService?.filter(e => e.value !== 0))
+    }
+
     const getDatos = async (start_date, end_date, period) => {
         const daterange = {start_date, end_date} 
         // const daterange = {start_date:'2022-1-1', end_date:'2023-1-1', period: 'year'} 
@@ -294,22 +323,29 @@ function Analytics(){
             : setAnalytics(data)
         setData(data.period)
         console.log('Datooooos',data)
+        getDataServices(data)
     }
 
     useEffect(() => {
         iniDateParams();
         iniOptions();
     },[])
+    
+    const [isLargerThan] = useMediaQuery('(min-width: 1400px)')
+    useEffect(() => {
+        console.log('isLargerThan2000',isLargerThan2000)
+        console.log('isLargerThan',isLargerThan)
+    },[isLargerThan2000,isLargerThan])
 
     return(
-        <Container maxW='1250px'>
+        <Container maxW={isLargerThan2000 ? '1750px' : ()=>(isLargerThan ? '1360px' : '1200px')}>
             <Flex w="100%" p={5} direction='column' minH={'100vh'} >
                 <Flex justify='start'>
                     <Heading pt='1' m={4} textAlign='center' > ¿Como va el taller? </Heading>
                 </Flex>
 
                 <Flex justify='center' gap='6' direction={['column','column','column','column','row','row']}>
-                    <Flex width='100%' direction='column'>
+                    <Flex width='100%' direction='column' h='100%'>
                         <Flex justify='space-between'>
                             <Flex W='30%' bg='white' boxShadow='lg' rounded='xl' m={4} mb={2} >
                                 <Button bg='white' onClick={()=>{nextPrevPeriod('prev')}}>&lt;</Button>
@@ -362,31 +398,63 @@ function Analytics(){
                             </Flex>
                         </Flex>
                         
-                        <Flex  bg='white' direction='column' boxShadow='lg' rounded='xl' m={4}>
-                            <Flex ml='2em' mt='15px'>
+                        <Flex  bg='white' direction='column' boxShadow='lg' rounded='xl'  m={4} mb={[0,0,0,4,4]}>
+                            {/* <Flex ml='2em' mt='15px'>
                                 <Text fontWeight='800' fontSize='17px'> Ganancias</Text>
-                            </Flex>
+                            </Flex> */}
                             <Flex p='2em' py='1em' justify='space-between'>
                                 <Flex direction='column' gap='8'>
-                                    <Flex direction={'column'}>
+                                    {/* <Flex direction={'column'}>
                                         <Heading>659€</Heading>
                                         <Text>Este mes</Text>
                                     </Flex>
                                     <Flex direction={'column'}>
                                         <Heading>40</Heading>
                                         <Text>Citas este mes</Text>
-                                    </Flex>
-                                    <Flex direction='column'>
+                                    </Flex> */}
+                                    {/* <Flex direction='column'>
                                         {graphicLine.name === 'ganancias'
                                             ?   <Button bg='#8884d8' color='white' _hover={{bg: 'white', color: '#001234'}} onClick={()=>{setGraphicLine({name:'citas', color:'#8884d8'})}}>Citas</Button>
                                             :   <Button bg='#82ca9d' _hover={{bg: 'white', color: '#001234'}} onClick={()=>{setGraphicLine({name:'ganancias', color:'#82ca9d'})}}>Ganancias</Button>
                                         }
+                                    </Flex> */}
+                                    <Flex direction='column'>
+                                        <Button m='2' mt='3' onClick={()=>{setGraphicLine({name:'citas', color:'#8884d8'})}}
+                                            bg={graphicLine.name === 'citas' ? '#8884d8' : 'none'}
+                                            color={graphicLine.name === 'citas' ? 'white' : '#8884d8'}
+                                            _hover={{bg: '#8884d8', color: '#001234'}}>
+                                                Citas
+                                        </Button>
+                                        <Button m='2' onClick={()=>{setGraphicLine({name:'ganancias', color:'#82ca9d'})}}
+                                            bg={graphicLine.name === 'ganancias' ? '#82ca9d' : 'none'}
+                                            color={graphicLine.name === 'ganancias' ? '#001234' : '#82ca9d'}
+                                            _hover={{bg: '#82ca9d', color: 'white'}}>
+                                            Ganancias
+                                        </Button> 
                                     </Flex>
                                 </Flex>
-                                <Flex  direction='column'>
-                                    <LineChart
-                                        width={500}
-                                        height={270}
+                                <Flex justify='center' mt='3' h='300px' w={['500px','500px','500px','650px',isLargerThan ? '600px' : '500px',isLargerThan2000 ? '800px' : '650px']}>
+                                    <ResponsiveContainer>
+                                    <AreaChart
+                                        data={data}
+                                        margin={{
+                                        top: 10,
+                                        right: 30,
+                                        left: 0,
+                                        bottom: 0,
+                                        }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Area type="monotone" dataKey={graphicLine.name} stroke={graphicLine.color} fill={graphicLine.color} />
+                                    </AreaChart>
+                                    </ResponsiveContainer>
+                                
+                                    {/* <LineChart
+                                        width={570}
+                                        height={280}
                                         data={data}
                                         margin={{
                                             top: 5,
@@ -400,68 +468,90 @@ function Analytics(){
                                         <Tooltip />
                                         <Legend />
                                         <Line type="monotone" dataKey={graphicLine.name} stroke={graphicLine.color} activeDot={{ r: 8 }} />
-                                        {/* <Line type="monotone" dataKey="gains" stroke="#82ca9d" /> */}
-                                    </LineChart>
+                                        <Line type="monotone" dataKey="gains" stroke="#82ca9d" />
+                                    </LineChart> */}
                                 </Flex>
                             </Flex>
                             <Divider/>
-                            <Flex  p='1em' align='center'>
-                                <Flex gap='0.5em'>
-                                    <Circle bg='tomato' w='40px' h='40px'/>
-                                    <Flex direction='column'>
-                                        <Text>Lavados</Text>
-                                        <Text>40€</Text>
-                                    </Flex>
-                                </Flex> 
-                                <Flex gap='0.5em' ml='2em' >
-                                    <Circle bg='teal.200' w='40px' h='40px'/>
-                                    <Flex direction='column'>
-                                        <Text>M.Ligera</Text>
-                                        <Text>140€</Text>
-                                    </Flex>
-                                </Flex>
-                                <Flex gap='0.5em' ml='2em' >
-                                    <Circle bg='purple.500' w='40px' h='40px'/>
-                                    <Flex direction='column'>
-                                        <Text>M.Pesada</Text>
-                                        <Text>500€</Text>
-                                    </Flex>
-                                </Flex>                         
-                            </Flex>
+                            <Wrap  p='1.5em' justify='start'>
+                                {graphicLine.name === 'citas'
+                                    ?   citasService.map((entry, index) => (
+                                            <WrapItem gap='0.5em'>
+                                                <Circle bg={servicesColors[index % servicesColors.length]} w='40px' h='40px'/>
+                                                <Flex direction='column' alignItems='start' mr={2} h='100%'>
+                                                    <Text>{entry.name}</Text>
+                                                    <Text>{entry.value} Citas</Text>
+                                                </Flex>
+                                            </WrapItem>
+                                        ))
+                                    :   gainsService.map((entry, index) => (
+                                        <WrapItem gap='0.5em'>
+                                            <Circle bg={servicesColors[index % servicesColors.length]} w='40px' h='40px'/>
+                                            <Flex direction='column' alignItems='start' mr={2} h='100%'>
+                                                <Text>{entry.name}</Text>
+                                                <Text>{entry.value}€</Text>
+                                            </Flex>
+                                        </WrapItem>
+                                    ))    
+                                } 
+                            </Wrap>
                         </Flex>
                     </Flex>
 
-                    <Flex boxShadow='lg' m={4} mt={[4,4,4,4,'80px','80px']} rounded='xl' bg='white' direction='column' justify='space-between'>
-                        <Flex m='1.5em'>
-                            <Text > Citas / Servicio</Text>
-                        </Flex>
-                        <Flex w='100%' justify='center' align='center' >
-                            <PieChart width={200} height={200}>
-                                <Pie
-                                data={data2}
-                                cx={95}
-                                cy={95}
-                                innerRadius={50}
-                                outerRadius={90}
-                                fill="#8884d8"
-                                paddingAngle={5}
-                                dataKey="value"
-                                >
-                                {data2.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                ))}
-                                </Pie>
-                            </PieChart>
-                        </Flex>
-                        <Flex  p='1.5em' justify='center'>
-                            {data2.map((entry, index) => (
-                                <Flex gap='0.5em'>
-                                    <Circle bg={COLORS[index % COLORS.length]} w='40px' h='40px'/>
-                                    <Flex alignItems='center' mr={2}>
-                                        <Text>10%</Text>
-                                    </Flex>
-                                </Flex>
-                            ))}                       
+                    <Flex pt={[0,0,0,0,'63px','63px']} justify="center" maxW={['1500px','1500px','1500px','1500px','500px','500px']} minW='350px'>      
+                        <Flex w={'100%'} boxShadow='lg' m={4} rounded='xl' bg='white' direction='column' justify='space-between'>
+                            <Flex m='1.5em'>
+                                {graphicLine.name === 'citas' 
+                                    ?   <Text>Citas / Servicio</Text>
+                                    :   <Text>Ganancias / Servicio</Text>
+                                }
+                            </Flex>
+                            <Flex w='100%' justify='center' align='center' >
+                                <PieChart width={200} height={200}>
+                                    <Pie
+                                    data={graphicLine.name === 'citas' 
+                                            ?   citasService
+                                            :   gainsService
+                                    }
+                                    cx={95}
+                                    cy={95}
+                                    innerRadius={50}
+                                    outerRadius={90}
+                                    fill="#8884d8"
+                                    paddingAngle={5}
+                                    dataKey="value"
+                                    >
+                                    {graphicLine.name === 'citas' 
+                                        ?   citasService.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={servicesColors[index % servicesColors.length]} />
+                                            ))
+                                        :   gainsService.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={servicesColors[index % servicesColors.length]} />
+                                            ))
+                                    }
+                                    </Pie>
+                                </PieChart>
+                            </Flex>
+                            <Wrap  p='1.5em' justify='center'>
+                                {graphicLine.name === 'citas'
+                                    ?   citasService.map((entry, index) => (
+                                            <WrapItem gap='0.5em' w='80px'>
+                                                <Circle bg={servicesColors[index % servicesColors.length]} w='40px' h='40px'/>
+                                                <Flex alignItems='center' mr={2} h='100%'>
+                                                    <Text>{Math.round(100*entry.value/analytics.total.total_events)}%</Text>
+                                                </Flex>
+                                            </WrapItem>
+                                        ))
+                                    :   gainsService.map((entry, index) => (
+                                        <WrapItem gap='0.5em' w='80px'>
+                                            <Circle bg={servicesColors[index % servicesColors.length]} w='40px' h='40px'/>
+                                            <Flex alignItems='center' mr={2} h='100%'>
+                                                <Text>{Math.round(100*entry.value/analytics.total.total_gains)}%</Text>
+                                            </Flex>
+                                        </WrapItem>
+                                    ))    
+                                }                       
+                            </Wrap>
                         </Flex>
                     </Flex>
 
@@ -477,7 +567,6 @@ function Analytics(){
                 }
             </Flex>
         </Container >
-        
     );
 }
 

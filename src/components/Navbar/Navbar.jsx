@@ -28,9 +28,9 @@ function Navbar(){
         <Box bg='transparent' h="100vh" w={navSize === "small"? "75px": "200px"}>
             <Flex direction="column"  p={navSize === "small"? "11px": "16px"} align={navSize === "small"? "flex-start": "flex-start"}  >
                 <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/none' />
-                <NavItem navSize={navSize} icon={AiOutlineCalendar} title="Calendar" slash='/none' />
-                <NavItem navSize={navSize} icon={BiWrench} title="Garage" slash='/none' />      
-                <NavItem navSize={navSize} icon={VscGraph} title="Reports" slash='/none' /> 
+                <NavItem navSize={navSize} icon={AiOutlineCalendar} title="Calendario" slash='/none' />
+                <NavItem navSize={navSize} icon={BiWrench} title="Mi taller" slash='/none' />      
+                <NavItem navSize={navSize} icon={VscGraph} title="Estadisticas" slash='/none' /> 
             </Flex>
         </Box> 
         <Flex bg='darkblue' h="100%" position='fixed' flexFlow='column wrap' justify="space-between" zIndex='50'
@@ -77,10 +77,11 @@ function Navbar(){
                     </Flex>
                 </Box>
                 {user.is_staff && 
-                <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/adminpanel' />}
-                <NavItem navSize={navSize} icon={AiOutlineCalendar} title="Calendar" slash='/calendar' />
-                <NavItem navSize={navSize} icon={BiWrench} title="Garage" slash='/garage' />      
-                <NavItem navSize={navSize} icon={VscGraph} title="Reports" slash='/analytics' /> 
+                    <NavItem navSize={navSize} icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/adminpanel' />
+                }
+                <NavItem navSize={navSize} icon={AiOutlineCalendar} title="Calendario" slash='/calendar' />
+                <NavItem navSize={navSize} icon={BiWrench} title="Mi taller" slash='/garage' />      
+                <NavItem navSize={navSize} icon={VscGraph} title="Estadisticas" slash='/analytics' /> 
             </Flex>
 
             <Flex p='2' flexFlow='column wrap' w="100%" mb={4} gap='3'

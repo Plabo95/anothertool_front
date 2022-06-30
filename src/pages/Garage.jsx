@@ -1,6 +1,6 @@
 import React, {useEffect, useContext} from 'react'
 
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Flex, Text, Heading } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Flex, Text, Heading, Container } from '@chakra-ui/react'
 
 
 //components
@@ -13,7 +13,7 @@ import CarsTable from '../tables/CarsTable'
 function Garage(){
     
     return(
-        <>
+        <Container maxW='1750px'>
         <Flex w="100%" direction={'column'} minH='100vh' align='center'>
         <Flex py='4' justify={'start'} w='80%'>
             <Heading>Mi taller</Heading>
@@ -43,7 +43,7 @@ function Garage(){
             </Tabs>
         </Flex>
         </Flex> 
-        </>
+        </Container>
     );
 }
 

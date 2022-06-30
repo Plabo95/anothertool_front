@@ -18,9 +18,9 @@ export const Unauthorized = ({site}) => {
 const UnauthorizedLogin = () => {
     return(
         <>
-            <Heading size='md'> ¡Su cuenta aun no ha sido activada! </Heading>
+            <Heading size='md'> ¡Tu cuenta aun no ha sido activada! </Heading>
             <Text textAlign='center'>
-                Nos pondremos en contacto lo antes posible, para activar su cuenta
+                Nos pondremos en contacto lo antes posible, para activar tu cuenta
             </Text>
             <Text textAlign='center'>
                 Si no recibe un email en las próximas 24 horas, póngase en contacto a traves de nuestro email:
@@ -37,7 +37,7 @@ const UnauthorizedRegister = () => {
         <>
             <Heading size='md'> ¡Gracias por confiar en nosotros! </Heading>
             <Text textAlign='center'>
-                Nos pondremos en contacto lo antes posible, para activar su cuenta
+                Nos pondremos en contacto lo antes posible, para activar tu cuenta
             </Text>
             <Text textAlign='center'>
                 Si no recibe un email en las próximas 24 horas, póngase en contacto a traves de nuestro email:

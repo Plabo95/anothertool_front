@@ -7,13 +7,13 @@ export default function Statbox({title, dataTotal, dataComparations}){
     return(
         <Flex direction='column' w='200px' gap='2em' p='2em' bg='white' justify='center' align='center' rounded='xl'boxShadow='lg'>  
             <Stat>
-                <Text>{title}</Text>
-                <Heading>{dataTotal}</Heading>
+                <Text textAlign='center'>{title}</Text>
+                <Heading textAlign='center'>{dataTotal}</Heading>
 
-                <StatHelpText>
-                    {dataComparations > 0
-                        ?   <StatArrow type='increase' />
-                        :   <StatArrow type='decrease' />
+                <StatHelpText textAlign='center'>
+                    {dataComparations >= 0
+                        ?   <StatArrow type='increase' textAlign='center'/>
+                        :   <StatArrow type='decrease' textAlign='center'/>
                     }
                     {dataComparations}%
                 </StatHelpText>

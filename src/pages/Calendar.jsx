@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Calendar, Views, DateLocalizer } from 'react-big-calendar'
 import Toolbar from "react-big-calendar/lib/Toolbar";
 import Nextsidebar from '../components/Nextsidebar'
-import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box, DrawerBody} from '@chakra-ui/react'
+import {Drawer, DrawerOverlay,DrawerContent, useDisclosure, Box, DrawerBody, Container, Heading} from '@chakra-ui/react'
 import { Flex, Button} from '@chakra-ui/react'
 import EventForm from '../forms/EventForm'
 
@@ -71,13 +71,14 @@ export default function CalendarComp({localizer}) {
       allDay: false,
       name : event.service_name + ' para ' + event.client_name,
       color: event.service_color,
-      }
-      })
+    }
+  })
 
   function handleNavigate(date) {
     setYourDate(moment(date).toDate())
   }
-//Manage del selection timeframe
+
+  //Manage del selection timeframe
   const handleSelectSlot = ({ start, end })=>{
     if(bcView==='month'){
       handleNavigate(start)
@@ -95,7 +96,7 @@ export default function CalendarComp({localizer}) {
       }
       setEvents((myEvents) => [...myEvents, newevent])    
       setEvent(newevent)    
-      }
+    }
   }
     
 
@@ -106,17 +107,17 @@ export default function CalendarComp({localizer}) {
     onOpen()
     setCreating(false)
     setEvent(myEvents.filter(item => item.id===e.id)[0])     //Elijo posicion 0 porque sino me guarda un array
-    }
-  const { defaultDate, views } = useMemo(
-    () => ({
-      defaultDate: new Date(),
-      views: [Views.MONTH, Views.DAY, Views.WEEK, Views.AGENDA],
-    }),
-    []
-  ) 
+  }
+
+  const { defaultDate, views } = useMemo(() => ({
+    defaultDate: new Date(),
+    views: [Views.MONTH, Views.DAY, Views.WEEK, Views.AGENDA],
+  }),[])
+
   function handleClose(){
     if(creating){
-      myEvents.pop()}
+      myEvents.pop()
+    }
     setCreating(false)
     setEvent()
     onClose()  
@@ -162,11 +163,12 @@ export default function CalendarComp({localizer}) {
 
 
   return (
-    <>
-    <Flex w="100%" p="5" m='5' gap={6}>
-      <Flex flexDirection='column'>
-        <Box>
+    <Container maxW='1750px' h='100vh'>
+    <Flex px="5" py="7" mx='5' my='0' gap={6} h='100%' className='primer-Flex' position={'relative'}>
+      <Flex flexDirection='column' h='100%' position={'relative'}>
+        <Box position={'fixed'} bg='#F0F0F0' w='330px' zIndex={50}>
           <Button variant='primary-s' onClick={()=>{handleSelectSlot({start:'',end:''})}}>+ Añadir cita</Button>
+          <Heading size='lg' my='5' minW='150px' >Para hoy </Heading>
         </Box>
         <Nextsidebar nextEvents={nextEvents} events={myEvents} setEvents={setEvents} updateEvents={updateEvents} 
           updateNextEvents={updateNextEvents}/>  
@@ -193,7 +195,7 @@ export default function CalendarComp({localizer}) {
       max= {new Date(2022, 10, 0, 22, 0, 0)}
       step={15}
       timeslots={4}
-      style={{ height: 800,width: '100%' }}
+      style={{ height: '100%',width: '100%' }}
       messages={{
         next: ">>",
         previous: "<<",
@@ -219,7 +221,7 @@ export default function CalendarComp({localizer}) {
           </DrawerBody>
         </DrawerContent>
       </Drawer>    
-      </>
+      </Container>
     )
 }
 
