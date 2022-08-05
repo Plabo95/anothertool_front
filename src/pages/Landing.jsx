@@ -106,10 +106,10 @@ export default function Landing(){
                         <Text variant='parrafo'>Fácil e intuitivo</Text>
                     </Flex>
                     <Flex>
-                        <Text variant='parrafo'>Loremipsum loremipsum</Text>
+                        <Text variant='parrafo'>Todo en una plataforma online</Text>
                     </Flex>
                     <Flex>
-                        <Text variant='parrafo'>Singelmery singelflery</Text>
+                        <Text variant='parrafo'>Controla tu taller desde cualquier lugar</Text>
                     </Flex>
                 </Flex>
             </Flex>
