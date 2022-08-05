@@ -43,7 +43,7 @@ export default function Login(){
             bgAttachment='fixed'
             bgRepeat='no-repeat'
             bgSize='100%'>
-            <Flex height='8vh' w='100%' p='1%' align='center' justifyContent='space-between'>
+            <Flex height='30px' w='100%' p='1%' align='center' justifyContent='space-between'>
                 <Flex justify='start' ml='3%'>
                     <Flex onClick={() => navigate('/')} cursor='pointer'>
                         <Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading>
@@ -60,7 +60,7 @@ export default function Login(){
             </Flex>
 
 
-            <Flex height='92vh' justify='center' align='center' w='100%'>
+            <Flex justify='center' align='center' w='100%'>
             { unauthorized 
                 ?   <Unauthorized site='login'/>
                 :   <Flex py='5%'  w={['80%','75%','400px','400px']} direction='column' align='center' gap='5'>
