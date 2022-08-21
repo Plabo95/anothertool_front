@@ -1,6 +1,8 @@
 import {Flex, Heading, Text, Button, Box, Image} from '@chakra-ui/react'
 import AuthContext from '../auth/AuthContext'
 import ReactTypingEffect from 'react-typing-effect';
+import {useNavigate} from 'react-router-dom'
+import { useContext, useEffect, useState } from 'react'
 
 //images
 import gradient from '../assets/landing/gradient.jpg'
@@ -13,13 +15,15 @@ import img5 from '../assets/landing/img5.png'
 import img6 from '../assets/landing/img6.png'
 import tick from '../assets/landing/tick.png'
 
+//icons
 import {AiOutlineCalendar, AiOutlineUnorderedList} from 'react-icons/ai';
 import {MdOutlinePeopleAlt} from 'react-icons/md';
 import {VscGraph} from 'react-icons/vsc';
 import {FiTool} from 'react-icons/fi';
 import {RiBookletLine} from 'react-icons/ri';
-import {useNavigate} from 'react-router-dom'
-import { useContext, useEffect } from 'react'
+
+//components
+import NavbarLanding from '../components/Navbar/NavLanding';
 
 export default function Landing(){
 
@@ -27,18 +31,26 @@ export default function Landing(){
     const icon_box = '120px'
     const navigate = useNavigate();
 
+    function getWindowDimensions() {
+        const { innerWidth: width, innerHeight: height } = window;
+        return {
+          width,
+          height
+        };
+      }
+
     useEffect(() => {
-        
+        console.log(getWindowDimensions())
         if(user){
             var now=Date.now();
             console.log(user.exp - now)
             if(user.exp - now > 0){
-                console.log('Aun hay tiempo')
+                //console.log('Aun hay tiempo')
                 navigate('calendar')
             }
             else{
-                console.log('no time, login out..')
-                // logoutUser()
+                //console.log('no time, login out..')
+                logoutUser()
             }            
         }
       },[])
@@ -47,21 +59,8 @@ export default function Landing(){
     return(
         <Flex direction='column' w='100%' bgImage={gradient} align='center'>
 
-            <Flex bg='white' height='8vh' w='100%' p='1%' align='center' position='fixed' zIndex={3}>
-                <Flex w='50%' justify='start' ml='3%'>
-                    <Box>
-                        <Image src={imgLogo}/>
-                    </Box>
-                </Flex>
-                <Flex w='50%' justify='end' gap='10' align='center' mr='3%' >
-                    <Button variant='primary-out-s' 
-                    onClick={() => navigate('login')}
-                    >Iniciar sesión</Button>
-                    <Button variant='primary-s'  
-                    onClick={() => navigate('register')}
-                    >Pruébalo gratis</Button>
-                </Flex>
-            </Flex>
+            <NavbarLanding/>
+
             {/* Pantalla 1 */}
             <Flex w='80%' justify='center' gap='5%' my='8vh' align='center' minH='82vh'>
                 <Flex direction='column' gap='1em' maxW='35%' >

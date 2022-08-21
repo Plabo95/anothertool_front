@@ -15,6 +15,7 @@ import AdminPanel from './pages/AdminPanel';
 
 //Non Auth Components
 import Landing from './pages/Landing';
+import Prices from './pages/Prices';
 
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import PrivateRoute from './auth/PrivateRoute'
@@ -50,7 +51,8 @@ function App() {
           <Navbar/>
         <Routes>
             <Route index element={isLogged ? <Navigate to="/calendar" replace /> : <Landing/>} />
-            <Route path='/' index element={isLogged ? <Navigate to="/calendar" replace /> : <Landing/>} />  
+            <Route path='/' index element={isLogged ? <Navigate to="/calendar" replace /> : <Landing/>} />
+            <Route path='/prices' index element={isLogged ? <Navigate to="/calendar" replace /> : <Prices/>} />  
             <Route path='/register' element={isLogged ? <Navigate to="/calendar" replace /> : <Register/>} /> 
             <Route path='/login' element={isLogged ? <Navigate to="/calendar" replace /> : <Login/>} />   
 
