@@ -43,7 +43,6 @@ export default function CarsTable(){
             updateTable()
         }   
         else{
-            console.log('error es:', error)
             toast({
                 title: 'Error al borrar ',
                 description: "Código de error"+ error +' intentalo mas tarde' ,
@@ -69,8 +68,8 @@ export default function CarsTable(){
 
     return(
         <>
-        <Flex justify={'space-between'}>
-            <Button variant='primary-out-s' onClick={()=>handleCreate()}>+ Añadir Coche</Button>
+        <Flex justify='end'>
+            <Button variant='primary' onClick={()=>handleCreate()}>+ Añadir coche</Button>
         </Flex>
         <Flex w="100%">
         <TableContainer mt='5' borderRadius='lg' w="100%" bg='white' boxShadow='lg'>

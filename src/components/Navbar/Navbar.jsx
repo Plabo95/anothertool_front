@@ -1,8 +1,4 @@
 import {Flex, Divider, Avatar, Heading, Text, IconButton, Button, Box} from '@chakra-ui/react'
-import SvgMenu from  '../../dist/Menu'
-import SvgAnalytics from  '../../dist/Analytics'
-import SvgCalendar from  '../../dist/Calendar'
-import SvgServicios from  '../../dist/Servicios'
 import SvgLogo from  '../../dist/Logo'
 import {AiOutlineCalendar} from 'react-icons/ai';
 import {BiWrench} from 'react-icons/bi';

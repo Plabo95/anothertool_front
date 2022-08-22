@@ -64,11 +64,11 @@ export const AuthProvider = ({children}) => {
             return (response.statusText)
     }
 
-    const logoutUser = (ini = true) => {
+    const logoutUser = () => {
+        navigate('/');
         setAuthTokens(null)
         setUser(null)
-        localStorage.removeItem('authTokens')
-        if (ini) navigate('/');
+        localStorage.removeItem('authTokens')    
     } 
 
     const updateToken = async() => {

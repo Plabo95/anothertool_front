@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import { Button, useToast, Flex, Heading, Text, Box} from '@chakra-ui/react'
+import { Button, Flex, Heading, Text} from '@chakra-ui/react'
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import {Unauthorized} from '../components/Unauthorized'
@@ -8,12 +8,15 @@ import TextField from '../forms/TextField'
 import AuthContext from '../auth/AuthContext';
 import {useNavigate} from 'react-router-dom'
 
-import bg from '../assets/login_bg.png'
+import bg from '../assets/login-register/login_bg.jpg'
+
+//Components
+import NavLoginRegister from '../components/Navbar/NavLoginRegister';
 
 export default function Login(){
 
     const navigate = useNavigate();
-    const toast = useToast();
+
     const [isLogged, setIsLogged] = useState(false)
     const [loadingCreate, setLoadingCreate] = useState(false)
     const [unauthorized, setUnauthorized] = useState(false)
@@ -43,22 +46,8 @@ export default function Login(){
             bgAttachment='fixed'
             bgRepeat='no-repeat'
             bgSize='100%'>
-            <Flex height='30px' w='100%' p='1%' align='center' justifyContent='space-between'>
-                <Flex justify='start' ml='3%'>
-                    <Flex onClick={() => navigate('/')} cursor='pointer'>
-                        <Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading>
-                    </Flex>
-                </Flex>
-                <Flex justify='end' gap='10' align='center' mr='3%' ml='3%'>
-                    <Text fontWeight='bold'>¿Aún no tienes cuenta?</Text>
-                    <Box>
-                        <Button variant="primary-s" size='sm'
-                        onClick={() => navigate('/register')}
-                        >Regístrate</Button>
-                    </Box>
-                </Flex>
-            </Flex>
 
+            <NavLoginRegister/>
 
             <Flex justify='center' align='center' w='100%'>
             { unauthorized 

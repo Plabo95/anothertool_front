@@ -43,7 +43,6 @@ function ClientsTable(){
             setClients(newClients)
         }   
         else{
-            console.log('error es:', error)
             toast({
                 title: 'Error al borrar ',
                 description: "Código de error"+ error +' intentalo mas tarde' ,
@@ -81,15 +80,15 @@ function ClientsTable(){
 
     return(
         <>
-        <Flex justify={'space-between'}>
-            <Flex p='6' gap='4' direction={'column'} shadow='md' borderRadius={'xl'} alignItems={'center'} bg='white'>
+        <Flex justify={'space-between'} align='end'>
+            <Flex p='6' gap='4' direction={'column'} shadow='md' borderRadius={'xl'} align={'center'} bg='white'>
                 <Text>Morosos</Text>
-                <Flex gap='4' align={'center'}>
+                <Flex gap='4' align='center'>
                     <Text> {morosos} </Text>
                     <Switch size='sm' colorScheme='green' ref={switchElement} onChange={()=>handleFilter()} />
                 </Flex>
             </Flex>
-            <Button variant='primary-out-s' onClick={()=>handleCreate()}>+ Añadir cliente</Button>
+            <Button variant='primary' onClick={()=>handleCreate()}>+ Añadir cliente</Button>
         </Flex>
         <Flex w="100%">
         <TableContainer mt='5' borderRadius='lg' w="100%" bg='white' boxShadow='lg'>

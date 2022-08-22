@@ -1,12 +1,11 @@
-import {Flex, Heading, Text, Button, Box, Image} from '@chakra-ui/react'
+import {Flex, Heading, Text, Button, Image} from '@chakra-ui/react'
 import AuthContext from '../auth/AuthContext'
 import ReactTypingEffect from 'react-typing-effect';
 import {useNavigate} from 'react-router-dom'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 
 //images
 import gradient from '../assets/landing/gradient.jpg'
-import imgLogo from '../assets/logo_navbar.png'
 import img1 from '../assets/landing/img1.png'
 import img2 from '../assets/landing/img2.png'
 import img3 from '../assets/landing/img3.png'
@@ -15,12 +14,6 @@ import img5 from '../assets/landing/img5.png'
 import img6 from '../assets/landing/img6.png'
 import tick from '../assets/landing/tick.png'
 
-//icons
-import {AiOutlineCalendar, AiOutlineUnorderedList} from 'react-icons/ai';
-import {MdOutlinePeopleAlt} from 'react-icons/md';
-import {VscGraph} from 'react-icons/vsc';
-import {FiTool} from 'react-icons/fi';
-import {RiBookletLine} from 'react-icons/ri';
 
 //components
 import NavbarLanding from '../components/Navbar/NavLanding';
@@ -28,8 +21,7 @@ import Footer from '../components/Footer';
 
 export default function Landing(){
 
-    const {user, authTokens, logoutUser} = useContext(AuthContext)
-    const icon_box = '120px'
+    const {user, logoutUser} = useContext(AuthContext)
     const navigate = useNavigate();
 
     function getWindowDimensions() {
@@ -47,7 +39,7 @@ export default function Landing(){
             console.log(user.exp - now)
             if(user.exp - now > 0){
                 //console.log('Aun hay tiempo')
-                navigate('calendar')
+                navigate('/calendar')
             }
             else{
                 //console.log('no time, login out..')
@@ -171,37 +163,16 @@ export default function Landing(){
             </Flex>
 
             {/* PANTALLA 6 */}
-            <Flex w='80%' direction='column' gap='10%' align='center' justify='center' minH='90vh' >
+            <Flex w='80%' direction='column' gap='5em' align='center' justify='center' minH='90vh' >
                 <Flex maxW='60%' direction='column' align='center' gap='2em'>
                     <Heading fontSize='40px'>anothertool, tu otra herramienta online</Heading>      
                     <Text fontSize='22px' align='center'>Calendario, seguimiento de trabajos, historial de cliente,s gestión de citas, tareas y servicios
                         estadísticas... 
                     </Text>
                 </Flex>
-                <Flex direction={['column','column','column','row','row']} gap='10'>
-                    <Flex gap='10'>
-                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                            <AiOutlineCalendar className='svg-blue' size='50%' />
-                        </Flex>
-                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                            <AiOutlineUnorderedList className='svg-orange' size='50%' />
-                        </Flex>
-                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                            <MdOutlinePeopleAlt className='svg-darkblue' size='50%' />
-                        </Flex>
-                    </Flex>
-                    <Flex gap='10'>
-                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                            <RiBookletLine className='svg-blue' size='50%' />
-                        </Flex>
-                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                            <VscGraph className='svg-orange' size='50%' />
-                        </Flex>
-                        <Flex bg='white' w={icon_box} h={icon_box} rounded='xl' align='center' justify= 'center'>
-                            <FiTool size='50%' className='svg-darkblue'/>
-                        </Flex>
-                    </Flex>
-                </Flex>
+                <Flex>
+                    <Image src={img6}/> 
+                </Flex>      
             </Flex>
 
             {/* FOOTER */}

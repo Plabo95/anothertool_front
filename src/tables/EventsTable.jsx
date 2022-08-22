@@ -1,12 +1,19 @@
 import React, {useContext, useState, useEffect} from 'react'
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,useToast,Flex, IconButton} from '@chakra-ui/react'
+import {Table as tablep,Thead,Tbody,Tr,Th,Td,TableContainer,useToast,Flex, IconButton} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {InputGroup, Input, InputLeftAddon} from '@chakra-ui/react'
-import EventFormCrud from '../forms/EventFormCrud'
+import {Table} from "react-chakra-pagination";
 import moment from 'moment';
+
+//components
+import EventFormCrud from '../forms/EventFormCrud'
+import PopoverDelete from '../components/PopoverDelete'
+
+//icons images
 import {FiSearch,} from 'react-icons/fi';
 import SvgEdit from  './../dist/Edit'
-import PopoverDelete from '../components/PopoverDelete'
+
+//api
 import eventsApi from '../api/eventsApi'
 import servicesApi from '../api/servicesApi'
 import clientsApi from '../api/clientsApi'
@@ -47,14 +54,9 @@ function EventsTable(){
         error
             ?   console.log('Error fetching services...', error) 
             :   setServices(data)
-    }
-    
+    } 
     function handleEdit(e){
         setEvent(e)
-        onOpen()
-    }
-    function handleCreate(){
-        setEvent()
         onOpen()
     }
     const handleDelete = async (e) =>{
@@ -81,7 +83,6 @@ function EventsTable(){
             })
         }    
     }
-
     function handleFilter(e){
         var filter = e.target.value.toLowerCase() 
         setEventsFilter(events.filter(item => filterEvent(item, filter)))
@@ -108,6 +109,33 @@ function EventsTable(){
             return('No price') 
       }
     }
+    const tableColumns = [
+        {
+          Header: "#",
+          accessor: "id"
+        },
+        {
+          Header: "Título",
+          accessor: "title"
+        },
+        {
+          Header: "Día",
+          accessor: "start"
+        },
+        {
+          Header: "Cliente",
+          accessor: "client"
+        },
+        {
+            Header: "¿Pagado?",
+            accessor: "paid"
+        },
+        {
+            Header: "",
+            accessor: "buttons"
+        }
+      ];
+
     useEffect(() => {
         updateEvents() 
         updateServices()
@@ -118,50 +146,45 @@ function EventsTable(){
         setEventsFilter(events) 
     },[events])
 
-    return(
-        <>
+    const [page, setPage] = React.useState(1);
+
+    const tableData = eventsFilter.map((date)=>({
+        id: date.id,
+        title: date.title,
+        start: moment(date.start).format("DD/MM/YYYY, hh:mm"),
+        client: date.client_name,
+        service: date.client_name,
+        paid: JSON.stringify(date.paid),
+        buttons:(
         <Flex>
-        <InputGroup rounded={'md'} bg="white" w="200px" >
-            <InputLeftAddon children={<FiSearch/>} />
-            <Input type='text' placeholder='Filtra por cliente' onChange={(e) => handleFilter(e)} />
-        </InputGroup>
-        </Flex>
-        <Flex w="100%"  >    
-            <TableContainer mt='5' borderRadius='lg' w="100%" bg="white" boxShadow='lg'>
-                <Table variant='simple' size='md'>
-                <Thead>
-                    <Tr>
-                    <Th>#</Th>
-                    <Th>Título</Th>
-                    <Th>Día</Th>
-                    <Th>Cliente</Th>
-                    <Th>Servicio</Th>
-                    <Th>Cobrado (€)</Th>
-                    <Th>Paid</Th>
-                    <Th></Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {eventsFilter.map(date=>
-                        <Tr key={date.id}>
-                            <Td>{date.id}</Td>
-                            <Td>{date.title}</Td>
-                            <Td>{moment(date.start).format("DD/MM/YYYY, hh:mm")}</Td>
-                            <Td>{date.client_name}</Td>
-                            <Td>{date.service_name}</Td>
-                            <Td textAlign={'center'}> 
-                                {getTotalPrice(date)}
-                            </Td>
-                            <Td> {JSON.stringify(date.paid)} </Td>
-                            <Td>
-                                <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>} onClick={() => handleEdit(date)} ></IconButton> 
-                                <PopoverDelete onDelete={handleDelete} id={date.id} />
-                            </Td>    
-                        </Tr>
-                    )}
-                </Tbody>
-                </Table>
-            </TableContainer>
+            <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>} onClick={() => handleEdit(date)} ></IconButton> 
+            <PopoverDelete onDelete={handleDelete} id={date.id} />
+        </Flex>),                 
+    }));
+
+    return(
+        <Flex direction='column' w='100%'>
+            <InputGroup rounded={'md'} bg="white" w="200px" >
+                <InputLeftAddon children={<FiSearch/>} />
+                <Input type='text' placeholder='Filtra por cliente' onChange={(e) => handleFilter(e)} />
+            </InputGroup>
+   
+            <Flex bg='white' rounded='lg' boxShadow='lg' mt='1em'>
+            <Table
+                colorScheme="gray"
+                // Fallback component when list is empty
+                emptyData={{
+                text: "Nobody is registered here."
+                }}
+                totalRegisters={eventsFilter.length}
+                page={page}
+                // Listen change page event and control the current page using state
+                onPageChange={(page) => setPage(page)}
+                columns={tableColumns}
+                data={tableData}
+            />
+            </Flex>
+            
             <Drawer
                 isOpen={isOpen}
                 placement='right'
@@ -174,8 +197,7 @@ function EventsTable(){
                 <EventFormCrud onClose={onClose} event={event} events={events} setEvents={setEvents} servicelist={services} clientlist={clients} updateEvents={updateEvents}/>
                 </DrawerContent>
             </Drawer>                    
-      </Flex>
-      </>
+        </Flex>
     );
 }
 

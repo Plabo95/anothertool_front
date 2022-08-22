@@ -4,16 +4,16 @@ import * as Yup from 'yup';
 import {Formik} from "formik";
 import TextField from '../forms/TextField'
 import {Unauthorized} from '../components/Unauthorized'
-import {SwitchControl} from "formik-chakra-ui";
-import {useNavigate} from 'react-router-dom'
 import {CheckboxSingleControl}  from "formik-chakra-ui";
 import { base_url } from '../environment/global';
 
-import bg from '../assets/register_bg.png'
+import bg from '../assets/login-register/register_bg.jpg'
+
+//Components
+import NavLoginRegister from '../components/Navbar/NavLoginRegister';
 
 export default function Register(){
 
-    const navigate = useNavigate();
     const toast = useToast()
     const[loadingCreate, setLoadingCreate] = useState(false)
     const[registered, setRegistered] = useState(false)
@@ -58,7 +58,6 @@ export default function Register(){
         }
     }
 
-
     return(
         <Flex w='100%' minH='100vh' direction='column' 
             backgroundImage={bg}
@@ -66,20 +65,8 @@ export default function Register(){
             bgAttachment='fixed'
             bgRepeat='no-repeat'
             bgSize='100%'>
-            
-            <Flex height='30px' w='100%' p='1%' align='center' justifyContent='space-between'>
-                <Flex justify='start' ml='3%'>
-                    <Flex onClick={() => navigate('/')} cursor='pointer' >
-                        <Heading size='md' >another</Heading><Heading size='md' color={'blue'}>tool</Heading>
-                    </Flex>
-                </Flex>
-                <Flex justify='end' gap='10' align='center' mr='3%' ml='3%'>
-                    <Text fontWeight='bold' >¿Ya tienes una cuenta?</Text>
-                    <Button variant="primary-s" size='sm'
-                    onClick={() => navigate('/login')}
-                    >Iniciar Sesión</Button>
-                </Flex>
-            </Flex>
+
+            <NavLoginRegister/>
 
             <Flex justify='center' align='center' w='100%'>
                 { registered 
@@ -138,6 +125,8 @@ export default function Register(){
                 }
             </Flex>
         </Flex>
+
+
     )
 
 }
