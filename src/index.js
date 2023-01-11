@@ -11,6 +11,9 @@ import {QueryClient,QueryClientProvider,} from '@tanstack/react-query'
 //auth
 import { AuthProvider } from 'react-auth-kit'
 
+/* Styles */
+import './index.css'
+
 const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
