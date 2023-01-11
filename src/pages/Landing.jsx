@@ -11,7 +11,7 @@ import img5 from '../img/landing/img5.png'
 import img6 from '../img/landing/img6.png'
 import tick from '../img/landing/tick.png'
 //components
-import NavbarLanding from '../components/Navbar/NavLanding';
+import NavbarLanding from '../components/landing/NavLanding';
 import Footer from '../components/Footer';
 
 export default function Landing(){
