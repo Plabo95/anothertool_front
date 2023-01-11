@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 //pages
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 export default function App() {
   
@@ -32,6 +33,7 @@ useEffect(() => {
     <Routes>
         <Route index path='/' element={<Landing  device={device} />} />
         <Route index path='/login' element={<Login  device={device} />} />
+        <Route index path='/register' element={<Register  device={device} />} />
     </Routes>
   )
 }
