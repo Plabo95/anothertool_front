@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 //pages
 import Home from "./pages/Home";
+import Landing from "./pages/Landing";
 
 export default function App() {
   
@@ -30,7 +31,7 @@ export default function App() {
 
   return (
     <Routes>
-        <Route index path='/' element={<Home  device={device} />} />
+        <Route index path='/' element={<Landing  device={device} />} />
     </Routes>
   )
 }
