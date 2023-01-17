@@ -1,6 +1,5 @@
 import { Button, Flex, Heading, Text, useToast} from '@chakra-ui/react'
 import {useNavigate} from 'react-router-dom'
-
 //images
 import bg from '../img/login-register/login_bg.jpg'
 //Components
@@ -28,16 +27,16 @@ export default function Login(){
         {
         onSuccess: (data) => {
             toast({title: 'Login exitoso!',status:"success"})
+            console.log(data)
             signIn({
-                token: data.access_token,
+                token: data.access,
                 expiresIn: 3600,
                 tokenType: "Bearer",
-                authState: {username: 'gervasio'},           
             })
             navigate('/')
         },
         onError : (error)=>{
-            toast({title: error.message, description: error.response.data?.message ,status:"error"})
+            toast({title: error.message, description: error.response?.data.message ,status:"error"})
         }
         }
     );
@@ -47,7 +46,7 @@ export default function Login(){
         password: Yup.string()
             .min(6, 'Demasiado corta')
             .required('Es obligatorio'),
-        username: Yup.string().email('Formato de email inválido').required('Es obligatorio'),
+        email: Yup.string().email('Formato de email inválido').required('Es obligatorio'),
         });  
 
     return(
@@ -66,19 +65,18 @@ export default function Login(){
                             <Heading size='md'> ¡Hola de nuevo! </Heading>
                             <Formik
                             initialValues = {{
-                                username: "",
+                                email: "",
                                 password: "",
                                 }
                             }
                             validationSchema={LoginSchema}
                             onSubmit={(values) => {
-                                console.log(values)
                                 mutate(values);
                                 }}
                             >
                             {formik => (
                             <Flex direction={'column'} onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" w='80%' justify='space-around' align='center' gap='3'>
-                            <TextField name="username" placeholder="Usuario"  />
+                            <TextField name="email" placeholder="Email"  />
                             <TextField type="password" name="password" placeholder="Contraseña" />
                             <Button mt='8' variant='primary-s' size='md'
                             onClick={formik.handleSubmit}  isLoading={isLoading}  >

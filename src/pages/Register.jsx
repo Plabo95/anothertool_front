@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import { useState } from 'react';
 import { Button, useToast, Flex, Text,Heading} from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom';
 //img
 import bg from '../img/login-register/register_bg.jpg'
 //Components
@@ -8,12 +9,31 @@ import TextField from '../components/forms/TextField'
 //forms
 import * as Yup from 'yup';
 import {Formik} from "formik";
+//api
+import { register } from '../api/authApi';
+import { useMutation } from "@tanstack/react-query"
+
 
 export default function Register(){
 
     const toast = useToast()
-    const[loadingCreate, setLoadingCreate] = useState(false)
-    const[registered, setRegistered] = useState(false)
+    const navigate = useNavigate()
+    const [error, setError] = useState('')
+
+    const {isLoading, mutate} = useMutation(
+        ["register"],
+        register,
+        {
+        onSuccess: (data) => {
+            toast({title: 'Registro exitoso!',status:"success"})
+            navigate('/login')
+        },
+        onError : (error)=>{
+            setError(error.response.data)
+            toast({title: error.message, description: error.response.data.email ,status:"error"})
+        }
+        }
+    );
 
     return(
         <Flex w='100%' minH='100vh' direction='column' 
@@ -33,30 +53,28 @@ export default function Register(){
                         <Formik
                         initialValues = {{
                             email: "",
-                            username: "",
                             password: "",
                             password2: "",
-                            terms: false,
                         }
                         }
                         validationSchema = {Yup.object({
                             email: Yup.string().email('Formato de email inválido').required("Email es obligatorio"),
-                            username: Yup.string().required("Usuario es obligatorio"),
                             password: Yup.string().min(8, 'Contraseña demasiado corta - mínimo 8 caracteres')
                                         .matches(/[a-zA-Z]/, 'Solo puede contener letras del abecedario'),
                             password2: Yup.string().oneOf([Yup.ref('password'), null], 'Las contraseñas no coinciden'),
                             terms: Yup.boolean().equals([true],'Debes aceptar los términos')
                         })}
                         onSubmit= {(values, actions) => {
-                            //alert(JSON.stringify(values))
-                            //handleSubmit(values)
-                            actions.resetForm()
+                            values = {'email': values['email'], 'password':values['password']}
+                            mutate(values)
                         }}
                         >
                         {formik => (
-                        <Flex  onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" direction={'column'} w='80%' justify='space-around' align='center' gap='3'>
+                        <Flex  onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" direction={'column'} justify='space-around' gap='3'>
                             <TextField placeholder="Correo electrónico" name="email" />
-                            <TextField placeholder="Usuario" name="username" />
+                            {error.email&&
+                            <Text color='red' fontSize='xs' >{error.email}</Text>
+                            }
                             <TextField placeholder="Contraseña" name="password" type="password" />
                             <Flex direction={'column'} align='start'  >
                                 <Text color='gray' fontSize='xs' fontWeight='hairline'>Debe tener al menos 8 caracteres</Text>
@@ -64,7 +82,9 @@ export default function Register(){
                                 <Text color='gray' fontSize='xs' fontWeight='hairline'>No puede ser enteramente numérica</Text>
                             </Flex>
                             <TextField placeholder="Repite Contraseña" name="password2" type="password" />
-                            <Button variant="primary-s" size='md' mt='8' onClick={formik.handleSubmit} isLoading={loadingCreate}  loadingText='Iniciando...'>
+                            <Button variant="primary-s" size='md' mt='8' w='50%' alignSelf='center'
+                            isDisabled={JSON.stringify(formik.errors) !== '{}' }
+                            onClick={formik.handleSubmit} isLoading={isLoading}  loadingText='Iniciando...'>
                             Registrarse </Button>  
                         </Flex>
                             )}
