@@ -1,6 +1,5 @@
 import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex,} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure,} from '@chakra-ui/react'
-import SvgEdit from  './../dist/Edit'
 
 export default function CarsTable(){
 

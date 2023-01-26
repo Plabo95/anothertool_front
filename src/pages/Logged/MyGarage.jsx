@@ -4,7 +4,6 @@ import { Flex, Tabs, TabList, TabPanels, Tab, TabPanel, } from "@chakra-ui/react
 import Navbar from "../../components/navbar/Navbar"
 import EventsTable from '../../components/myGarage/tables/EventsTable'
 import ClientsTable from '../../components/myGarage/tables/ClientsTable'
-import ServicesTable from '../../components/myGarage/tables/ServicesTable'
 import CarsTable from '../../components/myGarage/tables/CarsTable'
 
 export default function MyGarage(){
@@ -23,9 +22,6 @@ export default function MyGarage(){
                 <TabPanels>
                     <TabPanel>
                         <EventsTable/>
-                    </TabPanel>
-                    <TabPanel>
-                        <ServicesTable/>
                     </TabPanel>
                     <TabPanel>
                         <ClientsTable/>
