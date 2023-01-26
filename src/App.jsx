@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import CalendarComp from "./pages/Logged/CalendarPage";
+import MyGarage from "./pages/Logged/MyGarage";
 
 export default function App() {
   
@@ -34,6 +36,11 @@ useEffect(() => {
         <Route index path='/' element={<Landing  device={device} />} />
         <Route index path='/login' element={<Login  device={device} />} />
         <Route index path='/register' element={<Register  device={device} />} />
+
+        <Route index path='/calendar' element={<CalendarComp  device={device} />} />
+        <Route index path='/taller' element={<MyGarage  device={device} />} />
+
+
     </Routes>
   )
 }

@@ -30,6 +30,7 @@ export default function Login(){
             console.log(data)
             signIn({
                 token: data.access,
+                refresh: data.refresh,
                 expiresIn: 3600,
                 tokenType: "Bearer",
             })
