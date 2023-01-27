@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import {useToast, Flex, Button, Avatar, Text} from '@chakra-ui/react'
-import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure, Switch} from '@chakra-ui/react'
+import {useToast, Flex, Button, Text} from '@chakra-ui/react'
+import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
 //comps
 import ClientForm from '../forms/ClientForm';
@@ -66,6 +66,11 @@ export default function ClientsTable(){
     ];
     return(
         <>
+        <Flex justify='end'>
+            <Button variant='primary' 
+            onClick = {()=>{setClient(); onOpen() } }
+            >Crear</Button>
+        </Flex>
         {data&&
             <Table
             // Fallback component when list is empty
@@ -95,7 +100,7 @@ export default function ClientsTable(){
             <DrawerOverlay />
             <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader>Crear Cliente</DrawerHeader>                
+            <DrawerHeader>{client?'Editar':'Crear'} Cliente</DrawerHeader>                
             <ClientForm client={client} onClose={onClose} />
             </DrawerContent>
         </Drawer>  
