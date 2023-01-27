@@ -13,7 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.2",
     "formik": "^2.2.9",
-    "framer-motion": "^7.10.3",
+    "framer-motion": "^4.1.17",
     "install": "^0.13.0",
     "moment": "^2.29.4",
     "npm": "^9.3.1",

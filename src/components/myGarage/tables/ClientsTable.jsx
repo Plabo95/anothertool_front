@@ -1,74 +1,89 @@
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex, Text} from '@chakra-ui/react'
-
+import { useState } from 'react';
+import {useToast, Flex, Button, Avatar, Text} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure, Switch} from '@chakra-ui/react'
+import {Table} from "react-chakra-pagination";
 
-function ClientsTable(){
+//icons
+import {BsTrash} from 'react-icons/bs'
+import {AiOutlineEdit} from 'react-icons/ai'
+//api
+import { useQuery } from '@tanstack/react-query';
+import { getAllClients } from '../../../api/clientsApi';
+//auth
+import { useAuthHeader } from 'react-auth-kit';
+
+export default function ClientsTable(){
 
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [page, setPage] = useState(1);
+    const authHeader = useAuthHeader()
+    
+    const {data, isLoading} = useQuery({
+        queryKey: ['clients'],
+        queryFn: () => getAllClients(authHeader()),
+    })
 
+    // Formatter for each user
+    const tableData = data?.map((client) => ({
+        name: client.name,
+        phone: client.telf,
+        moroso: client.moroso?'Si':'No',
+        action: (
+        <Flex gap='1em'>
+            <Button onClick={() => console.log("remove user!")}>
+                <AiOutlineEdit size='20px' color='blue'/>
+            </Button>
+            <Button onClick={() => console.log("remove user!")}>
+                <BsTrash size='20px' color='red'/>
+            </Button>
+        </Flex>
+        )
+    }));
+  
+    // Accessor to get a data in user object
+    const tableColumns = [
+      {
+        Header: "Nombre",
+        accessor: "name"
+      },
+      {
+        Header: "Teléfono",
+        accessor: "phone"
+      },
+      {
+        Header: "Moroso",
+        accessor: "moroso"
+      },
+      {
+        Header: "",
+        accessor: "action"
+      }
+    ];
     return(
         <>
-        <Flex justify={'space-between'} align='end'>
-            <Flex p='6' gap='4' direction={'column'} shadow='md' borderRadius={'xl'} align={'center'} bg='white'>
-                <Text>Morosos</Text>
-                <Flex gap='4' align='center'>
-                    <Text> {/*  morosos */} </Text>
-                    <Switch size='sm' colorScheme='green' />
-                </Flex>
-            </Flex>
-            <Button variant='primary' >+ Añadir cliente</Button>
-        </Flex>
-        <Flex w="100%">
-        <TableContainer mt='5' borderRadius='lg' w="100%" bg='white' boxShadow='lg'>
-        <Table variant='simple' size='md'>
-            <Thead>
-                <Tr>
-                <Th>#</Th>
-                <Th>Name</Th>
-                <Th>Car</Th>
-                <Th>Phone</Th>
-                <Th>Moroso</Th>
-                <Th></Th>
-                </Tr>
-            </Thead>
-            <Tbody>
-                {/*  fClients.map(client=> {
-                return(
-                    <Tr key={client.id}>
-                        <Td>{client.id}</Td>
-                        <Td>{client.name}</Td>
-                        <Td>{client.car}</Td>
-                        <Td>{client.telf}</Td>
-                        <Td>{JSON.stringify(client.moroso)}</Td>
-                        <Td>
-                            <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>}  onClick={()=> handleEdit(client)} ></IconButton>  
-                            <PopoverDelete onDelete={handleDelete} id={client.id} />
-                        </Td>    
-                    </Tr>
-                )})
-                */}
-            </Tbody>
-        </Table>
-        </TableContainer>
-        </Flex>
-        <Drawer
-            isOpen={isOpen}
-            placement='right'
-            onClose={onClose}
-        >
-            <DrawerOverlay />
-            <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>Crear/Editar cliente</DrawerHeader>                
-            {/* 
-                <ClientForm is_creating={creating} onClose={onClose} client={sClient} clients={fClients} setClients={setFClients} updateTable={updateTable}/>
-            */}
-            </DrawerContent>
-        </Drawer>                    
-     
-      </>
-    );
+        {data&&
+            <Table
+            // Fallback component when list is empty
+            colorScheme={'brand'}
+            emptyData={{
+                    text: "Nobody is registered here."
+            }}
+            totalRegisters={data?.length}
+            page={page}
+            // Listen change page event and control the current page using state
+            onPageChange={(page) => setPage(page)}
+            columns={tableColumns}
+            data={tableData}
+            />
+        }
+        
+        {isLoading&&
+            <Text>
+                Cargando...
+            </Text>
+        }
+        </>
+    )
 }
 
-export default ClientsTable;

@@ -10,6 +10,13 @@ export const myTheme = extendTheme({
         orange: "#FF7C02", //orange
         lightgray: "#F0F0F0",
 
+        brand:{
+            100:'#5292DE',
+            500:'#1C1654',
+            900:'#5292DE',
+        },
+
+
     },
     components: {
         Heading: {
