@@ -8,3 +8,9 @@ export const getAllClients = async(credentials) => {
     const response =  await clientsApi.get('', credentials);
     return response.data
 }
+
+export const createClient = async(data) => {
+    const response =  await clientsApi.post('',data);
+    return response.data
+}
+
