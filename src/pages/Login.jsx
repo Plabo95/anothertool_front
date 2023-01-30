@@ -27,14 +27,14 @@ export default function Login(){
         {
         onSuccess: (data) => {
             toast({title: 'Login exitoso!',status:"success"})
-            console.log(data)
             signIn({
                 token: data.access,
                 refresh: data.refresh,
                 expiresIn: 3600,
                 tokenType: "Bearer",
             })
-            navigate('/')
+            console.log(data)
+            navigate('/calendar')
         },
         onError : (error)=>{
             toast({title: error.message, description: error.response?.data.message ,status:"error"})

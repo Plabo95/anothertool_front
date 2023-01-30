@@ -12,8 +12,12 @@ import {VscGraph} from 'react-icons/vsc';
 import {FaUserTie} from 'react-icons/fa';
 //images
 import Logo from '../../img/logos/logo_navbar.png'
+//auth
+import { useSignOut } from 'react-auth-kit'
 
 export default function Navbar(){
+
+    const signOut = useSignOut()
 
     return(
         <Flex direction='column' bg='darkblue' justify='space-between' py='4em' minH='100vh' px='2em'>
@@ -27,9 +31,11 @@ export default function Navbar(){
 
             <Flex direction='column' gap='2em'>
                 <Divider/>
-                <Flex _hover={{bg:'darkblue'}} _focus={{bg:'darkblue'}}  gap='1em'>
+                <Flex _hover={{bg:'darkblue'}} _focus={{bg:'darkblue'}}  gap='1em' cursor={'pointer'}>
                     <FiLogOut style={{ background: 'none', color: 'white', fontSize: '25px', padding: '0px', _hover:{background:'none'}, _focus:{background:'none'} }}/> 
-                    <Text color="whiteAlpha.800"> Cerrar sesión </Text>
+                    <Text color="whiteAlpha.800"
+                    onClick={() => signOut()}
+                    > Cerrar sesión </Text>
                 </Flex>
                 <Flex >
                     <Avatar size="sm" icon={<FaUserTie fontSize='1.5rem' />}/> 

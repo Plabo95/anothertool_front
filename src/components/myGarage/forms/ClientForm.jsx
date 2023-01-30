@@ -1,33 +1,38 @@
-import { Button, useToast, Flex,VStack} from '@chakra-ui/react'
+import { Button, useToast, Flex,VStack, Text} from '@chakra-ui/react'
 import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
 
 //forms validation
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import TextField from '../../forms/TextField'
-
+//auth
+import {useAuthHeader} from 'react-auth-kit'
 //api
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '../../../api/clientsApi';
 
 export default function ClientForm({onClose, client}){
     
     const toast = useToast()
+    const authHeader = useAuthHeader()
+    const QueryClient = useQueryClient()
 
-    const {isLoading, mutate} = useMutation(
+
+    const {isLoading, mutate, error} = useMutation(
         ["createClient"],
         createClient,
         {
-        onSuccess: (data) => {
+        onSuccess: () => {
             toast({title: 'Creado con exito!',status:"success"})
-            console.log(data)
+            QueryClient.invalidateQueries(["clients"]);
+            QueryClient.refetchQueries("clients", {force:true})
+            onClose()
         },
         onError : (error)=>{
-            toast({title: error.message, description: error.response?.data.message ,status:"error"})
+            toast({title: error.message, description: error.code ,status:"error"})
         }
         }
     );
-
     return(
         <Formik
         initialValues= {{name: client? client.name : '' ,car: client? client.car: '',telf: client? client.telf: '',moroso: client? client.moroso: false }}
@@ -39,8 +44,12 @@ export default function ClientForm({onClose, client}){
             .max(9, "Debe se de 9 dígitos"),
         })}
         onSubmit={(values) => {
-            console.log(values)
-            mutate(values);
+            const payload = {
+                data: values,
+                token: authHeader()
+            }
+            //console.log(payload)
+            mutate(payload);
             }}
         >
         {formik => (
@@ -50,12 +59,14 @@ export default function ClientForm({onClose, client}){
                 <TextField label="Nombre" name="name" />
                 <TextField label="Coche" name="car" />
                 <TextField label="Teléfono" name="telf" />
-            </VStack>      
+            </VStack>     
         </DrawerBody>
         <DrawerFooter>
           <Flex justify="right" columnGap="3" mt='3'>
               <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
-              <Button colorScheme='orange' color='orange' size='sm' onClick={formik.handleSubmit} loadingText='Guardando'>  Guardar </Button>
+              <Button size='sm' 
+              variant ='primary-s'
+              onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
           </Flex>  
         </DrawerFooter>
         </>

@@ -5,12 +5,14 @@ const clientsApi = axios.create({
 })
 
 export const getAllClients = async(credentials) => {
-    const response =  await clientsApi.get('', credentials);
+    const response =  await clientsApi.get('/', credentials);
     return response.data
 }
 
-export const createClient = async(data) => {
-    const response =  await clientsApi.post('',data);
+export const createClient = async(payload) => {
+    const response =  await clientsApi.post('/',payload.data,
+    {headers: {'Authorization': payload.token}}
+    );
     return response.data
 }
 
