@@ -9,7 +9,7 @@ import TextField from '../../forms/TextField'
 import {useAuthHeader} from 'react-auth-kit'
 //api
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createClient } from '../../../api/clientsApi';
+import { createUpdateClient} from '../../../api/clientsApi';
 
 export default function ClientForm({onClose, client}){
     
@@ -17,10 +17,9 @@ export default function ClientForm({onClose, client}){
     const authHeader = useAuthHeader()
     const QueryClient = useQueryClient()
 
-
     const {isLoading, mutate, error} = useMutation(
         ["createClient"],
-        createClient,
+        createUpdateClient,
         {
         onSuccess: () => {
             toast({title: 'Creado con exito!',status:"success"})
@@ -33,6 +32,8 @@ export default function ClientForm({onClose, client}){
         }
         }
     );
+
+
     return(
         <Formik
         initialValues= {{name: client? client.name : '' ,car: client? client.car: '',telf: client? client.telf: '',moroso: client? client.moroso: false }}
@@ -44,9 +45,19 @@ export default function ClientForm({onClose, client}){
             .max(9, "Debe se de 9 dígitos"),
         })}
         onSubmit={(values) => {
-            const payload = {
-                data: values,
-                token: authHeader()
+            var payload = {}
+            if (client) {
+                payload = {
+                    data: values,
+                    slug: client.id,
+                    token: authHeader()
+                }
+            }
+            else{
+                payload = {
+                    data: values,
+                    token: authHeader()
+                }
             }
             //console.log(payload)
             mutate(payload);

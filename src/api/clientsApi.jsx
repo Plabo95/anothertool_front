@@ -9,10 +9,28 @@ export const getAllClients = async(credentials) => {
     return response.data
 }
 
-export const createClient = async(payload) => {
-    const response =  await clientsApi.post('/',payload.data,
+export const createUpdateClient = async(payload) => {
+    var response = {}
+
+    if (payload.slug){
+        response =  await clientsApi.put('/'+payload.slug+'/' ,
+        payload.data,
+        {headers: {'Authorization': payload.token}}
+        );
+    }
+    else{
+        response =  await clientsApi.post('/',payload.data,
+        {headers: {'Authorization': payload.token}}
+        );
+    }
+
+    return response.data
+}
+export const deleteClient = async(payload) => {
+    const response =  await clientsApi.delete('/'+payload.slug+'/',
     {headers: {'Authorization': payload.token}}
     );
     return response.data
 }
+
 

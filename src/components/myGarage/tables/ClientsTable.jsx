@@ -8,8 +8,8 @@ import ClientForm from '../forms/ClientForm';
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
-import { useQuery } from '@tanstack/react-query';
-import { getAllClients } from '../../../api/clientsApi';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getAllClients, deleteClient } from '../../../api/clientsApi';
 //auth
 import { useAuthHeader } from 'react-auth-kit';
 
@@ -21,24 +21,43 @@ export default function ClientsTable(){
     const [page, setPage] = useState(1);
     const [client, setClient] = useState()
     const authHeader = useAuthHeader()
-    
+    const QueryClient = useQueryClient()
+
+
     const {data, isLoading} = useQuery({
         queryKey: ['clients'],
         queryFn: () => getAllClients(authHeader()),
     })
 
+    const {isLoading:ld, mutate} = useMutation(
+        ["deleteClient"],
+        deleteClient,
+        {
+        onSuccess: () => {
+            toast({title: 'Borrado con exito!',status:"success"})
+            QueryClient.invalidateQueries(["clients"]);
+            QueryClient.refetchQueries("clients", {force:true})
+            onClose()
+        },
+        onError : (error)=>{
+            toast({title: error.message, description: error.code ,status:"error"})
+        }
+        }
+    );
+
     // Formatter for each user
     const tableData = data?.map((client) => ({
-        key: client.id,
         name: client.name,
         phone: client.telf,
         moroso: client.moroso?'Si':'No',
         action: (
-        <Flex gap='1em'>
+        <Flex gap='1em' key={client.id}>
             <Button onClick={() => {setClient(client);  onOpen()}}>
                 <AiOutlineEdit size='20px' color='blue'/>
             </Button>
-            <Button onClick={() => console.log("remove user!")}>
+            <Button
+            isLoading={ld} 
+            onClick={() => mutate({slug:client.id, token:authHeader() })   }>
                 <BsTrash size='20px' color='red'/>
             </Button>
         </Flex>
