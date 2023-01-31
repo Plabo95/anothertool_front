@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const clientsApi = axios.create({
-    baseURL: process.env.REACT_APP_API_URL +'clients'
+const servicesApi = axios.create({
+    baseURL: process.env.REACT_APP_API_URL +'services'
 })
 
 export const getAllClients = async(token) => {
@@ -10,7 +10,6 @@ export const getAllClients = async(token) => {
     );
     return response.data
 }
-
 export const createUpdateClient = async(payload) => {
     var response = {}
 

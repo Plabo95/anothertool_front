@@ -1,5 +1,6 @@
 import  {useState } from 'react'
 import {Flex, Divider, Avatar, Heading, Text, IconButton, Button, Box} from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom';
 
 //comps
 import NavItem from './NavItem';
@@ -18,6 +19,7 @@ import { useSignOut } from 'react-auth-kit'
 export default function Navbar(){
 
     const signOut = useSignOut()
+    const navigate = useNavigate()
 
     return(
         <Flex direction='column' bg='darkblue' justify='space-between' py='4em' minH='100vh' px='2em'>
@@ -34,7 +36,7 @@ export default function Navbar(){
                 <Flex _hover={{bg:'darkblue'}} _focus={{bg:'darkblue'}}  gap='1em' cursor={'pointer'}>
                     <FiLogOut style={{ background: 'none', color: 'white', fontSize: '25px', padding: '0px', _hover:{background:'none'}, _focus:{background:'none'} }}/> 
                     <Text color="whiteAlpha.800"
-                    onClick={() => signOut()}
+                    onClick={() =>{ signOut(); navigate('/')}}
                     > Cerrar sesión </Text>
                 </Flex>
                 <Flex >
