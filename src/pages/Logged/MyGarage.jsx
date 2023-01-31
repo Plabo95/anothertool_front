@@ -5,6 +5,7 @@ import Navbar from "../../components/navbar/Navbar"
 //import EventsTable from '../../components/myGarage/tables/EventsTable'
 import ClientsTable from '../../components/myGarage/tables/ClientsTable'
 //import CarsTable from '../../components/myGarage/tables/CarsTable'
+import ServicesTable from "../../components/myGarage/tables/ServicesTable"
 
 export default function MyGarage(){
 
@@ -24,7 +25,7 @@ export default function MyGarage(){
                         Citas
                     </TabPanel>
                     <TabPanel>
-                        Servicios
+                        <ServicesTable/>
                     </TabPanel>
                     <TabPanel>
                         <ClientsTable/>
