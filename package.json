@@ -22,6 +22,7 @@
     "react-auth-kit": "^2.7.1",
     "react-big-calendar": "^1.5.2",
     "react-chakra-pagination": "^1.0.1",
+    "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-router-dom": "^6.6.2",

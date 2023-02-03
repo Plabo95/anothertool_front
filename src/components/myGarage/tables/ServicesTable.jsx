@@ -3,7 +3,7 @@ import {useToast, Flex, Button, Text} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
 //comps
-import ClientForm from '../forms/ClientForm';
+import ServiceForm from '../forms/ServiceForm';
 //icons
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
@@ -88,7 +88,6 @@ export default function ServicesTable(){
         accessor: "action"
       }
     ];
-    console.log(data)
     return(
         <>
         <Flex justify='end'>
@@ -126,7 +125,7 @@ export default function ServicesTable(){
             <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader>{service?'Editar':'Crear'} Cliente</DrawerHeader>                
-            <ClientForm service={service} onClose={onClose} />
+            <ServiceForm service={service} onClose={onClose} />
             </DrawerContent>
         </Drawer>  
         </>
