@@ -13,7 +13,6 @@ export const getAllClients = async(token) => {
 
 export const createUpdateClient = async(payload) => {
     var response = {}
-
     if (payload.slug){
         response =  await clientsApi.put('/'+payload.slug+'/' ,
         payload.data,

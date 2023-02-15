@@ -49,6 +49,7 @@ export default function ClientsTable(){
     const tableData = data?.map((client) => ({
         name: client.name,
         phone: client.telf,
+        email: client.email,
         moroso: client.moroso?'Si':'No',
         action: (
         <Flex gap='1em' key={client.id}>
@@ -73,6 +74,10 @@ export default function ClientsTable(){
       {
         Header: "Teléfono",
         accessor: "phone"
+      },
+      {
+        Header: "Email",
+        accessor: "email"
       },
       {
         Header: "Moroso",

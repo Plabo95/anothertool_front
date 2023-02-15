@@ -1,10 +1,6 @@
 import { useState } from 'react';
-import { Button, useToast, Flex,VStack, Input, FormLabel, Square, 
-        NumberInput, NumberDecrementStepper, NumberIncrementStepper, 
-        NumberInputField, NumberInputStepper
-} from '@chakra-ui/react'
+import { Button, useToast, Flex,VStack, Input, FormLabel, Square, } from '@chakra-ui/react'
 import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
-import { TwitterPicker } from 'react-color';
 
 //forms validation
 import * as Yup from 'yup';
@@ -15,24 +11,22 @@ import NumberField from '../../forms/NumberField';
 import {useAuthHeader} from 'react-auth-kit'
 //api
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createUpdateService } from '../../../api/servicesApi';
+import { createUpdateCar } from '../../../api/carsApi';
 
-export default function ServiceForm({onClose, service}){
+export default function CarForm({onClose, service}){
     
     const toast = useToast()
     const authHeader = useAuthHeader()
     const QueryClient = useQueryClient()
 
-    const[color, setColor] = useState('')
-
     const {isLoading, mutate, error} = useMutation(
-        ["createService"],
-        createUpdateService,
+        ["createCar"],
+        createUpdateCar,
         {
         onSuccess: () => {
-            toast({title: 'Creado con exito!',status:"success"})
-            QueryClient.invalidateQueries(["services"]);
-            QueryClient.refetchQueries("services", {force:true})
+            toast({title: 'Coche creado con exito!',status:"success"})
+            QueryClient.invalidateQueries(["cars"]);
+            QueryClient.refetchQueries("cars", {force:true})
             onClose()
         },
         onError : (error)=>{
@@ -41,10 +35,10 @@ export default function ServiceForm({onClose, service}){
         }
     );
     const initialValues = {
-        name: service? service.name : '' ,
-        price: service? service.baseprice: '',
-        estimed_hours: service? service.estimed_hours: '',  
-        estimed_mins: service? service.estimed_mins: ''
+        plate: car? service.plate : '' ,
+        brand: car? service.brand: '',
+        model: car? service.model: '',  
+        client: car? service.client: ''
     }
     const validationSchema = Yup.object({
         name: Yup.string().required("Nombre es obligatorio"),
@@ -52,7 +46,6 @@ export default function ServiceForm({onClose, service}){
         estimed_hours: Yup.number().required("Horas es obligatorio").max(23),
         estimed_mins: Yup.number().required("Mins es obligatorio").max(59),
     })
-
 
     return(
         <Formik
@@ -82,13 +75,7 @@ export default function ServiceForm({onClose, service}){
         <DrawerBody>  
             <VStack as="form">
                 <TextField label="Nombre" name="name" />
-                <NumberInput label="Precio" name="price" defaultValue={15} min={10} max={20}>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
+               <NumberField label='Precio' />
                 <Flex mb='3' justify='start' align='center' gap='3' >
                 <FormLabel my='3'> Color  </FormLabel>
                 <Square size='20px' bg={color} rounded="md"/>

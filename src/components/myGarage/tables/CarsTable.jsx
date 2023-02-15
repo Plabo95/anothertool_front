@@ -1,62 +1,134 @@
-import {Table,Thead,Tbody,Tr,Th,Td,TableContainer,Button,useToast,IconButton, Flex,} from '@chakra-ui/react'
-import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure,} from '@chakra-ui/react'
+import { useState } from 'react';
+import {useToast, Flex, Button, Text} from '@chakra-ui/react'
+import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
+import {Table} from "react-chakra-pagination";
+//comps
+import ServiceForm from '../forms/CarForm';
+//icons
+import {BsTrash} from 'react-icons/bs'
+import {AiOutlineEdit} from 'react-icons/ai'
+//api
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getAllServices, deleteService } from '../../../api/carsApi';
+//auth
+import { useAuthHeader } from 'react-auth-kit';
 
-export default function CarsTable(){
+
+export default function ServicesTable(){
 
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [page, setPage] = useState(1);
+    const [service, setService] = useState()
+    const authHeader = useAuthHeader()
+    const QueryClient = useQueryClient()
 
+
+    const {data, isLoading} = useQuery({
+        queryKey: ['services'],
+        queryFn: () => getAllServices(authHeader()),
+    })
+
+    const {isLoading:ld, mutate} = useMutation(
+        ["deleteService"],
+        deleteService,
+        {
+        onSuccess: () => {
+            toast({title: 'Borrado con exito!',status:"success"})
+            QueryClient.invalidateQueries(["services"]);
+            QueryClient.refetchQueries("services", {force:true})
+            onClose()
+        },
+        onError : (error)=>{
+            toast({title: error.message, description: error.code ,status:"error"})
+        }
+        }
+    );
+
+    // Formatter for each user
+    const tableData = data?.map((service) => ({
+        name: service.name,
+        color: service.color,
+        duration: service.estimed_hours,
+        baseprice: service.baseprice,
+        action: (
+        <Flex gap='1em' key={service.id}>
+            <Button onClick={() => {setService(service);  onOpen()}}>
+                <AiOutlineEdit size='20px' color='blue'/>
+            </Button>
+            <Button
+            isLoading={ld} 
+            onClick={() => mutate({slug:service.id, token:authHeader() })   }>
+                <BsTrash size='20px' color='red'/>
+            </Button>
+        </Flex>
+        )
+    }));
+  
+    // Accessor to get a data in user object
+    const tableColumns = [
+      {
+        Header: "Nombre",
+        accessor: "name"
+      },
+      {
+        Header: "Color",
+        accessor: "color"
+      },
+      {
+        Header: "Tiempo estimado",
+        accessor: "duration"
+      },
+      {
+        Header: "Precio estimado",
+        accessor: "baseprice"
+      },
+      {
+        Header: "",
+        accessor: "action"
+      }
+    ];
     return(
         <>
         <Flex justify='end'>
-            <Button variant='primary'>+ Añadir coche</Button>
+            <Button variant='primary' 
+            onClick = {()=>{setService(); onOpen() } }
+            >Crear</Button>
         </Flex>
-        <Flex w="100%">
-        <TableContainer mt='5' borderRadius='lg' w="100%" bg='white' boxShadow='lg'>
-        <Table variant='simple' size='md'>
-            <Thead>
-                <Tr>
-                <Th>Matrícula</Th>
-                <Th>Marca</Th>
-                <Th>Modelo</Th>
-                <Th>Cliente</Th>
-                <Th></Th>
-                </Tr>
-            </Thead>
-            <Tbody>
-                {/* cars.map(car=> {
-                return(
-                    <Tr key={car.idplate}>
-                        <Td>{car.idplate}</Td>
-                        <Td>{car.brand}</Td>
-                        <Td>{car.model}</Td>
-                        <Td>{car.client? car.client: 'No asignado'}</Td>
-                        <Td>
-                            <IconButton mr={3} size='xs' background="none" icon={<SvgEdit/>}  onClick={()=> handleEdit(car)} ></IconButton>  
-                            <PopoverDelete onDelete={handleDelete} id={car.idplate} />
-                        </Td>    
-                    </Tr>
-                )})
-                */}
-            </Tbody>
-        </Table>
-        </TableContainer>
-        </Flex>
+        {data&&
+            <Table
+            // Fallback component when list is empty
+            colorScheme={'brand'}
+            emptyData={{
+                    text: "Nobody is registered here."
+            }}
+            totalRegisters={data?.length}
+            page={page}
+            // Listen change page event and control the current page using state
+            onPageChange={(page) => setPage(page)}
+            columns={tableColumns}
+            data={tableData}
+            />
+        }
+        
+        {isLoading&&
+            <Text>
+                Cargando...
+            </Text>
+        }
         <Drawer
-            isOpen={isOpen}
-            placement='right'
-            onClose={onClose}
+        isOpen={isOpen}
+        placement='right'
+        onClose={onClose}
         >
             <DrawerOverlay />
             <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader>Coche</DrawerHeader>
-                {/* 
-                <CarForm  onClose={onClose} /> 
-                */}              
+            <DrawerHeader>{service?'Editar':'Crear'} Cliente</DrawerHeader>                
+            <ServiceForm service={service} onClose={onClose} />
             </DrawerContent>
-        </Drawer>                    
-     
-      </>
-    );
+        </Drawer>  
+        </>
+    )
 }
+

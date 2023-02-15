@@ -1,7 +1,6 @@
-import {FormControl,FormErrorMessage,Input, FormLabel} from '@chakra-ui/react'
 import {Field, useField} from "formik";
 import {NumberInput, NumberDecrementStepper, NumberIncrementStepper, 
-NumberInputField, NumberInputStepper
+NumberInputField, NumberInputStepper, Flex
 } from '@chakra-ui/react'
 
 //Factorizacion del input de texto en los formularios
@@ -11,13 +10,15 @@ export default function NumberField({label, ...props}) {
     const [field, meta] = useField(props) 
 
     return(
-        <FormControl isInvalid={meta.error && meta.touched}>
-
+        <Flex direction='column'>
+            {label}
+            <NumberInput >
                 <NumberInputField />
-
-
-
-            <FormErrorMessage> {meta.error} </FormErrorMessage>
-        </FormControl>
+                <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                </NumberInputStepper>
+            </NumberInput>
+        </Flex>
     )
 }

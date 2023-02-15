@@ -28,48 +28,61 @@ export default function ClientForm({onClose, client}){
             onClose()
         },
         onError : (error)=>{
+            console.log(error)
             toast({title: error.message, description: error.code ,status:"error"})
         }
         }
     );
+    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+    
+    const initialValues = {
+        name: client? client.name : '' ,
+        phone: client? client.phone: '',
+        email: client? client.email: '',  
+    }
+    const validationSchema = Yup.object({
+        name: Yup.string().required("Nombre es obligatorio"),
+        phone: Yup.string().matches(phoneRegExp, 'Teléfono no válido').min(9).required("Teléfono es obligatorio"), 
+        email: Yup.string().email().required("Email es obligatorio"),
+    })
 
-
+    const submit = (values) => {
+        var payload = {}
+        if (client) {
+            payload = {
+                data: values,
+                slug: client.id,
+                token: authHeader()
+            }
+        }
+        else{
+            payload = {
+                data: values,
+                token: authHeader()
+            }
+        }
+        //console.log(payload)
+        mutate(payload);
+    }
     return(
         <Formik
-        initialValues= {{name: client? client.name : '' ,car: client? client.car: '',telf: client? client.telf: '',moroso: client? client.moroso: false }}
-        validationSchema = {Yup.object({
-            name: Yup.string().required("Nombre es obligatorio"),
-            //car: Yup.string().required("Coche es obligatorio"),
-            telf: Yup.string().required("Coche es obligatorio")
-            .min(9, "Debe ser de 9 dígitos")
-            .max(9, "Debe se de 9 dígitos"),
-        })}
-        onSubmit={(values) => {
-            var payload = {}
-            if (client) {
-                payload = {
-                    data: values,
-                    slug: client.id,
-                    token: authHeader()
-                }
-            }
-            else{
-                payload = {
-                    data: values,
-                    token: authHeader()
-                }
-            }
-            //console.log(payload)
-            mutate(payload);
-            }}
+        initialValues= {initialValues}
+        validationSchema = {validationSchema}
+        onSubmit={(values)=>submit(values)}
         >
         {formik => (
         <>
         <DrawerBody>        
             <VStack as="form" >
                 <TextField label="Nombre" name="name" />
-                <TextField label="Coche" name="car" />
-                <TextField label="Teléfono" name="telf" />
+                <TextField label="Telefono" name="phone" />
+                {error && 
+                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.phone} </Text>
+                }
+                <TextField label="Email" name="email" />
+                {error && 
+                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.email} </Text>
+                }
             </VStack>     
         </DrawerBody>
         <DrawerFooter>
@@ -77,6 +90,7 @@ export default function ClientForm({onClose, client}){
               <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
               <Button size='sm' 
               variant ='primary-s'
+              isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) == '{}'}
               onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
           </Flex>  
         </DrawerFooter>

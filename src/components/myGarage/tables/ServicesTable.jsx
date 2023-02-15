@@ -3,13 +3,13 @@ import {useToast, Flex, Button, Text} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
 //comps
-import ServiceForm from '../forms/ServiceForm';
+import ServiceForm from '../forms/CarForm';
 //icons
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getAllServices, deleteService } from '../../../api/servicesApi';
+import { getAllServices, deleteService } from '../../../api/carsApi';
 //auth
 import { useAuthHeader } from 'react-auth-kit';
 

@@ -5,7 +5,7 @@ import Navbar from "../../components/navbar/Navbar"
 //import EventsTable from '../../components/myGarage/tables/EventsTable'
 import ClientsTable from '../../components/myGarage/tables/ClientsTable'
 //import CarsTable from '../../components/myGarage/tables/CarsTable'
-import ServicesTable from "../../components/myGarage/tables/ServicesTable"
+//import ServicesTable from "../../components/myGarage/tables/ServicesTable"
 
 export default function MyGarage(){
 
@@ -15,22 +15,12 @@ export default function MyGarage(){
             <Navbar/>
             <Tabs variant='unstyled' colorScheme='orange'  w='100%' p='4em'>
                 <TabList >
-                    <Tab px='10' rounded='5px' _selected={{ color: 'white', bg: 'blue', rounded: '5px' }}>Citas</Tab>
-                    <Tab px='10' rounded='5px' _selected={{ color: 'white', bg: 'blue', rounded: '5px' }}>Servicios</Tab>
                     <Tab px='10' rounded='5px' _selected={{ color: 'white', bg: 'blue', rounded: '5px' }}>Clientes</Tab>
-                    <Tab px='10' rounded='5px' _selected={{ color: 'white', bg: 'blue', rounded: '5px' }}>Coches</Tab>
                 </TabList>
                 <TabPanels>
                     <TabPanel>
-                        Citas
-                    </TabPanel>
-                    <TabPanel>
-                        <ServicesTable/>
-                    </TabPanel>
-                    <TabPanel>
                         <ClientsTable/>
                     </TabPanel>
-
                 </TabPanels>
             </Tabs>
         </Flex>
