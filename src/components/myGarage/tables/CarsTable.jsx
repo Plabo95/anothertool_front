@@ -3,13 +3,13 @@ import {useToast, Flex, Button, Text} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
 //comps
-import ServiceForm from '../forms/CarForm';
+import CarForm from '../forms/CarForm';
 //icons
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getAllServices, deleteService } from '../../../api/carsApi';
+import { getAllCars, deleteCar } from '../../../api/carsApi';
 //auth
 import { useAuthHeader } from 'react-auth-kit';
 
@@ -19,24 +19,24 @@ export default function ServicesTable(){
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [page, setPage] = useState(1);
-    const [service, setService] = useState()
+    const [car, setCar] = useState()
     const authHeader = useAuthHeader()
     const QueryClient = useQueryClient()
 
 
     const {data, isLoading} = useQuery({
-        queryKey: ['services'],
-        queryFn: () => getAllServices(authHeader()),
+        queryKey: ['cars'],
+        queryFn: () => getAllCars(authHeader()),
     })
 
     const {isLoading:ld, mutate} = useMutation(
-        ["deleteService"],
-        deleteService,
+        ["deleteCar"],
+        deleteCar,
         {
         onSuccess: () => {
             toast({title: 'Borrado con exito!',status:"success"})
-            QueryClient.invalidateQueries(["services"]);
-            QueryClient.refetchQueries("services", {force:true})
+            QueryClient.invalidateQueries(["cars"]);
+            QueryClient.refetchQueries("cars", {force:true})
             onClose()
         },
         onError : (error)=>{
@@ -46,19 +46,19 @@ export default function ServicesTable(){
     );
 
     // Formatter for each user
-    const tableData = data?.map((service) => ({
-        name: service.name,
-        color: service.color,
-        duration: service.estimed_hours,
-        baseprice: service.baseprice,
+    const tableData = data?.map((car) => ({
+        plate: car.plate,
+        brand: car.brand,
+        model: car.model,
+        client: car.client_name,
         action: (
-        <Flex gap='1em' key={service.id}>
-            <Button onClick={() => {setService(service);  onOpen()}}>
+        <Flex gap='1em' key={car.id}>
+            <Button onClick={() => {setCar(car);  onOpen()}}>
                 <AiOutlineEdit size='20px' color='blue'/>
             </Button>
             <Button
             isLoading={ld} 
-            onClick={() => mutate({slug:service.id, token:authHeader() })   }>
+            onClick={() => mutate({slug:car.id, token:authHeader() })   }>
                 <BsTrash size='20px' color='red'/>
             </Button>
         </Flex>
@@ -68,20 +68,20 @@ export default function ServicesTable(){
     // Accessor to get a data in user object
     const tableColumns = [
       {
-        Header: "Nombre",
-        accessor: "name"
+        Header: "Matrícula",
+        accessor: "plate"
       },
       {
-        Header: "Color",
-        accessor: "color"
+        Header: "Marca",
+        accessor: "brand"
       },
       {
-        Header: "Tiempo estimado",
-        accessor: "duration"
+        Header: "Modelo",
+        accessor: "model"
       },
       {
-        Header: "Precio estimado",
-        accessor: "baseprice"
+        Header: "Cliente",
+        accessor: "client"
       },
       {
         Header: "",
@@ -92,7 +92,7 @@ export default function ServicesTable(){
         <>
         <Flex justify='end'>
             <Button variant='primary' 
-            onClick = {()=>{setService(); onOpen() } }
+            onClick = {()=>{setCar(); onOpen() } }
             >Crear</Button>
         </Flex>
         {data&&
@@ -124,8 +124,8 @@ export default function ServicesTable(){
             <DrawerOverlay />
             <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader>{service?'Editar':'Crear'} Cliente</DrawerHeader>                
-            <ServiceForm service={service} onClose={onClose} />
+            <DrawerHeader>{car?'Editar':'Crear'} Coche</DrawerHeader>                
+            <CarForm car={car} onClose={onClose} />
             </DrawerContent>
         </Drawer>  
         </>
