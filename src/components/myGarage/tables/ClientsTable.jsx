@@ -48,7 +48,7 @@ export default function ClientsTable(){
     // Formatter for each user
     const tableData = data?.map((client) => ({
         name: client.name,
-        phone: client.telf,
+        phone: client.phone,
         email: client.email,
         moroso: client.moroso?'Si':'No',
         action: (
