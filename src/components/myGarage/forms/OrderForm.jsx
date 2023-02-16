@@ -20,14 +20,13 @@ export default function OrderForm({onClose, order}){
     const authHeader = useAuthHeader()
     const QueryClient = useQueryClient()
 
-    const {data:clients} = useQuery({
-        queryKey: ['clients'],
-        queryFn: () => getAllClients(authHeader()),
-    })
-    
     const {data:options} = useQuery({
         queryKey: ['orderOptions'],
         queryFn: () => getOrderOptions(authHeader()),
+    })
+    const {data:clients} = useQuery({
+        queryKey: ['clients'],
+        queryFn: () => getAllClients(authHeader()),
     })
     const {isLoading, mutate, error} = useMutation(
         ["createOrder"],
@@ -53,7 +52,7 @@ export default function OrderForm({onClose, order}){
         client : order? order.client:'',
     }
     const validationSchema = Yup.object({
-        date_in: Yup.string(),
+        date_in: Yup.string().required('Obligatorio asignar fecha de entrada'),
         client: Yup.string().required('Debes asociarlo a un cliente'), 
     })
 
@@ -98,7 +97,7 @@ export default function OrderForm({onClose, order}){
                 {error && 
                     <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.state} </Text>
                 }
-                <OptionsSelectField label="Estado" name="state" choices={options?.actions.POST.state.choices} />
+                <OptionsSelectField label="Estado" name="state" choices={options?.actions?.POST?.state?.choices} />
                 {error && 
                     <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.phone} </Text>
                 }

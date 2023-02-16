@@ -14,7 +14,7 @@ export default function SelectField({label, ...props}) {
             {...field} //aqui van los props de onblur, on change
             {...props} //props que pasamos como placeholder etc
             >
-                {props.choices.map(choice=>
+                {props.choices?.map(choice=>
                     <option key={choice.id} value={choice.id}> {choice.name} </option>
                 )}
             </Field>

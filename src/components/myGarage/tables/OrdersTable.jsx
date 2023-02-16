@@ -2,6 +2,8 @@ import { useState } from 'react';
 import {useToast, Flex, Button, Text} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
+import moment from 'moment'
+import 'moment/locale/es'  // without this line it didn't work
 //comps
 import OrderForm from '../forms/OrderForm';
 //icons
@@ -47,12 +49,12 @@ export default function OrdersTable(){
 
     // Formatter for each user
     const tableData = data?.map((order) => ({
-        date_in: order.date_in,
-        date_out: order.date_out,
+        date_in: moment(order.date_in).format('l'),
+        date_out: moment(order.date_out).format('l'),
         client_desc: order.client_desc,
         diagnostic: order.diagnostic,
         state : order.state,
-        client : order.client,
+        client : order.client_name,
         action: (
         <Flex gap='1em' key={order.id}>
             <Button onClick={() => {setOrder(order);  onOpen()}}>
@@ -70,20 +72,28 @@ export default function OrdersTable(){
     // Accessor to get a data in user object
     const tableColumns = [
       {
-        Header: "Nombre",
-        accessor: "name"
+        Header: "Fecha entrada",
+        accessor: "date_in"
       },
       {
-        Header: "Teléfono",
-        accessor: "phone"
+        Header: "Fecha salida",
+        accessor: "date_out"
       },
       {
-        Header: "Email",
-        accessor: "email"
+        Header: "Descripción",
+        accessor: "client_desc"
       },
       {
-        Header: "Moroso",
-        accessor: "moroso"
+        Header: "Diagnóstico",
+        accessor: "diagnostic"
+      },
+      {
+        Header: "Estado",
+        accessor: "state"
+      },
+      {
+        Header: "Cliente",
+        accessor: "client"
       },
       {
         Header: "",

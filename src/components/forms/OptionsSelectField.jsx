@@ -13,7 +13,7 @@ export default function OptionsSelectField({label, ...props}) {
             {...field} //aqui van los props de onblur, on change
             {...props} //props que pasamos como placeholder etc
             >
-                {props.choices.map(choice=>
+                {props.choices?.map(choice=>
                     <option key={choice.value} value={choice.value}> {choice.display_name} </option>
                 )}
             </Field>
