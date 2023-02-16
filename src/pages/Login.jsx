@@ -7,7 +7,7 @@ import NavLoginRegister from '../components/loginRegister/NavLoginRegister';
 //validation
 import * as Yup from 'yup';
 import {Formik} from "formik";
-import TextField from '../components/forms/TextField'
+import InputField from '../components/forms/InputField'
 //api
 import { login } from '../api/authApi';
 import { useMutation } from "@tanstack/react-query"
@@ -77,8 +77,8 @@ export default function Login(){
                             >
                             {formik => (
                             <Flex direction={'column'} onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" w='80%' justify='space-around' align='center' gap='3'>
-                            <TextField name="email" placeholder="Email"  />
-                            <TextField type="password" name="password" placeholder="Contraseña" />
+                            <InputField name="email" placeholder="Email"  />
+                            <InputField type="password" name="password" placeholder="Contraseña" />
                             <Button mt='8' variant='primary-s' size='md'
                             onClick={formik.handleSubmit}  isLoading={isLoading}  >
                                 Iniciar Sesión </Button> 

@@ -1,9 +1,8 @@
 import {FormControl,FormErrorMessage, Select, FormLabel} from '@chakra-ui/react'
 import {Field, useField} from "formik";
 
-//Factorizacion del input de texto en los formularios
-export default function SelectField({label, ...props}) {
-
+//Select field cuando es un choice y tengo que obtener las posibles opciones de las OPTIONS
+export default function OptionsSelectField({label, ...props}) {
     //hook de formik para obtener el field data y los errors y touched de cada field
     const [field, meta] = useField(props) 
     return(
@@ -15,7 +14,7 @@ export default function SelectField({label, ...props}) {
             {...props} //props que pasamos como placeholder etc
             >
                 {props.choices.map(choice=>
-                    <option key={choice.id} value={choice.id}> {choice.name} </option>
+                    <option key={choice.value} value={choice.value}> {choice.display_name} </option>
                 )}
             </Field>
             <FormErrorMessage> {meta.error} </FormErrorMessage>

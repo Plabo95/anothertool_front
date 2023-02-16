@@ -2,7 +2,7 @@ import {FormControl,FormErrorMessage,Input, FormLabel} from '@chakra-ui/react'
 import {Field, useField} from "formik";
 
 //Factorizacion del input de texto en los formularios
-export default function TextField({label, ...props}) {
+export default function InputField({label, ...props}) {
 
     //hook de formik para obtener el field data y los errors y touched de cada field
     const [field, meta] = useField(props) 

@@ -3,7 +3,7 @@ import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
 //forms validation
 import * as Yup from 'yup';
 import {Formik} from "formik";
-import TextField from '../../forms/TextField'
+import TextField from '../../forms/InputField'
 import SelectField from '../../forms/SelectField';
 //auth
 import {useAuthHeader} from 'react-auth-kit'

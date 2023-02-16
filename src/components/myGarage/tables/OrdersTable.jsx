@@ -3,40 +3,40 @@ import {useToast, Flex, Button, Text} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
 //comps
-import ServiceForm from '../forms/CarForm';
+import OrderForm from '../forms/OrderForm';
 //icons
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getAllServices, deleteService } from '../../../api/carsApi';
+import { getAllOrders, deleteOrder } from '../../../api/ordersApi';
 //auth
 import { useAuthHeader } from 'react-auth-kit';
 
 
-export default function ServicesTable(){
+export default function OrdersTable(){
 
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [page, setPage] = useState(1);
-    const [service, setService] = useState()
+    const [order, setOrder] = useState()
     const authHeader = useAuthHeader()
     const QueryClient = useQueryClient()
 
 
     const {data, isLoading} = useQuery({
-        queryKey: ['services'],
-        queryFn: () => getAllServices(authHeader()),
+        queryKey: ['orders'],
+        queryFn: () => getAllOrders(authHeader()),
     })
 
     const {isLoading:ld, mutate} = useMutation(
-        ["deleteService"],
-        deleteService,
+        ["deleteOrder"],
+        deleteOrder,
         {
         onSuccess: () => {
             toast({title: 'Borrado con exito!',status:"success"})
-            QueryClient.invalidateQueries(["services"]);
-            QueryClient.refetchQueries("services", {force:true})
+            QueryClient.invalidateQueries(["orders"]);
+            QueryClient.refetchQueries("orders", {force:true})
             onClose()
         },
         onError : (error)=>{
@@ -46,19 +46,21 @@ export default function ServicesTable(){
     );
 
     // Formatter for each user
-    const tableData = data?.map((service) => ({
-        name: service.name,
-        color: service.color,
-        duration: service.estimed_hours,
-        baseprice: service.baseprice,
+    const tableData = data?.map((order) => ({
+        date_in: order.date_in,
+        date_out: order.date_out,
+        client_desc: order.client_desc,
+        diagnostic: order.diagnostic,
+        state : order.state,
+        client : order.client,
         action: (
-        <Flex gap='1em' key={service.id}>
-            <Button onClick={() => {setService(service);  onOpen()}}>
+        <Flex gap='1em' key={order.id}>
+            <Button onClick={() => {setOrder(order);  onOpen()}}>
                 <AiOutlineEdit size='20px' color='blue'/>
             </Button>
             <Button
             isLoading={ld} 
-            onClick={() => mutate({slug:service.id, token:authHeader() })   }>
+            onClick={() => mutate({slug:order.id, token:authHeader() })   }>
                 <BsTrash size='20px' color='red'/>
             </Button>
         </Flex>
@@ -72,16 +74,16 @@ export default function ServicesTable(){
         accessor: "name"
       },
       {
-        Header: "Color",
-        accessor: "color"
+        Header: "Teléfono",
+        accessor: "phone"
       },
       {
-        Header: "Tiempo estimado",
-        accessor: "duration"
+        Header: "Email",
+        accessor: "email"
       },
       {
-        Header: "Precio estimado",
-        accessor: "baseprice"
+        Header: "Moroso",
+        accessor: "moroso"
       },
       {
         Header: "",
@@ -92,7 +94,7 @@ export default function ServicesTable(){
         <>
         <Flex justify='end'>
             <Button variant='primary' 
-            onClick = {()=>{setService(); onOpen() } }
+            onClick = {()=>{setOrder(); onOpen() } }
             >Crear</Button>
         </Flex>
         {data&&
@@ -124,8 +126,8 @@ export default function ServicesTable(){
             <DrawerOverlay />
             <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader>{service?'Editar':'Crear'} Cliente</DrawerHeader>                
-            <ServiceForm service={service} onClose={onClose} />
+            <DrawerHeader>{order?'Editar':'Crear'} Orden</DrawerHeader>                
+            <OrderForm order={order} onClose={onClose} />
             </DrawerContent>
         </Drawer>  
         </>
