@@ -6,8 +6,11 @@ export default function OrderStatusView({status}){
     if (status === 'pending'){
         color='orange'
     }
-    if (status === 'finished'){
+    if (status === 'completed'){
         color='green'
+    }
+    if (status === 'started'){
+        color='yellow'
     }
     return(
         <Badge colorScheme={color} variant='solid' p='0.4em' rounde='xl'>

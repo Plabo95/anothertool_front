@@ -1,12 +1,12 @@
 import { Flex, Text, useDisclosure } from "@chakra-ui/react" 
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
 //comps
-import OrderStatusView from "./OrderStatusView"
-import OrderForm from '../myGarage/forms/OrderForm'
+import OrderStatusView from "../OrderStatusView"
+import OrderForm from '../../myGarage/forms/OrderForm'
 //icons
 import {AiOutlineEye} from 'react-icons/ai'
 
-export default function OrderCard({order}){
+export default function StartedOrderCard({order}){
     const { isOpen, onOpen, onClose } = useDisclosure()
     return(
         <>

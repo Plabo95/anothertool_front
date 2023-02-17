@@ -1,6 +1,8 @@
 import {Flex, Text, IconButton, Button} from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom';
 
+
+
 export default function NavItem({icon, title, slash}){
     const navigate = useNavigate()
     return(

@@ -1,42 +1,34 @@
-import {Flex, Text, Button} from '@chakra-ui/react'
-
+import {Flex, Text} from '@chakra-ui/react'
 //comps
 import Navbar from "../../components/navbar/Navbar";
-import OrderCard from '../../components/orders/OrderCard';
-//api
-import { useQuery } from "@tanstack/react-query"
-import { getAllOrders } from '../../api/ordersApi';
-//auth
-import { useAuthHeader } from "react-auth-kit";
+import PendingOrderCardlist from '../../components/orders/pending/PendingOrderCardlist';
+import StartedOrderCardList from '../../components/orders/started/StartedOrderCardList';
+import CompletedOrderCardList from '../../components/orders/completed/CompletedOrderCardList';
 
 export default function Orders(){
 
-    const authHeader = useAuthHeader()
-
-    const {data:orders, isLoading} = useQuery({
-        queryKey: ['orders'],
-        queryFn: () => getAllOrders(authHeader()),
-    })
     return (
         <Flex w='100%'>
             <Navbar/>
-            <Flex p='2em' w='100%'>
-                {/* Section proximos orders */}
-                <Flex maxW='40%' direction='column'  align='center' bg='white' rounded='xl' px='2em'>
-                    <Text fontSize='22px' fontWeight='bold' mt='2em' mb='1em' alignSelf='start' >Órdenes de trabajo</Text>
-                    <Button variant='primary'>+ Nueva</Button>
-                    {orders
-                    ?
-                        <Flex direction='column'>
-                            {orders?.map((order) => (
-                                <OrderCard order={order} />
-                            ))}
-                        </Flex>
-                    :
-                        <Text> Todavía no hay órdenes</Text>
-                    }
-                </Flex>
+            <Flex p='2em' w='100%' direction='column'>
 
+                <Flex  gap='1em' justify='space-evenly' align='center'>
+                    {/* Section pending orders */}
+                    <Flex maxW='40%' direction='column'  align='center' bg='white' rounded='xl' px='2em'>
+                        <Text mt='1.5em'  mb='0.5em' alignSelf='start'>Pendientes (2)</Text>
+                        <PendingOrderCardlist/>
+                    </Flex>
+                    {/* Section en curso */}
+                    <Flex maxW='40%' direction='column'  align='center' bg='white' rounded='xl' px='2em'>
+                        <Text mt='1.5em' mb='0.5em' alignSelf='start'>En curso (2)</Text>
+                        <StartedOrderCardList/>
+                    </Flex>
+                    {/* Section en curso */}
+                    <Flex maxW='40%' direction='column'  align='center' bg='white' rounded='xl' px='2em'>
+                        <Text mt='1.5em'  mb='0.5em' alignSelf='start'>Completados (14)</Text>
+                        <CompletedOrderCardList/>
+                    </Flex>
+                </Flex>
             </Flex>
 
         </Flex>

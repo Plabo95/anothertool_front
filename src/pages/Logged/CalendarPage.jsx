@@ -1,8 +1,6 @@
 import {Flex, Text, Button} from '@chakra-ui/react'
-
 //comps
 import Navbar from "../../components/navbar/Navbar";
-import OrderCard from '../../components/orders/OrderCard';
 //api
 import { useQuery } from "@tanstack/react-query"
 import { getAllOrders } from '../../api/ordersApi';
@@ -25,16 +23,6 @@ export default function CalendarPage(){
                 <Flex maxW='40%' direction='column'  align='center' bg='white' rounded='xl' px='2em'>
                     <Text fontSize='22px' fontWeight='bold' mt='2em' mb='1em' alignSelf='start' >Órdenes de trabajo</Text>
                     <Button variant='primary'>+ Nueva</Button>
-                    {orders
-                    ?
-                        <Flex direction='column'>
-                            {orders?.map((order) => (
-                                <OrderCard order={order} />
-                            ))}
-                        </Flex>
-                    :
-                        <Text> Todavía no hay órdenes</Text>
-                    }
                 </Flex>
 
             </Flex>

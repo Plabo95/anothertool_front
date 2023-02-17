@@ -4,9 +4,14 @@ const ordersApi = axios.create({
     baseURL: process.env.REACT_APP_API_URL +'orders'
 })
 
-export const getAllOrders = async(token) => {
-    const response =  await ordersApi.get('/', 
-    {headers: {'Authorization': token}}
+export const getAllOrders = async(payload) => {
+    var url ='/'
+    if (payload.filter){
+        url = '/?status='+payload.filter 
+    }
+    const response =  await ordersApi.get(url, 
+    {filter: 'pending'},
+    {headers: {'Authorization': payload.auth}}
     );
     return response.data
 }
