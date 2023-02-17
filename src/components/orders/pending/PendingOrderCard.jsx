@@ -9,8 +9,8 @@ export default function PendingOrderCard({order}){
     const { isOpen, onOpen, onClose } = useDisclosure()
     return(
         <>
-            <Flex direction='column' my='0.5em' gap='1em' p='1em' rounded='xl' justify='center' align='center'>
-                <Flex  justify='space-between'>
+            <Flex w='100%' direction='column' my='0.5em' gap='1em' p='1em' rounded='xl' justify='center' align='center'>
+                <Flex w='100%'  justify='space-between'>
                     <Text fontWeight='bold' >
                         {order.car.plate}
                     </Text>
@@ -18,7 +18,7 @@ export default function PendingOrderCard({order}){
                         {order.car.client_name}
                     </Text>
                 </Flex>
-                <Text >
+                <Text alignSelf='start'>
                     {order.car.brand} {order.car.model}
                 </Text>
 

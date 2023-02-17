@@ -10,7 +10,8 @@ export default function CompletedOrderCard({order}){
     const { isOpen, onOpen, onClose } = useDisclosure()
     return(
         <>
-            <Flex direction='column' my='0.5em' gap='1em' p='1em' bg='purple.200' rounded='xl' justify='center' align='center'>
+            <Flex direction='column'
+            my='0.5em' gap='1em' p='1em' bg='purple.200' rounded='xl' justify='center' align='center'>
                 <Flex>
                     <Text mr='0.2em'>
                         {order.car.brand}

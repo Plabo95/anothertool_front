@@ -19,7 +19,7 @@ export default function PendingOrderCardlist () {
         <>
         {pendingorders
             ?
-                <Flex direction='column'>
+                <Flex direction='column'minW='90%' >
                     {pendingorders?.map((order) => (
                         <PendingOrderCard key={order.id} order={order} />
                     ))}

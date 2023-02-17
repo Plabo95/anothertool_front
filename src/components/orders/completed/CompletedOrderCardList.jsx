@@ -19,7 +19,7 @@ export default function CompletedOrderCardList () {
         <>
         {completedorders
             ?
-                <Flex direction='column'>
+                <Flex direction='column' minW='90%' >
                     {completedorders?.map((order) => (
                         <CompletedOrderCard key={order.id} order={order} />
                     ))}
