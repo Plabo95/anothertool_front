@@ -1,5 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react" 
-
+//comps
+import OrderStatusView from "./OrderStatusView"
 
 export default function OrderPreview({order}){
 
@@ -22,9 +23,7 @@ export default function OrderPreview({order}){
                 </Text>
             </Flex>
             <Flex w='100%' justify='end'>
-                <Text>
-                    {order.state}
-                </Text>
+                <OrderStatusView status={order.status} />
             </Flex>
         </Flex>
     )

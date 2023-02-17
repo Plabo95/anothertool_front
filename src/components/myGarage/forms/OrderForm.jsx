@@ -1,6 +1,6 @@
 import { Button, useToast, Flex,VStack, Text} from '@chakra-ui/react'
 import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
-
+import moment from 'moment';
 //forms validation
 import * as Yup from 'yup';
 import {Formik} from "formik";
@@ -42,18 +42,18 @@ export default function OrderForm({onClose, order}){
             toast({title: error.message, description: error.code ,status:"error"})
         }
         }
-    );    
+    );
     const initialValues = {
-        date_in: order? order.date_in:'',
-        date_out: order? order.date_out:'',
+        date_in: order? moment(order.date_in).format("YYYY-MM-DD HH:MM"):'',
+        date_out: order? moment(order.date_out).format("YYYY-MM-DD HH:MM"):'',
         client_desc: order? order.desc:'',
         diagnostic: order? order.diagnostic:'',
-        state :  order? order.state:'',
-        car : order? order.car:'',
+        status :  order? order.status:'pending',
+        car : order? order.car.id:'',
     }
     const validationSchema = Yup.object({
         date_in: Yup.string().required('Obligatorio asignar fecha de entrada'),
-        car: Yup.string().required('Debes asociarlo a un coche'), 
+        car: Yup.number().required('Debes asociarlo a un coche'), 
     })
 
     const submit = (values) => {
@@ -80,6 +80,7 @@ export default function OrderForm({onClose, order}){
         onSubmit={(values)=>submit(values)}
         >
         {formik => (
+        console.log(formik.errors),
         <>
         <DrawerBody>        
             <VStack as="form" >
@@ -92,19 +93,16 @@ export default function OrderForm({onClose, order}){
                     <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_out} </Text>
                 }
                 <InputField label="Descripción cliente" name="client_desc" type='textarea' />
+                <SelectField label="Coche" name="car" choices={cars}/>
                 {error && 
                     <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.car} </Text>
                 }
-                <SelectField label="Coche" name="car" choices={cars}/>
-                {error && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.state} </Text>
+                {formik.errors?.car && 
+                    <Text color='red' fontSize='14px' fontWeight='bold'> {formik.errors.car} </Text>
                 }
-                <OptionsSelectField label="Estado" name="state" choices={options?.actions?.POST?.state?.choices} />
+                <OptionsSelectField label="Estado" name="state" choices={options?.actions?.POST?.status?.choices} />
                 {error && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.phone} </Text>
-                }
-                {error && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.email} </Text>
+                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.status} </Text>
                 }
             </VStack>     
         </DrawerBody>

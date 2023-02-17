@@ -46,12 +46,12 @@ export default function OrdersTable(){
         }
         }
     );
-        console.log(data)
+    console.log(data)
     // Formatter for each user
     const tableData = data?.map((order) => ({
         date_in: moment(order.date_in).format('l'),
         date_out: moment(order.date_out).format('l'),
-        state : order.state,
+        state : order.status,
         car: order.car.plate,
         client : order.car.client_name,
         action: (
