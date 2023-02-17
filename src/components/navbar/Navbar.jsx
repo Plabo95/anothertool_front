@@ -22,11 +22,11 @@ export default function Navbar(){
     const navigate = useNavigate()
 
     return(
-        <Flex direction='column' bg='darkblue' justify='space-between' py='4em' minH='100vh' px='2em'>
+        <Flex w='200px' direction='column' bg='darkblue' justify='space-between' py='4em' minH='100vh' px='2em'>
 
             <Flex direction='column'>
                 <NavItem icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/none' />
-                <NavItem icon={AiOutlineCalendar} title="Calendario" slash='/calendar' />
+                <NavItem icon={AiOutlineCalendar} title="Calendar" slash='/calendar' />
                 <NavItem icon={BiWrench} title="Mi taller" slash='/taller' />      
                 <NavItem icon={VscGraph} title="Estadisticas" slash='/none' />
             </Flex>

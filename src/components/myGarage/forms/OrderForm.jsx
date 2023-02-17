@@ -12,7 +12,7 @@ import {useAuthHeader} from 'react-auth-kit'
 //api
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { createUpdateOrder, getOrderOptions } from '../../../api/ordersApi';
-import { getAllClients } from '../../../api/clientsApi';
+import { getAllCars } from '../../../api/carsApi';
 
 export default function OrderForm({onClose, order}){
     
@@ -24,9 +24,9 @@ export default function OrderForm({onClose, order}){
         queryKey: ['orderOptions'],
         queryFn: () => getOrderOptions(authHeader()),
     })
-    const {data:clients} = useQuery({
-        queryKey: ['clients'],
-        queryFn: () => getAllClients(authHeader()),
+    const {data:cars} = useQuery({
+        queryKey: ['cars'],
+        queryFn: () => getAllCars(authHeader()),
     })
     const {isLoading, mutate, error} = useMutation(
         ["createOrder"],
@@ -49,11 +49,11 @@ export default function OrderForm({onClose, order}){
         client_desc: order? order.desc:'',
         diagnostic: order? order.diagnostic:'',
         state :  order? order.state:'',
-        client : order? order.client:'',
+        car : order? order.car:'',
     }
     const validationSchema = Yup.object({
         date_in: Yup.string().required('Obligatorio asignar fecha de entrada'),
-        client: Yup.string().required('Debes asociarlo a un cliente'), 
+        car: Yup.string().required('Debes asociarlo a un coche'), 
     })
 
     const submit = (values) => {
@@ -73,7 +73,6 @@ export default function OrderForm({onClose, order}){
         }
         mutate(payload);
     }
-
     return(
         <Formik
         initialValues= {initialValues}
@@ -93,7 +92,10 @@ export default function OrderForm({onClose, order}){
                     <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_out} </Text>
                 }
                 <InputField label="Descripción cliente" name="client_desc" type='textarea' />
-                <SelectField label="Cliente" name="client" choices={clients} />
+                {error && 
+                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.car} </Text>
+                }
+                <SelectField label="Coche" name="car" choices={cars}/>
                 {error && 
                     <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.state} </Text>
                 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {useToast, Flex, Button, Text} from '@chakra-ui/react'
+import {useToast, Flex, Button, Text, flexbox} from '@chakra-ui/react'
 import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
 import moment from 'moment'
@@ -46,15 +46,14 @@ export default function OrdersTable(){
         }
         }
     );
-
+        console.log(data)
     // Formatter for each user
     const tableData = data?.map((order) => ({
         date_in: moment(order.date_in).format('l'),
         date_out: moment(order.date_out).format('l'),
-        client_desc: order.client_desc,
-        diagnostic: order.diagnostic,
         state : order.state,
-        client : order.client_name,
+        car: order.car.plate,
+        client : order.car.client_name,
         action: (
         <Flex gap='1em' key={order.id}>
             <Button onClick={() => {setOrder(order);  onOpen()}}>
@@ -80,16 +79,12 @@ export default function OrdersTable(){
         accessor: "date_out"
       },
       {
-        Header: "Descripción",
-        accessor: "client_desc"
-      },
-      {
-        Header: "Diagnóstico",
-        accessor: "diagnostic"
-      },
-      {
         Header: "Estado",
         accessor: "state"
+      },
+      {
+        Header: "Coche",
+        accessor: "car"
       },
       {
         Header: "Cliente",
@@ -101,46 +96,45 @@ export default function OrdersTable(){
       }
     ];
     return(
-        <>
-        <Flex justify='end'>
-            <Button variant='primary' 
-            onClick = {()=>{setOrder(); onOpen() } }
-            >Crear</Button>
-        </Flex>
-        {data&&
-            <Table
-            // Fallback component when list is empty
-            colorScheme={'brand'}
-            emptyData={{
-                    text: "Nobody is registered here."
-            }}
-            totalRegisters={data?.length}
-            page={page}
-            // Listen change page event and control the current page using state
-            onPageChange={(page) => setPage(page)}
-            columns={tableColumns}
-            data={tableData}
-            />
-        }
+        <Flex direction='column'>
+            <Flex justify='end'>
+                <Button variant='primary' 
+                onClick = {()=>{setOrder(); onOpen() } }
+                >Crear</Button>
+            </Flex>
+            {data&&
+                <Table
+                colorScheme={'brand'}
+                emptyData={{
+                        text: "Nobody is registered here."
+                }}
+                totalRegisters={data?.length}
+                page={page}
+                // Listen change page event and control the current page using state
+                onPageChange={(page) => setPage(page)}
+                columns={tableColumns}
+                data={tableData}
+                />
+            }
         
-        {isLoading&&
-            <Text>
-                Cargando...
-            </Text>
-        }
-        <Drawer
-        isOpen={isOpen}
-        placement='right'
-        onClose={onClose}
-        >
-            <DrawerOverlay />
-            <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>{order?'Editar':'Crear'} Orden</DrawerHeader>                
-            <OrderForm order={order} onClose={onClose} />
-            </DrawerContent>
-        </Drawer>  
-        </>
+            {isLoading&&
+                <Text>
+                    Cargando...
+                </Text>
+            }
+            <Drawer
+            isOpen={isOpen}
+            placement='right'
+            onClose={onClose}
+            >
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerCloseButton />
+                    <DrawerHeader>{order?'Editar':'Crear'} Orden</DrawerHeader>                
+                    <OrderForm order={order} onClose={onClose} />
+                </DrawerContent>
+            </Drawer>  
+        </Flex>
     )
 }
 

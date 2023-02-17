@@ -15,7 +15,7 @@ export default function SelectField({label, ...props}) {
             {...props} //props que pasamos como placeholder etc
             >
                 {props.choices?.map(choice=>
-                    <option key={choice.id} value={choice.id}> {choice.name} </option>
+                    <option key={choice.id} value={choice.id}> {choice.plate} </option>
                 )}
             </Field>
             <FormErrorMessage> {meta.error} </FormErrorMessage>
