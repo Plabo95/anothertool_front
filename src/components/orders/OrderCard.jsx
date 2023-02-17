@@ -28,7 +28,7 @@ export default function OrderCard({order}){
                     </Text>
                 </Flex>
                 <Flex w='100%' justify='space-between' align='center'>
-                    <AiOutlineEye size='25px' color='white' onClick={() => {onOpen()}} />
+                    <AiOutlineEye  cursor='pointer' size='25px' color='white' onClick={() => {onOpen()}} />
                     <OrderStatusView status={order.status} />
                 </Flex>
             </Flex>

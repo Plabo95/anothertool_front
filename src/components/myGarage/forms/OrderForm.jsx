@@ -99,7 +99,7 @@ export default function OrderForm({onClose, order}){
                 {formik.errors?.car && 
                     <Text color='red' fontSize='14px' fontWeight='bold'> {formik.errors.car} </Text>
                 }
-                <OptionsSelectField label="Estado" name="state" choices={options?.actions?.POST?.status?.choices} />
+                <OptionsSelectField label="Estado" name="status" choices={options?.actions?.POST?.status?.choices} />
                 {error && 
                     <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.status} </Text>
                 }
