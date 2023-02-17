@@ -125,6 +125,7 @@ export default function OrdersTable(){
             isOpen={isOpen}
             placement='right'
             onClose={onClose}
+            size='lg'
             >
                 <DrawerOverlay />
                 <DrawerContent>

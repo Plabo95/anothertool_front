@@ -9,6 +9,7 @@ import {FiLogOut} from 'react-icons/fi';
 import {AiOutlineCalendar} from 'react-icons/ai';
 import {BiWrench} from 'react-icons/bi';
 //import {VscGraph} from 'react-icons/vsc';
+import {BsSticky} from 'react-icons/bs'
 import {FaUserTie} from 'react-icons/fa';
 //images
 //auth
@@ -25,6 +26,7 @@ export default function Navbar(){
             <Flex direction='column' gap='2em'>
                 <NavItem icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/none' />
                 <NavItem icon={AiOutlineCalendar} title="Dashboard" slash='/calendar' />
+                <NavItem icon={BsSticky} title="Ordenes" slash='/ordenes' />
                 <NavItem icon={BiWrench} title="Mi taller" slash='/taller' />      
             </Flex>
 

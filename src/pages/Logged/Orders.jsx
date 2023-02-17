@@ -9,7 +9,7 @@ import { getAllOrders } from '../../api/ordersApi';
 //auth
 import { useAuthHeader } from "react-auth-kit";
 
-export default function CalendarPage(){
+export default function Orders(){
 
     const authHeader = useAuthHeader()
 

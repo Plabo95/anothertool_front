@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CalendarComp from "./pages/Logged/CalendarPage";
 import MyGarage from "./pages/Logged/MyGarage";
+import Orders from "./pages/Logged/Orders";
 
 export default function App() {
   
@@ -38,6 +39,7 @@ useEffect(() => {
         <Route index path='/register' element={<Register  device={device} />} />
 
         <Route index path='/calendar' element={<CalendarComp  device={device} />} />
+        <Route index path='/ordenes' element={<Orders  device={device} />} />
         <Route index path='/taller' element={<MyGarage  device={device} />} />
 
 
