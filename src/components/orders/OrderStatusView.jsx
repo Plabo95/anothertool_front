@@ -9,9 +9,8 @@ export default function OrderStatusView({status}){
     if (status === 'finished'){
         color='green'
     }
-
     return(
-        <Badge colorScheme={color} >
+        <Badge colorScheme={color} variant='solid' p='0.4em' rounde='xl'>
             {status}
         </Badge>
     )

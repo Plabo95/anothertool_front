@@ -7,7 +7,7 @@ export const myTheme = extendTheme({
     colors: {
         blue: "#0258FF", //light blue
         darkblue: "#001234", //darkblue,
-        orange: "#FF7C02", //orange
+        brandOrange: "#FF7C02", //orange
         lightgray: "#F0F0F0",
 
         brand:{
