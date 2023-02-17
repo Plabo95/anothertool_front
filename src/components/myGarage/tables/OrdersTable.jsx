@@ -46,7 +46,6 @@ export default function OrdersTable(){
         }
         }
     );
-    console.log(data)
     // Formatter for each user
     const tableData = data?.map((order) => ({
         date_in: moment(order.date_in).format('l'),

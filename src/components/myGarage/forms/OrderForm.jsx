@@ -80,7 +80,6 @@ export default function OrderForm({onClose, order}){
         onSubmit={(values)=>submit(values)}
         >
         {formik => (
-        console.log(formik.errors),
         <>
         <DrawerBody>        
             <VStack as="form" >
