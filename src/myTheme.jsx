@@ -56,6 +56,17 @@ export const myTheme = extendTheme({
                         bg: "#749FF2",
                     }
                 },
+                'darkblue': {
+                    bg: "#001234",
+                    color: 'whiteAlpha.800',
+                    fontFamily: 'Poppins',
+                    fontWeight: '400',
+                    _hover: {
+                        // bg: "#aabcdb",
+                        // color: "#001234",
+                        bg: "#0258FF",
+                    }
+                },
                 'primary-s': {
                     bg: '#0258FF',
                     color: 'white',
