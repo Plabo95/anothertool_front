@@ -102,9 +102,14 @@ export default function OrderForm({onClose, order}){
                 {formik.errors?.car && 
                     <Text color='red' fontSize='14px' fontWeight='bold'> {formik.errors.car} </Text>
                 }
-                <OptionsSelectField label="Estado" name="status" choices={options?.actions?.POST?.status?.choices} />
-                {error && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.status} </Text>
+                {/* Si no hay order el status se pone por defecto en pending */}
+                {order&& 
+                    <> 
+                    <OptionsSelectField label="Estado" name="status" choices={options?.actions?.POST?.status?.choices} />
+                    {error && 
+                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.status} </Text>
+                    }
+                    </>
                 }
             </VStack>     
         </DrawerBody>

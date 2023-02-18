@@ -1,29 +1,79 @@
-import { Flex, Text, useDisclosure, Button } from "@chakra-ui/react" 
-import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
+import { Flex, Text,Button } from "@chakra-ui/react" 
+import {useDisclosure, Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
+import moment from "moment"
 //comps
 import OrderForm from '../../myGarage/forms/OrderForm'
 //icons
-
+//auth
+import {useAuthHeader} from 'react-auth-kit'
+//api
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { createUpdateOrder } from "../../../api/ordersApi"
 
 export default function PendingOrderCard({order}){
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const authHeader = useAuthHeader()
+    const QueryClient = useQueryClient()
+
+    const {isLoading, mutate, error} = useMutation(
+        ["updateorder"],
+        createUpdateOrder,
+        {
+        onSuccess: () => {
+            QueryClient.invalidateQueries(["pendingorders"]);
+            QueryClient.refetchQueries("pendingorders", {force:true})
+            QueryClient.invalidateQueries(["startedorders"]);
+            QueryClient.refetchQueries("startedorders", {force:true})
+            onClose()
+        },
+        onError : (error)=>{
+            console.log(error)
+        }
+        }
+    );
+    const setStarted = () => {
+        const payload = {
+            data: {
+                status: 'started'
+            },
+            slug: order.id,
+            token: authHeader()
+        }
+        mutate(payload)
+    }
+
     return(
         <>
-            <Flex w='100%' direction='column' my='0.5em' gap='1em' p='1em' rounded='xl' justify='center' align='center'>
-                <Flex w='100%'  justify='space-between'>
-                    <Text fontWeight='bold' >
-                        {order.car.plate}
-                    </Text>
-                    <Text>
-                        {order.car.client_name}
-                    </Text>
+            <Flex direction='column' w='100%' my='0.5em' boxShadow='2px 2px 2px 1px #F4F4F9'  
+            gap='1em' rounded='xl' justify='center' align='center' p='1em'>
+                <Flex w='100%' justify='space-between' >
+                    {/* Info column */}
+                    <Flex direction='column' gap='1em' >
+                        <Flex direction='column' gap='0.5em' >
+                            <Text fontSize='12px'> Cliente </Text>
+                            <Text fontWeight='bold'> {order.car.client_name} </Text>
+                        </Flex>
+                        <Flex direction='column' gap='0.5em' >
+                            <Text fontSize='12px'>Coche </Text>
+                            <Text fontWeight='bold'> {order.car.brand} {order.car.model} </Text>
+                        </Flex>
+                        <Flex direction='column' gap='0.5em' >
+                            <Text fontSize='12px'>Fecha entrada </Text>
+                            <Text fontWeight='bold'> {moment(order.date_in).format('h:mm Do MMM')} </Text>
+                        </Flex>
+                    </Flex>
+                    <Flex direction='column' gap='1em' >
+                        <Flex direction='column' gap='0.5em' >
+                            <Text fontSize='12px'> Matrícla </Text>
+                            <Text fontWeight='bold'> {order.car.plate} </Text>
+                        </Flex>
+                    </Flex>
                 </Flex>
-                <Text alignSelf='start'>
-                    {order.car.brand} {order.car.model}
-                </Text>
-
-                <Flex w='100%' justify='end' align='center'  >
+                {/* Action section */}
+                <Flex w='100%' justify='end' gap='0.5em' mt='0.5em'>
+                    <Button variant='primary' size='xs' onClick={() => {onOpen()}} >VER</Button>
                     <Button variant='primary' size='xs' onClick={() => {onOpen()}} >PRESUPUESTO</Button>
+                    <Button colorScheme='green' size='xs' onClick={() => setStarted()} >EMPEZAR</Button>
                 </Flex>
             </Flex>
             <Drawer

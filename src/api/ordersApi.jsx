@@ -26,7 +26,7 @@ export const getOrderOptions = async(token) => {
 export const createUpdateOrder= async(payload) => {
     var response = {}
     if (payload.slug){
-        response =  await ordersApi.put('/'+payload.slug+'/' ,
+        response =  await ordersApi.patch('/'+payload.slug+'/' ,
         payload.data,
         {headers: {'Authorization': payload.token}}
         );
