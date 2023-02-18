@@ -25,10 +25,9 @@ export default function Orders(){
                         <PendingOrderCardlist/>
 
                         {/* Section en curso */}
-                        <Flex w='30%' direction='column'  align='center' bg='white' rounded='xl' px='2em'>
-                            <Text mt='1.5em' mb='0.5em' alignSelf='start'>En curso (2)</Text>
-                            <StartedOrderCardList/>
-                        </Flex>
+
+                        <StartedOrderCardList/>
+
                         {/* Section en curso */}
                         <Flex w='30%' direction='column'  align='center' bg='white' rounded='xl' px='2em'>
                             <Text mt='1.5em'  mb='0.5em' alignSelf='start'>Completados (14)</Text>

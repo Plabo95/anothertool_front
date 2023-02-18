@@ -1,35 +1,83 @@
-import { Flex, Text, useDisclosure } from "@chakra-ui/react" 
-import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
+import { Flex, Text, Button} from "@chakra-ui/react" 
+import {useDisclosure ,Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
+import moment from "moment"
 //comps
-import OrderStatusView from "../OrderStatusView"
 import OrderForm from '../../myGarage/forms/OrderForm'
 //icons
-import {AiOutlineEye} from 'react-icons/ai'
+//auth
+import {useAuthHeader} from 'react-auth-kit'
+//api
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createUpdateOrder } from "../../../api/ordersApi"
 
 export default function StartedOrderCard({order}){
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const authHeader = useAuthHeader()
+    const QueryClient = useQueryClient()
+
+    const {isLoading, mutate, error} = useMutation(
+        ["updateorder"],
+        createUpdateOrder,
+        {
+        onSuccess: () => {
+            QueryClient.invalidateQueries(["pendingorders"]);
+            QueryClient.refetchQueries("pendingorders", {force:true})
+            QueryClient.invalidateQueries(["startedorders"]);
+            QueryClient.refetchQueries("startedorders", {force:true})
+            onClose()
+        },
+        onError : (error)=>{
+            console.log(error)
+        }
+        }
+    );
+    const setCompleted = () => {
+        const payload = {
+            data: {
+                status: 'completed',
+                date_out:moment().format()
+            },
+            slug: order.id,
+            token: authHeader()
+        }
+        mutate(payload)
+    }
     return(
         <>
-            <Flex direction='column' my='0.5em' gap='1em' p='1em' bg='purple.200' rounded='xl' justify='center' align='center'>
-                <Flex>
-                    <Text mr='0.2em'>
-                        {order.car.brand}
-                    </Text>
-                    <Text mr='2em'>
-                        {order.car.model}
-                    </Text>
-                    <Text>
-                        {order.car.plate}
-                    </Text>
+          <Flex direction='column' w='100%' my='0.5em' boxShadow='2px 2px 2px 1px #F4F4F9'  
+            gap='1em' rounded='xl' justify='center' align='center' p='1em' bg='purple.100'>
+                <Flex w='100%' justify='space-between' >
+                    {/* Info column */}
+                    <Flex direction='column' gap='1em' >
+                        <Flex direction='column' gap='0.5em' >
+                            <Text fontSize='12px'>Coche </Text>
+                            <Text fontWeight='bold'> {order.car.brand} {order.car.model} </Text>
+                        </Flex>
+                        <Flex direction='column' gap='0.5em' >
+                            <Text fontSize='12px'>Fecha de entrada</Text>
+                            <Flex>
+                                <Text fontWeight='bold'> 
+                                    {moment(order.date_in).format('Do MMM')} 
+                                </Text>
+                                <Text > 
+                                    ({moment(order.date_in).fromNow()})
+                                </Text>
+                            </Flex>
+
+                        </Flex>
+                    </Flex>
+                    <Flex direction='column' gap='1em' >
+                        <Flex direction='column' gap='0.5em' >
+                            <Text fontSize='12px'> Matrícla </Text>
+                            <Text fontWeight='bold'> {order.car.plate} </Text>
+                        </Flex>
+                    </Flex>
                 </Flex>
-                <Flex w='100%' justify='start'>
-                    <Text mr='0.2em'>
-                        {order.car.client_name}
-                    </Text>
-                </Flex>
-                <Flex w='100%' justify='space-between' align='center'>
-                    <AiOutlineEye  cursor='pointer' size='25px' color='white' onClick={() => {onOpen()}} />
-                    <OrderStatusView status={order.status} />
+                {/* Action section */}
+                <Flex w='100%' justify='end' gap='0.5em' mt='0.5em'>
+                    <Button variant='primary' size='xs' onClick={() => {onOpen()}} >Ver</Button>
+                    <Button variant='primary' size='xs' onClick={() => {onOpen()}} >Factura</Button>
+                    <Button colorScheme='green' size='xs' onClick={() => {setCompleted()}}>Finalizar</Button>
                 </Flex>
             </Flex>
             <Drawer

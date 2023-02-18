@@ -7,7 +7,7 @@ import OrderForm from '../../myGarage/forms/OrderForm'
 //auth
 import {useAuthHeader} from 'react-auth-kit'
 //api
-import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createUpdateOrder } from "../../../api/ordersApi"
 
 export default function PendingOrderCard({order}){
@@ -20,10 +20,10 @@ export default function PendingOrderCard({order}){
         createUpdateOrder,
         {
         onSuccess: () => {
-            QueryClient.invalidateQueries(["pendingorders"]);
-            QueryClient.refetchQueries("pendingorders", {force:true})
-            QueryClient.invalidateQueries(["startedorders"]);
-            QueryClient.refetchQueries("startedorders", {force:true})
+            QueryClient.invalidateQueries(["started"]);
+            QueryClient.refetchQueries("started", {force:true})
+            QueryClient.invalidateQueries(["completed"]);
+            QueryClient.refetchQueries("completed", {force:true})
             onClose()
         },
         onError : (error)=>{
@@ -34,7 +34,8 @@ export default function PendingOrderCard({order}){
     const setStarted = () => {
         const payload = {
             data: {
-                status: 'started'
+                status: 'started',
+                date_in:moment().format()
             },
             slug: order.id,
             token: authHeader()
@@ -58,8 +59,8 @@ export default function PendingOrderCard({order}){
                             <Text fontWeight='bold'> {order.car.brand} {order.car.model} </Text>
                         </Flex>
                         <Flex direction='column' gap='0.5em' >
-                            <Text fontSize='12px'>Fecha entrada </Text>
-                            <Text fontWeight='bold'> {moment(order.date_in).format('h:mm Do MMM')} </Text>
+                            <Text fontSize='12px'>Creada</Text>
+                            <Text fontWeight='bold'> {moment(order.created_at).format('h:mm Do MMM')} </Text>
                         </Flex>
                     </Flex>
                     <Flex direction='column' gap='1em' >
