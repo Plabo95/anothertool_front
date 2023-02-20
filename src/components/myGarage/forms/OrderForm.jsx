@@ -1,6 +1,8 @@
-import { Button, useToast, Flex,VStack, Text} from '@chakra-ui/react'
-import {DrawerBody,DrawerFooter,Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
+import { Button, useToast, Flex, Text} from '@chakra-ui/react'
+import {DrawerBody,DrawerFooter,Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton, useDisclosure} from '@chakra-ui/react'
 import moment from 'moment';
+//comps
+import CarForm from './CarForm'
 //forms validation
 import * as Yup from 'yup';
 import {Formik} from "formik";
@@ -16,6 +18,7 @@ import { getAllCars } from '../../../api/carsApi';
 
 export default function OrderForm({isOpen, onClose, order}){
     
+    const { isOpen:isOpenCar, onOpen:onOpenCar, onClose:onCloseCar } = useDisclosure()
     const toast = useToast()
     const authHeader = useAuthHeader()
     const QueryClient = useQueryClient()
@@ -52,7 +55,6 @@ export default function OrderForm({isOpen, onClose, order}){
         car : order? order.car.id:'',
     }
     const validationSchema = Yup.object({
-        date_in: Yup.string().required('Obligatorio asignar fecha de entrada'),
         car: Yup.number().required('Debes asociarlo a un coche'), 
     })
 
@@ -74,69 +76,72 @@ export default function OrderForm({isOpen, onClose, order}){
         mutate(payload);
     }
     return(
-        <Drawer
-        size='lg'
-        isOpen={isOpen}
-        placement='right'
-        onClose={onClose}
-        >
-            <DrawerOverlay />
-            <DrawerContent>
-                <DrawerCloseButton />
-                <DrawerHeader>{order?'Editar':'Crear'} Orden</DrawerHeader> 
-                <Formik
-                initialValues= {initialValues}
-                validationSchema = {validationSchema}
-                onSubmit={(values)=>submit(values)}
-                >
-                {formik => (
-                <>
-                <DrawerBody>        
-                    <VStack as="form" >
-                        <Flex w='100%' justify='space-between' >
-                            <InputField label="Fecha entrada" name="date_in" type='datetime-local' />
-                            {error && 
-                                <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_in} </Text>
-                            }
-                            <InputField label="Fecha salida" name="date_out" type='datetime-local' />
-                            {error && 
-                                <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_out} </Text>
-                            }
-                        </Flex>
+        <>
+            <CarForm isOpen={isOpenCar} onClose={onCloseCar} />
+            <Drawer
+            size='lg'
+            isOpen={isOpen}
+            placement='right'
+            onClose={onClose}
+            >
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerCloseButton />
+                    <DrawerHeader>{order?'Editar':'Crear'} orden de trabajo</DrawerHeader> 
+                    <Formik
+                    initialValues= {initialValues}
+                    validationSchema = {validationSchema}
+                    onSubmit={(values)=>submit(values)}
+                    >
+                    {formik => (
+                    <>
+                    <DrawerBody>        
+                        <Flex direction='column' as="form" >
+                            <Flex w='100%' justify='space-between' >
+                                <InputField label="Fecha entrada" name="date_in" type='datetime-local' />
+                                {error && 
+                                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_in} </Text>
+                                }
+                                <InputField label="Fecha salida" name="date_out" type='datetime-local' />
+                                {error && 
+                                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_out} </Text>
+                                }
+                            </Flex>
 
-                        <InputField label="Descripción cliente" name="client_desc" type='textarea' />
-                        <SelectField label="Coche" name="car" choices={cars}/>
-                        {error && 
-                            <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.car} </Text>
-                        }
-                        {formik.errors?.car && 
-                            <Text color='red' fontSize='14px' fontWeight='bold'> {formik.errors.car} </Text>
-                        }
-                        {/* Si no hay order el status se pone por defecto en pending */}
-                        {order&& 
-                            <> 
-                            <OptionsSelectField label="Estado" name="status" choices={options?.actions?.POST?.status?.choices} />
-                            {error && 
-                                <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.status} </Text>
+                            <InputField label="Descripción cliente" name="client_desc" type='textarea' />
+                            <SelectField label="Coche" name="car" choices={cars} error={error?.response.data?.car} />
+                            {cars.length===0 &&
+                                <Flex mt='1em' align='center' gap='1em'>
+                                    <Text fontSize='14px' color='red' >Aún no hay coches</Text>
+                                    <Button size='sm' variant='primary' onClick={()=>onOpenCar()} >+ Crea uno</Button>
+                                </Flex>
                             }
-                            </>
-                        }
-                    </VStack>     
-                </DrawerBody>
-                <DrawerFooter>
-                <Flex justify="right" columnGap="3" mt='3'>
-                    <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
-                    <Button size='sm' 
-                    variant ='primary-s'
-                    isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) === '{}'}
-                    onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
-                </Flex>  
-                </DrawerFooter>
-                </>
-                    )}
-                </Formik>
-            </DrawerContent>
-        </Drawer>
+                            {/* Si no hay order el status se pone por defecto en pending */}
+                            {order&& 
+                                <> 
+                                <OptionsSelectField label="Estado" name="status" choices={options?.actions?.POST?.status?.choices} />
+                                {error && 
+                                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.status} </Text>
+                                }
+                                </>
+                            }
+                        </Flex>     
+                    </DrawerBody>
+                    <DrawerFooter>
+                    <Flex justify="right" columnGap="3" mt='3'>
+                        <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
+                        <Button size='sm' 
+                        variant ='primary-s'
+                        isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) === '{}'}
+                        onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
+                    </Flex>  
+                    </DrawerFooter>
+                    </>
+                        )}
+                    </Formik>
+                </DrawerContent>
+            </Drawer>
+        </>
     )
 }
 

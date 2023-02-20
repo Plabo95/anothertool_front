@@ -1,4 +1,4 @@
-import { Button, useToast, Flex,VStack, Text, Select, FormControl} from '@chakra-ui/react'
+import { Button, useToast, Flex,VStack, Text, Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
 import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
 //forms validation
 import * as Yup from 'yup';
@@ -12,7 +12,7 @@ import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { createUpdateCar } from '../../../api/carsApi';
 import { getAllClients } from '../../../api/clientsApi';
 
-export default function CarForm({onClose, car}){
+export default function CarForm({onClose,isOpen, car}){
     
     const toast = useToast()
     const authHeader = useAuthHeader()
@@ -71,41 +71,52 @@ export default function CarForm({onClose, car}){
         mutate(payload);
     }
     return(
-        <Formik
-        initialValues= {initialValues}
-        validationSchema = {validationSchema}
-        onSubmit={(values)=>submit(values)}
+        <Drawer
+        isOpen={isOpen}
+        placement='right'
+        onClose={onClose}
         >
-        {formik => (
-        <>
-        <DrawerBody>        
-            <VStack as="form" >
-                <TextField label="Matrícula" name="plate" />
-                {error && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.plate} </Text>
-                }
-                <TextField label="Marca" name="brand" />
-                {error && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.brand} </Text>
-                }
-                <TextField label="Modelo" name="model" />
-                {error && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.model} </Text>
-                }
-                <SelectField label="Cliente" name="client" choices={clients} />
-            </VStack>     
-        </DrawerBody>
-        <DrawerFooter>
-          <Flex justify="right" columnGap="3" mt='3'>
-              <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
-              <Button size='sm' 
-              variant ='primary-s'
-              isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) == '{}'}
-              onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
-          </Flex>  
-        </DrawerFooter>
-        </>
-            )}
-        </Formik>
+            <DrawerOverlay />
+            <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>{car?'Editar':'Crear'} Coche</DrawerHeader>    
+            <Formik
+            initialValues= {initialValues}
+            validationSchema = {validationSchema}
+            onSubmit={(values)=>submit(values)}
+            >
+            {formik => (
+            <>
+            <DrawerBody>        
+                <VStack as="form" >
+                    <TextField label="Matrícula" name="plate" />
+                    {error && 
+                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.plate} </Text>
+                    }
+                    <TextField label="Marca" name="brand" />
+                    {error && 
+                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.brand} </Text>
+                    }
+                    <TextField label="Modelo" name="model" />
+                    {error && 
+                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.model} </Text>
+                    }
+                    <SelectField label="Cliente" name="client" choices={clients} />
+                </VStack>     
+            </DrawerBody>
+            <DrawerFooter>
+            <Flex justify="right" columnGap="3" mt='3'>
+                <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
+                <Button size='sm' 
+                variant ='primary-s'
+                isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) == '{}'}
+                onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
+            </Flex>  
+            </DrawerFooter>
+            </>
+                )}
+            </Formik>
+        </DrawerContent>
+    </Drawer>      
     )
 }

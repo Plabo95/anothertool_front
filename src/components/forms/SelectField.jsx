@@ -17,8 +17,12 @@ export default function SelectField({label, ...props}) {
                 {props.choices?.map(choice=>
                     <option key={choice.id} value={choice.id}> {choice.plate} </option>
                 )}
+                {props.choices.length===0&&
+                    <option>No hay opciones disponibles</option>
+                }
             </Field>
-            <FormErrorMessage> {meta.error} </FormErrorMessage>
+            <FormErrorMessage>  formik error {meta.error} </FormErrorMessage>
+            <FormErrorMessage> http error {props.error} </FormErrorMessage>
         </FormControl>
     )
 }

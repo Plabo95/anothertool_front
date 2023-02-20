@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import {useToast, Flex, Button, Text} from '@chakra-ui/react'
-import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
+import {useToast, Flex, Button, Text, useDisclosure} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
 //comps
 import CarForm from '../forms/CarForm';
@@ -116,18 +115,9 @@ export default function ServicesTable(){
                 Cargando...
             </Text>
         }
-        <Drawer
-        isOpen={isOpen}
-        placement='right'
-        onClose={onClose}
-        >
-            <DrawerOverlay />
-            <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>{car?'Editar':'Crear'} Coche</DrawerHeader>                
-            <CarForm car={car} onClose={onClose} />
-            </DrawerContent>
-        </Drawer>  
+            
+            <CarForm car={car} isOpen={isOpen} onClose={onClose} />
+
         </>
     )
 }
