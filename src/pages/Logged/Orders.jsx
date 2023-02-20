@@ -23,16 +23,10 @@ export default function Orders(){
                     <Flex  w='100%' justify='space-evenly' align='top'>
                         {/* Section pending orders */}    
                         <PendingOrderCardlist/>
-
                         {/* Section en curso */}
-
                         <StartedOrderCardList/>
-
-                        {/* Section en curso */}
-                        <Flex w='30%' direction='column'  align='center' bg='white' rounded='xl' px='2em'>
-                            <Text mt='1.5em'  mb='0.5em' alignSelf='start'>Completados (14)</Text>
-                            <CompletedOrderCardList/>
-                        </Flex>
+                        {/* Section finalizadas */}
+                        <CompletedOrderCardList/>
                     </Flex>
                 </Flex>
 
