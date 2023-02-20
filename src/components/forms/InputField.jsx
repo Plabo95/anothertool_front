@@ -6,7 +6,6 @@ export default function InputField({label, ...props}) {
 
     //hook de formik para obtener el field data y los errors y touched de cada field
     const [field, meta] = useField(props) 
-
     return(
         <FormControl isInvalid={meta.error && meta.touched}>
             <FormLabel> {label} </FormLabel>

@@ -30,6 +30,12 @@ export const getOrderOptions = async(token) => {
 }
 
 export const createUpdateOrder= async(payload) => {
+    if(payload.data.date_in ==="") {
+        payload["data"]["date_in"]=null
+    }
+    if(payload.data.date_out ==="") {
+        payload["data"]["date_out"]=null
+    } 
     var response = {}
     if (payload.slug){
         response =  await ordersApi.patch('/'+payload.slug+'/' ,

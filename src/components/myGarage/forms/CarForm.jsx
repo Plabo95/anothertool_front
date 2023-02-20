@@ -41,7 +41,6 @@ export default function CarForm({onClose,isOpen, car}){
         }
         }
     )
-    console.log(clients)
     
     const initialValues = {
         plate: car? car.plate : '' ,

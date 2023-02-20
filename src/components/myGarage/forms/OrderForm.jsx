@@ -98,16 +98,9 @@ export default function OrderForm({isOpen, onClose, order}){
                     <DrawerBody>        
                         <Flex direction='column' as="form" >
                             <Flex w='100%' justify='space-between' >
-                                <InputField label="Fecha entrada" name="date_in" type='datetime-local' />
-                                {error && 
-                                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_in} </Text>
-                                }
-                                <InputField label="Fecha salida" name="date_out" type='datetime-local' />
-                                {error && 
-                                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_out} </Text>
-                                }
+                                <InputField label="Fecha entrada" name="date_in" type='datetime-local' default error={error?.response.data?.date_in} />
+                                <InputField label="Fecha salida" name="date_out" type='datetime-local' error={error?.response.data?.date_out} />
                             </Flex>
-
                             <InputField label="Descripción cliente" name="client_desc" type='textarea' />
                             <SelectField label="Coche" name="car" choices={cars} error={error?.response.data?.car} />
                             {cars.length===0 &&
