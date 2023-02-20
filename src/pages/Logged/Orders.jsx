@@ -1,5 +1,4 @@
-import {Flex, Text, Heading, Button} from '@chakra-ui/react'
-import {useDisclosure, Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
+import {Flex, useDisclosure, Heading, Button} from '@chakra-ui/react'
 import moment from 'moment';
 //comps
 import Navbar from "../../components/navbar/Navbar";
@@ -30,20 +29,8 @@ export default function Orders(){
                     </Flex>
                 </Flex>
 
-            </Flex>
-            <Drawer
-            size='lg'
-            isOpen={isOpen}
-            placement='right'
-            onClose={onClose}
-            >
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerCloseButton />
-                    <DrawerHeader>Crear Orden</DrawerHeader>                
-                    <OrderForm  onClose={onClose} />
-                </DrawerContent>
-            </Drawer>
+            </Flex> 
+            <OrderForm  isOpen={isOpen} onClose={onClose} />
         </>
     )
 }

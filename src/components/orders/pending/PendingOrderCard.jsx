@@ -1,5 +1,5 @@
 import { Flex, Text,Button } from "@chakra-ui/react" 
-import {useDisclosure, Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
+import {useDisclosure} from '@chakra-ui/react'
 import moment from "moment"
 //comps
 import OrderForm from '../../myGarage/forms/OrderForm'
@@ -76,20 +76,8 @@ export default function PendingOrderCard({order}){
                     <Button variant='primary' size='xs' onClick={() => {onOpen()}} >PRESUPUESTO</Button>
                     <Button colorScheme='green' size='xs' onClick={() => setStarted()} >EMPEZAR</Button>
                 </Flex>
-            </Flex>
-            <Drawer
-            size='lg'
-            isOpen={isOpen}
-            placement='right'
-            onClose={onClose}
-            >
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerCloseButton />
-                    <DrawerHeader>{order?'Editar':'Crear'} Orden</DrawerHeader>                
-                    <OrderForm order={order} onClose={onClose} />
-                </DrawerContent>
-            </Drawer>
+            </Flex>  
+            <OrderForm order={order} isOpen={isOpen} onClose={onClose} />
         </>
     )
 }

@@ -1,5 +1,5 @@
 import { Button, useToast, Flex,VStack, Text} from '@chakra-ui/react'
-import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
+import {DrawerBody,DrawerFooter,Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
 import moment from 'moment';
 //forms validation
 import * as Yup from 'yup';
@@ -14,7 +14,7 @@ import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { createUpdateOrder, getOrderOptions } from '../../../api/ordersApi';
 import { getAllCars } from '../../../api/carsApi';
 
-export default function OrderForm({onClose, order}){
+export default function OrderForm({isOpen, onClose, order}){
     
     const toast = useToast()
     const authHeader = useAuthHeader()
@@ -74,57 +74,69 @@ export default function OrderForm({onClose, order}){
         mutate(payload);
     }
     return(
-        <Formik
-        initialValues= {initialValues}
-        validationSchema = {validationSchema}
-        onSubmit={(values)=>submit(values)}
+        <Drawer
+        size='lg'
+        isOpen={isOpen}
+        placement='right'
+        onClose={onClose}
         >
-        {formik => (
-        <>
-        <DrawerBody>        
-            <VStack as="form" >
-                <Flex w='100%' justify='space-between' >
-                    <InputField label="Fecha entrada" name="date_in" type='datetime-local' />
-                    {error && 
-                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_in} </Text>
-                    }
-                    <InputField label="Fecha salida" name="date_out" type='datetime-local' />
-                    {error && 
-                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_out} </Text>
-                    }
-                </Flex>
+            <DrawerOverlay />
+            <DrawerContent>
+                <DrawerCloseButton />
+                <DrawerHeader>{order?'Editar':'Crear'} Orden</DrawerHeader> 
+                <Formik
+                initialValues= {initialValues}
+                validationSchema = {validationSchema}
+                onSubmit={(values)=>submit(values)}
+                >
+                {formik => (
+                <>
+                <DrawerBody>        
+                    <VStack as="form" >
+                        <Flex w='100%' justify='space-between' >
+                            <InputField label="Fecha entrada" name="date_in" type='datetime-local' />
+                            {error && 
+                                <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_in} </Text>
+                            }
+                            <InputField label="Fecha salida" name="date_out" type='datetime-local' />
+                            {error && 
+                                <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.date_out} </Text>
+                            }
+                        </Flex>
 
-                <InputField label="Descripción cliente" name="client_desc" type='textarea' />
-                <SelectField label="Coche" name="car" choices={cars}/>
-                {error && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.car} </Text>
-                }
-                {formik.errors?.car && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {formik.errors.car} </Text>
-                }
-                {/* Si no hay order el status se pone por defecto en pending */}
-                {order&& 
-                    <> 
-                    <OptionsSelectField label="Estado" name="status" choices={options?.actions?.POST?.status?.choices} />
-                    {error && 
-                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.status} </Text>
-                    }
-                    </>
-                }
-            </VStack>     
-        </DrawerBody>
-        <DrawerFooter>
-          <Flex justify="right" columnGap="3" mt='3'>
-              <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
-              <Button size='sm' 
-              variant ='primary-s'
-              isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) === '{}'}
-              onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
-          </Flex>  
-        </DrawerFooter>
-        </>
-            )}
-        </Formik>
+                        <InputField label="Descripción cliente" name="client_desc" type='textarea' />
+                        <SelectField label="Coche" name="car" choices={cars}/>
+                        {error && 
+                            <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.car} </Text>
+                        }
+                        {formik.errors?.car && 
+                            <Text color='red' fontSize='14px' fontWeight='bold'> {formik.errors.car} </Text>
+                        }
+                        {/* Si no hay order el status se pone por defecto en pending */}
+                        {order&& 
+                            <> 
+                            <OptionsSelectField label="Estado" name="status" choices={options?.actions?.POST?.status?.choices} />
+                            {error && 
+                                <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.status} </Text>
+                            }
+                            </>
+                        }
+                    </VStack>     
+                </DrawerBody>
+                <DrawerFooter>
+                <Flex justify="right" columnGap="3" mt='3'>
+                    <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
+                    <Button size='sm' 
+                    variant ='primary-s'
+                    isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) === '{}'}
+                    onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
+                </Flex>  
+                </DrawerFooter>
+                </>
+                    )}
+                </Formik>
+            </DrawerContent>
+        </Drawer>
     )
 }
 
