@@ -9,8 +9,14 @@ export const getAllOrders = async(payload) => {
     if (payload.filter){
         url = '/?status='+payload.filter 
     }
-    const response =  await ordersApi.get(url, 
-    {filter: 'pending'},
+    const response =  await ordersApi.get(url,
+    {headers: {'Authorization': payload.auth}}
+    );
+    return response.data
+}
+
+export const getLatestOrders = async(payload) => {
+    const response =  await ordersApi.get('/?latest='+payload.number, 
     {headers: {'Authorization': payload.auth}}
     );
     return response.data

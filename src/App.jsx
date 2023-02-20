@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import CalendarComp from "./pages/Logged/CalendarPage";
+import Dashboard from "./pages/Logged/Dashboard";
 import MyGarage from "./pages/Logged/MyGarage";
 import Orders from "./pages/Logged/Orders";
 
@@ -38,7 +38,7 @@ useEffect(() => {
         <Route index path='/login' element={<Login  device={device} />} />
         <Route index path='/register' element={<Register  device={device} />} />
 
-        <Route index path='/calendar' element={<CalendarComp  device={device} />} />
+        <Route index path='/dashboard' element={<Dashboard  device={device} />} />
         <Route index path='/ordenes' element={<Orders  device={device} />} />
         <Route index path='/taller' element={<MyGarage  device={device} />} />
 
