@@ -14,8 +14,8 @@ export default function InputField({label, ...props}) {
             {...field} //aqui van los props de onblur, on change
             {...props} //props que pasamos como placeholder etc
             />
-            <FormErrorMessage>  formik error {meta.error} </FormErrorMessage>
-            <FormErrorMessage> http error {props.error} </FormErrorMessage>
+            <FormErrorMessage> {meta.error} </FormErrorMessage>
+            <FormErrorMessage> {props.error} </FormErrorMessage>
         </FormControl>
     )
 }

@@ -22,7 +22,8 @@ export default function PendingOrderCardlist () {
             >Pendientes (2)</Text>
             {pendingorders?.length !== 0
                 ?
-                    <Flex direction='column' minW='85%' >
+                    <Flex direction='column' minW='90%' 
+                    sx={{ flexGrow: 2, overflowY: "auto", height: '75vh' }}>
                         {pendingorders?.map((order) => (
                             <PendingOrderCard key={order.id} order={order} />
                         ))}

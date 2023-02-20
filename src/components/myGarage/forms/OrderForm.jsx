@@ -96,19 +96,22 @@ export default function OrderForm({isOpen, onClose, order}){
                     {formik => (
                     <>
                     <DrawerBody>        
-                        <Flex direction='column' as="form" >
-                            <Flex w='100%' justify='space-between' >
-                                <InputField label="Fecha entrada" name="date_in" type='datetime-local' default error={error?.response.data?.date_in} />
-                                <InputField label="Fecha salida" name="date_out" type='datetime-local' error={error?.response.data?.date_out} />
+                        <Flex direction='column' as="form" gap='1em' >
+                            <Flex align='end'>
+                                <SelectField maxW='60%' label="Coche" name="car" choices={cars} error={error?.response.data?.car} />
+                                <Button variant='primary' onClick={()=>onOpenCar()} >+ Crea uno</Button>
                             </Flex>
-                            <InputField label="Descripción cliente" name="client_desc" type='textarea' />
-                            <SelectField label="Coche" name="car" choices={cars} error={error?.response.data?.car} />
                             {cars.length===0 &&
                                 <Flex mt='1em' align='center' gap='1em'>
                                     <Text fontSize='14px' color='red' >Aún no hay coches</Text>
-                                    <Button size='sm' variant='primary' onClick={()=>onOpenCar()} >+ Crea uno</Button>
+                                    
                                 </Flex>
                             }
+                            <Flex w='100%' justify='space-between' >
+                                <InputField label="Fecha entrada" name="date_in" type='datetime-local' maxW='220px' error={error?.response.data?.date_in} />
+                                <InputField label="Fecha salida" name="date_out" type='datetime-local' maxW='220px' error={error?.response.data?.date_out} />
+                            </Flex>
+                            <InputField label="Descripción cliente" name="client_desc" type='textarea' />
                             {/* Si no hay order el status se pone por defecto en pending */}
                             {order&& 
                                 <OptionsSelectField label="Estado" name="status" choices={options?.actions?.POST?.status?.choices} error={error?.response.data?.status}/>         

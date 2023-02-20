@@ -21,7 +21,9 @@ export default function CompletedOrderCardList () {
             >Completadas (2)</Text>
             {completedorders?.length !== 0
                 ?
-                    <Flex direction='column' minW='90%' >
+                    <Flex direction='column' minW='90%' 
+                    sx={{ flexGrow: 2, overflowY: "auto", height: '75vh' }}
+                    >
                         {completedorders?.map((order) => (
                             <CompletedOrderCard key={order.id} order={order} />
                         ))}
