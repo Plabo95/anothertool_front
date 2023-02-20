@@ -23,7 +23,7 @@ export default function LatestOrderCardList () {
                 >Últimas 5 órdenes</Text>
                 <Button variant='primary' onClick={()=>onOpen()} >+ Nueva</Button>
             </Flex>
-            {latestorders.length !== 0
+            {latestorders?.length !== 0
                 ?
                     <Flex direction='column' minW='90%' >
                         {latestorders?.map((order) => (

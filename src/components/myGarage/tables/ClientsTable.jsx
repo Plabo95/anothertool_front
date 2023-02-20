@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import {useToast, Flex, Button, Text} from '@chakra-ui/react'
-import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
+import {useToast, useDisclosure, Flex, Button, Text} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
 //comps
 import ClientForm from '../forms/ClientForm';
@@ -115,19 +114,8 @@ export default function ClientsTable(){
             <Text>
                 Cargando...
             </Text>
-        }
-        <Drawer
-        isOpen={isOpen}
-        placement='right'
-        onClose={onClose}
-        >
-            <DrawerOverlay />
-            <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>{client?'Editar':'Crear'} Cliente</DrawerHeader>                
-            <ClientForm client={client} onClose={onClose} />
-            </DrawerContent>
-        </Drawer>  
+        }  
+        <ClientForm client={client} onClose={onClose} isOpen={isOpen} />
         </>
     )
 }

@@ -11,11 +11,12 @@ export default function SelectField({label, ...props}) {
             <FormLabel> {label} </FormLabel>
             <Field
             as={Select}
+            placeholder='Selecciona uno'
             {...field} //aqui van los props de onblur, on change
             {...props} //props que pasamos como placeholder etc
             >
                 {props.choices?.map(choice=>
-                    <option key={choice.id} value={choice.id}> {choice.plate} </option>
+                    <option key={choice.id} value={choice.id}> {choice.plate} {choice.name} </option>
                 )}
                 {props.choices.length===0&&
                     <option>No hay opciones disponibles</option>

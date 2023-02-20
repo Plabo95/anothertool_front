@@ -1,5 +1,5 @@
 import { Button, useToast, Flex,VStack, Text} from '@chakra-ui/react'
-import {DrawerBody,DrawerFooter} from '@chakra-ui/react'
+import {DrawerBody,DrawerFooter, Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
 
 //forms validation
 import * as Yup from 'yup';
@@ -11,7 +11,7 @@ import {useAuthHeader} from 'react-auth-kit'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createUpdateClient} from '../../../api/clientsApi';
 
-export default function ClientForm({onClose, client}){
+export default function ClientForm({onClose, isOpen, client}){
     
     const toast = useToast()
     const authHeader = useAuthHeader()
@@ -28,7 +28,6 @@ export default function ClientForm({onClose, client}){
             onClose()
         },
         onError : (error)=>{
-            console.log(error)
             toast({title: error.message, description: error.code ,status:"error"})
         }
         }
@@ -65,38 +64,49 @@ export default function ClientForm({onClose, client}){
         mutate(payload);
     }
     return(
-        <Formik
-        initialValues= {initialValues}
-        validationSchema = {validationSchema}
-        onSubmit={(values)=>submit(values)}
+        <Drawer
+        isOpen={isOpen}
+        placement='right'
+        onClose={onClose}
         >
-        {formik => (
-        <>
-        <DrawerBody>        
-            <VStack as="form" >
-                <TextField label="Nombre" name="name" />
-                <TextField label="Telefono" name="phone" />
-                {error && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.phone} </Text>
-                }
-                <TextField label="Email" name="email" />
-                {error && 
-                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.email} </Text>
-                }
-            </VStack>     
-        </DrawerBody>
-        <DrawerFooter>
-          <Flex justify="right" columnGap="3" mt='3'>
-              <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
-              <Button size='sm' 
-              variant ='primary-s'
-              isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) == '{}'}
-              onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
-          </Flex>  
-        </DrawerFooter>
-        </>
-            )}
-        </Formik>
+            <DrawerOverlay />
+            <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>{client?'Editar':'Crear'} Cliente</DrawerHeader>    
+            <Formik
+            initialValues= {initialValues}
+            validationSchema = {validationSchema}
+            onSubmit={(values)=>submit(values)}
+            >
+            {formik => (
+            <>
+            <DrawerBody>        
+                <VStack as="form" >
+                    <TextField label="Nombre" name="name" />
+                    <TextField label="Telefono" name="phone" />
+                    {error && 
+                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.phone} </Text>
+                    }
+                    <TextField label="Email" name="email" />
+                    {error && 
+                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.email} </Text>
+                    }
+                </VStack>     
+            </DrawerBody>
+            <DrawerFooter>
+            <Flex justify="right" columnGap="3" mt='3'>
+                <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
+                <Button size='sm' 
+                variant ='primary-s'
+                isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) == '{}'}
+                onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
+            </Flex>  
+            </DrawerFooter>
+            </>
+                )}
+            </Formik>
+        </DrawerContent>
+    </Drawer>  
     )
 }
 

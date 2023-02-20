@@ -118,12 +118,7 @@ export default function OrderForm({isOpen, onClose, order}){
                             }
                             {/* Si no hay order el status se pone por defecto en pending */}
                             {order&& 
-                                <> 
-                                <OptionsSelectField label="Estado" name="status" choices={options?.actions?.POST?.status?.choices} />
-                                {error && 
-                                    <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.status} </Text>
-                                }
-                                </>
+                                <OptionsSelectField label="Estado" name="status" choices={options?.actions?.POST?.status?.choices} error={error?.response.data?.status}/>         
                             }
                         </Flex>     
                     </DrawerBody>

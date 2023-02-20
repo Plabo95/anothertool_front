@@ -20,7 +20,7 @@ export default function PendingOrderCardList () {
             <Text mt='1.5em'  mb='0.5em' alignSelf='start'
             fontSize='20px'
             >En curso (2)</Text>
-            {startedorders.length !== 0
+            {startedorders?.length !== 0
                 ?
                     <Flex direction='column' minW='85%'>
                         {startedorders?.map((order) => (
