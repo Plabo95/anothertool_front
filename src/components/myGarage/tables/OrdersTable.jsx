@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import {useToast, Flex, Button, Text, flexbox} from '@chakra-ui/react'
-import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
+import {useToast, Flex, Button, Text, useDisclosure} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
 import moment from 'moment'
 import 'moment/locale/es'  // without this line it didn't work
@@ -120,20 +119,8 @@ export default function OrdersTable(){
                 <Text>
                     Cargando...
                 </Text>
-            }
-            <Drawer
-            isOpen={isOpen}
-            placement='right'
-            onClose={onClose}
-            size='lg'
-            >
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerCloseButton />
-                    <DrawerHeader>{order?'Editar':'Crear'} Orden</DrawerHeader>                
-                    <OrderForm order={order} onClose={onClose} />
-                </DrawerContent>
-            </Drawer>  
+            }              
+            <OrderForm  isOpen={isOpen} order={order} onClose={onClose} />
         </Flex>
     )
 }
