@@ -19,7 +19,7 @@ export default function CompletedOrderCardList () {
             <Text mt='1.5em'  mb='0.5em' alignSelf='start'
             fontSize='20px'
             >Completadas (2)</Text>
-            {completedorders
+            {completedorders.length !== 0
                 ?
                     <Flex direction='column' minW='90%' >
                         {completedorders?.map((order) => (

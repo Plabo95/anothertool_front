@@ -19,7 +19,7 @@ export default function LatestOrderCardList () {
             <Text mt='1.5em'  mb='0.5em' alignSelf='start'
             fontSize='20px'
             >Últimas 5 órdenes</Text>
-            {latestorders
+            {latestorders.length !== 0
                 ?
                     <Flex direction='column' minW='90%' >
                         {latestorders?.map((order) => (
@@ -27,7 +27,7 @@ export default function LatestOrderCardList () {
                         ))}
                     </Flex>
                 :
-                    <Text> Todavía no hay órdenes</Text>
+                    <Text color='black'> Todavía no hay órdenes</Text>
                 }
         </Flex>
     )
