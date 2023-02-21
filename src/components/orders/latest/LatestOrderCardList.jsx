@@ -15,6 +15,8 @@ export default function LatestOrderCardList () {
         queryKey: ['latestorders'],
         queryFn: () => getLatestOrders({number:'5', auth: authHeader()}),
     })
+    var ordersCount = latestorders?.length
+
     return(
         <Flex w='30%' direction='column'  align='center' bg='white' rounded='xl' px='1em'>         
             <Flex justify='space-between' align='center'>
@@ -23,7 +25,7 @@ export default function LatestOrderCardList () {
                 >Últimas 5 órdenes</Text>
                 <Button variant='primary' onClick={()=>onOpen()} >+ Nueva</Button>
             </Flex>
-            {latestorders?.length !== 0
+            {ordersCount !== 0
                 ?
                     <Flex direction='column' minW='90%' >
                         {latestorders?.map((order) => (

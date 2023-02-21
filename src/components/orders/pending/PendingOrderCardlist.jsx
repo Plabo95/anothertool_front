@@ -14,13 +14,14 @@ export default function PendingOrderCardlist () {
         queryKey: ['pendingorders'],
         queryFn: () => getAllOrders({filter:'pending', auth: authHeader()}),
     })
+    var ordersCount = pendingorders?.length
 
     return(
         <Flex w='30%' direction='column'  align='center' bg='white' rounded='xl' px='1em'>
             <Text mt='1.5em'  mb='0.5em' alignSelf='start'
             fontSize='20px'
-            >Pendientes (2)</Text>
-            {pendingorders?.length !== 0
+            >Pendientes ({ordersCount})</Text>
+            {ordersCount !== 0
                 ?
                     <Flex direction='column' minW='90%' 
                     sx={{ flexGrow: 2, overflowY: "auto", height: '75vh' }}>

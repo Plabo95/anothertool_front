@@ -14,12 +14,14 @@ export default function CompletedOrderCardList () {
         queryKey: ['completedorders'],
         queryFn: () => getAllOrders({filter:'completed', auth: authHeader()}),
     })
+    var ordersCount = completedorders?.length
+
     return(
         <Flex w='30%' direction='column'  align='center' bg='white' rounded='xl' px='1em'>
             <Text mt='1.5em'  mb='0.5em' alignSelf='start'
             fontSize='20px'
-            >Completadas (2)</Text>
-            {completedorders?.length !== 0
+            >Completadas ({ordersCount})</Text>
+            {ordersCount !== 0
                 ?
                     <Flex direction='column' minW='90%' 
                     sx={{ flexGrow: 2, overflowY: "auto", height: '75vh' }}

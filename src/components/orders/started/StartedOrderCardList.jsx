@@ -14,13 +14,14 @@ export default function PendingOrderCardList () {
         queryKey: ['startedorders'],
         queryFn: () => getAllOrders({filter:'started', auth: authHeader()}),
     })
+    var ordersCount = startedorders?.length
 
     return(
         <Flex w='30%' direction='column'  align='center' bg='white' rounded='xl' px='1em'>
             <Text mt='1.5em'  mb='0.5em' alignSelf='start'
             fontSize='20px'
-            >En curso (2)</Text>
-            {startedorders?.length !== 0
+            >En curso ({ordersCount})</Text>
+            {ordersCount !== 0
                 ?
                     <Flex direction='column' minW='90%'
                     sx={{ flexGrow: 2, overflowY: "auto", height: '75vh' }}
