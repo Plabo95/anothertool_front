@@ -4,6 +4,13 @@ import moment from 'moment';
 //comps
 import CarForm from './CarForm'
 //forms validation
+import {
+    AsyncCreatableSelect,
+    AsyncSelect,
+    CreatableSelect,
+    Select,
+  } from "chakra-react-select";
+import CarSelectField from '../../forms/CarSelectField';
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import InputField from '../../forms/InputField'
@@ -75,6 +82,25 @@ export default function OrderForm({isOpen, onClose, order}){
         }
         mutate(payload);
     }
+
+    const optionsselect = [
+        {
+          label: "Science",
+          value: "science"
+        },
+        {
+          label: "Math",
+          value: "math"
+        },
+        {
+          label: "History",
+          value: "history"
+        },
+        {
+          label: "English",
+          value: "english"
+        }
+      ];
     return(
         <>
             <CarForm isOpen={isOpenCar} onClose={onCloseCar} />
@@ -98,9 +124,11 @@ export default function OrderForm({isOpen, onClose, order}){
                     <DrawerBody>        
                         <Flex direction='column' as="form" gap='1em' >
                             <Flex align='end'>
-                                <SelectField maxW='60%' label="Coche" name="car" choices={cars} error={error?.response.data?.car} />
+                                {/* <SelectField maxW='60%' label="Coche" name="car" choices={cars} error={error?.response.data?.car} />*/} 
                                 <Button variant='primary' onClick={()=>onOpenCar()} >+ Crea uno</Button>
                             </Flex>
+                            <Select        options={optionsselect}    />
+                            <CarSelectField maxW='60%' label="Coche" name="car" choices={cars} error={error?.response.data?.car}/>
                             {cars.length===0 &&
                                 <Flex mt='1em' align='center' gap='1em'>
                                     <Text fontSize='14px' color='red' >Aún no hay coches</Text>
