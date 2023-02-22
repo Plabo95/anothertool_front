@@ -58,4 +58,3 @@ export const deleteOrder = async(payload) => {
     return response.data
 }
 
-
