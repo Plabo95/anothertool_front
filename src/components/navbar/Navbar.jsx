@@ -27,7 +27,8 @@ export default function Navbar(){
                 <NavItem icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/none' />
                 <NavItem icon={AiOutlineCalendar} title="Dashboard" slash='/dashboard' />
                 <NavItem icon={BsSticky} title="Ordenes" slash='/ordenes' />
-                <NavItem icon={BiWrench} title="Mi taller" slash='/taller' />      
+                <NavItem icon={BiWrench} title="Datos" slash='/datos' /> 
+                <NavItem icon={BiWrench} title="Taller" slash='/taller' />      
             </Flex>
 
             <Flex direction='column' gap='2em' justify='center'  align='center'  >

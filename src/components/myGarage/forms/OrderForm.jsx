@@ -4,18 +4,11 @@ import moment from 'moment';
 //comps
 import CarForm from './CarForm'
 //forms validation
-import { FormControl, FormLabel } from '@chakra-ui/react';
-import {
-    AsyncCreatableSelect,
-    AsyncSelect,
-    CreatableSelect,
-    Select,
-  } from "chakra-react-select";
+import {Select,} from "chakra-react-select";
 //import CarSelectField from '../../forms/CarSelectField';
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import InputField from '../../forms/InputField'
-import SelectField from '../../forms/SelectField'
 import OptionsSelectField from '../../forms/OptionsSelectField';
 //auth
 import {useAuthHeader} from 'react-auth-kit'
@@ -119,11 +112,11 @@ export default function OrderForm({isOpen, onClose, order}){
                             </Flex>
 
                             <Select placeholder='Selecciona' label="Coche" name="car"
-                            onChange={selectedOption =>(
-                                formik.setFieldValue("car", selectedOption.value),
-                                formik.setFieldTouched("car", true)
-                                )} 
-                            options={options2} 
+                                onChange={selectedOption =>(
+                                    formik.setFieldValue("car", selectedOption.value),
+                                    formik.setFieldTouched("car", true)
+                                    )} 
+                                options={options2} 
                             />  
 
 
