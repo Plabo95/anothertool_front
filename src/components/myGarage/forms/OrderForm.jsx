@@ -4,13 +4,14 @@ import moment from 'moment';
 //comps
 import CarForm from './CarForm'
 //forms validation
+import { FormControl, FormLabel } from '@chakra-ui/react';
 import {
     AsyncCreatableSelect,
     AsyncSelect,
     CreatableSelect,
     Select,
   } from "chakra-react-select";
-import CarSelectField from '../../forms/CarSelectField';
+//import CarSelectField from '../../forms/CarSelectField';
 import * as Yup from 'yup';
 import {Formik} from "formik";
 import InputField from '../../forms/InputField'
@@ -81,26 +82,15 @@ export default function OrderForm({isOpen, onClose, order}){
             }
         }
         mutate(payload);
+        //console.log(payload)
     }
-
-    const optionsselect = [
+    var options2 =cars?.map(car=>(
         {
-          label: "Science",
-          value: "science"
-        },
-        {
-          label: "Math",
-          value: "math"
-        },
-        {
-          label: "History",
-          value: "history"
-        },
-        {
-          label: "English",
-          value: "english"
-        }
-      ];
+            label: car.plate,
+            value: car.id,
+            variant: "outline", // The option variant overrides the global
+        })
+    )
     return(
         <>
             <CarForm isOpen={isOpenCar} onClose={onCloseCar} />
@@ -127,8 +117,16 @@ export default function OrderForm({isOpen, onClose, order}){
                                 {/* <SelectField maxW='60%' label="Coche" name="car" choices={cars} error={error?.response.data?.car} />*/} 
                                 <Button variant='primary' onClick={()=>onOpenCar()} >+ Crea uno</Button>
                             </Flex>
-                            <Select        options={optionsselect}    />
-                            <CarSelectField maxW='60%' label="Coche" name="car" choices={cars} error={error?.response.data?.car}/>
+
+                            <Select placeholder='Selecciona' label="Coche" name="car"
+                            onChange={selectedOption =>(
+                                formik.setFieldValue("car", selectedOption.value),
+                                formik.setFieldTouched("car", true)
+                                )} 
+                            options={options2} 
+                            />  
+
+
                             {cars.length===0 &&
                                 <Flex mt='1em' align='center' gap='1em'>
                                     <Text fontSize='14px' color='red' >Aún no hay coches</Text>
