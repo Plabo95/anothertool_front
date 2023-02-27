@@ -141,6 +141,24 @@ export const myTheme = extendTheme({
                         borderColor: '#F0F0F0'
                     }
                 },
+                'filter': {
+                    width: '80px',
+                    bg: '#0258FF',
+                    color: 'white',
+                    fontFamily: 'Poppins',
+                    rounded: 'none',
+                    fontWeight: '400',
+                    _hover: {
+                        // bg: "#aabcdb",
+                        // color: "#001234",
+                        bg: "#749FF2",
+                    },
+                    _active: {
+                        bg: 'white',
+                        color:'#0258FF',
+                        border: '1px solid #0258FF'
+                    }
+                },
             }
         },
     }

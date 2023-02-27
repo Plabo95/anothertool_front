@@ -5,15 +5,18 @@ export default function  OrderListFilter({period, setPeriod}){
 
     return(
         <Flex>
-            <Button size='sm' variant='primary' 
-            onClick={()=>setPeriod('day')}
-            >Hoy</Button>
-            <Button size='sm' variant='primary' 
+            <Button variant='filter' isActive={period=='day'}
+                onClick={()=>setPeriod('day')}
+                >Hoy
+            </Button>
+            <Button variant='filter' isActive={period=='week'}
             onClick={()=>setPeriod('week')}
-            >Semana</Button>
-            <Button size='sm' variant='primary' 
-            onClick={()=>setPeriod('month')}
-            >mes</Button>
+                >Semana
+            </Button>
+            <Button variant='filter' isActive={period=='month'}
+                onClick={()=>setPeriod('month')}
+                >Mes
+            </Button>
         </Flex>
     )
 }
