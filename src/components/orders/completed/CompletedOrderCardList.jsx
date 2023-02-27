@@ -1,6 +1,8 @@
 import {Flex, Text} from '@chakra-ui/react'
+import { useState } from 'react';
 //comps
 import CompletedOrderCard from './CompletedOrderCard';
+import OrderListFilter from '../OrderListFilter';
 //api
 import { useQuery } from "@tanstack/react-query"
 import { getAllOrders } from '../../../api/ordersApi';
@@ -8,11 +10,11 @@ import { getAllOrders } from '../../../api/ordersApi';
 import { useAuthHeader } from "react-auth-kit";
 
 export default function CompletedOrderCardList () {
-    
+    const [period, setPeriod] = useState('month')
     const authHeader = useAuthHeader()
     const {data:completedorders} = useQuery({
-        queryKey: ['completedorders'],
-        queryFn: () => getAllOrders({filter:'completed', auth: authHeader()}),
+        queryKey: ['completedorders',period],
+        queryFn: () => getAllOrders({filter:'completed&period='+period, auth: authHeader()}),
     })
     var ordersCount = completedorders?.length
 
@@ -21,6 +23,7 @@ export default function CompletedOrderCardList () {
             <Text mt='1.5em'  mb='0.5em' alignSelf='start'
             fontSize='20px'
             >Completadas ({ordersCount})</Text>
+            <OrderListFilter period={period} setPeriod={setPeriod} />
             {ordersCount !== 0
                 ?
                     <Flex direction='column' minW='90%' 
