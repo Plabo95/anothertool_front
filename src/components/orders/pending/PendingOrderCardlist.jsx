@@ -1,6 +1,8 @@
 import {Flex, Text} from '@chakra-ui/react'
+import { useState } from 'react';
 //comps
 import PendingOrderCard from './PendingOrderCard';
+import OrderListFilter from '../OrderListFilter';
 //api
 import { useQuery } from "@tanstack/react-query"
 import { getAllOrders } from '../../../api/ordersApi';
@@ -8,19 +10,19 @@ import { getAllOrders } from '../../../api/ordersApi';
 import { useAuthHeader } from "react-auth-kit";
 
 export default function PendingOrderCardlist () {
-    
+    const [period, setPeriod] = useState('month')
     const authHeader = useAuthHeader()
     const {data:pendingorders} = useQuery({
-        queryKey: ['pendingorders'],
-        queryFn: () => getAllOrders({filter:'pending', auth: authHeader()}),
+        queryKey: ['pendingorders',period],
+        queryFn: () => getAllOrders({filter:'pending&period='+period, auth: authHeader()}),
     })
     var ordersCount = pendingorders?.length
-
     return(
         <Flex w='30%' direction='column'  align='center' bg='white' rounded='xl' px='1em'>
             <Text mt='1.5em'  mb='0.5em' alignSelf='start'
             fontSize='20px'
             >Pendientes ({ordersCount})</Text>
+            <OrderListFilter period={period} setPeriod={setPeriod} />
             {ordersCount !== 0
                 ?
                     <Flex direction='column' minW='90%' 
