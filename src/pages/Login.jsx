@@ -21,7 +21,7 @@ export default function Login(){
     const toast = useToast()
     const signIn = useSignIn()
 
-    const {isLoading, mutate} = useMutation(
+    const {isLoading, mutate, error} = useMutation(
         ["login"],
         login,
         {
@@ -49,7 +49,6 @@ export default function Login(){
             .required('Es obligatorio'),
         email: Yup.string().email('Formato de email inválido').required('Es obligatorio'),
         });  
-
     return(
         <Flex w='100%' height='100vh' direction='column' 
             bgImage={bg}
@@ -76,12 +75,15 @@ export default function Login(){
                                 }}
                             >
                             {formik => (
-                            <Flex direction={'column'} onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" w='80%' justify='space-around' align='center' gap='3'>
-                            <InputField name="email" placeholder="Email"  />
-                            <InputField type="password" name="password" placeholder="Contraseña" />
-                            <Button mt='8' variant='primary-s' size='md'
-                            onClick={formik.handleSubmit}  isLoading={isLoading}  >
-                                Iniciar Sesión </Button> 
+                            <Flex direction='column' onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" w='80%' justify='space-around' align='center' gap='3'>
+                                <InputField name="email" placeholder="Email"  />
+                                <InputField type="password" name="password" placeholder="Contraseña" />
+                                {error?.response.data?.detail &&
+                                    <Text color='red' > {error.response.data.detail} </Text>
+                                }
+                                <Button mt='8' variant='primary-s' size='md'
+                                onClick={formik.handleSubmit}  isLoading={isLoading}  >
+                                    Iniciar Sesión </Button> 
                             </Flex>
                                 )}
                             </Formik>
