@@ -27,7 +27,7 @@ export default function OrdersTable(){
 
     const {data, isLoading} = useQuery({
         queryKey: ['orders'],
-        queryFn: () => getAllOrders(authHeader()),
+        queryFn: () => getAllOrders({auth: authHeader()}),
     })
 
     const {isLoading:ld, mutate} = useMutation(

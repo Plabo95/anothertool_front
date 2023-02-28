@@ -34,7 +34,7 @@ export default function Login(){
                 tokenType: "Bearer",
             })
             console.log(data)
-            navigate('/calendar')
+            navigate('/dashboard')
         },
         onError : (error)=>{
             toast({title: error.message, description: error.response?.data.message ,status:"error"})

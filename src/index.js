@@ -10,6 +10,7 @@ import { myTheme } from './myTheme';
 import {QueryClient,QueryClientProvider,} from '@tanstack/react-query'
 //auth
 import { AuthProvider } from 'react-auth-kit'
+import refreshApi from './api/refreshApi';
 
 /* Styles */
 import './index.css'
