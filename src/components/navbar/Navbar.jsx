@@ -13,13 +13,15 @@ import {BsSticky} from 'react-icons/bs'
 import {FaUserTie} from 'react-icons/fa';
 //images
 //auth
-import { useSignOut } from 'react-auth-kit'
+import { useSignOut, useAuthUser } from 'react-auth-kit'
 
 export default function Navbar(){
 
     const signOut = useSignOut()
     const navigate = useNavigate()
+    const auth = useAuthUser()
 
+    console.log(auth())
     return(
         <Flex w='150px' direction='column' bg='darkblue' justify='space-between' py='4em' minH='100vh'>
 
@@ -42,7 +44,7 @@ export default function Navbar(){
                 <Button variant='darkblue' py='4em' w='100%'>
                     <Flex direction='column' justify='center' align='center' gap='0.5em'>
                         <Avatar size="sm" icon={<FaUserTie />}/> 
-                        <Text color="whiteAlpha.800" fontWeight='bold' size="sm"> Romario </Text>
+                        <Text color="whiteAlpha.800" fontWeight='bold' size="sm"> {auth()?.email} </Text>
                         <Text color="whiteAlpha.800" fontSize='14px'>Jefe de taller</Text>
                     </Flex>
                 </Button>

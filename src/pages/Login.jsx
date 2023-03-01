@@ -1,5 +1,6 @@
 import { Button, Flex, Heading, Text, useToast} from '@chakra-ui/react'
 import {useNavigate} from 'react-router-dom'
+import jwt_decode from "jwt-decode";
 //images
 import bg from '../img/login-register/login_bg.jpg'
 //Components
@@ -25,15 +26,21 @@ export default function Login(){
         ["login"],
         login,
         {
-        onSuccess: (data) => {
+        onSuccess: (token) => {
+            var decoded = jwt_decode(token.access);
+            //console.log(decoded);
             toast({title: 'Login exitoso!',status:"success"})
             signIn({
-                token: data.access,
-                refresh: data.refresh,
+                token: token.access,
+                refresh: token.refresh,
+                authState:{
+                    email: decoded.email,
+                    is_staff: decoded.is_staff,
+                },
                 expiresIn: 3600,
                 tokenType: "Bearer",
             })
-            console.log(data)
+            //console.log(token)
             navigate('/dashboard')
         },
         onError : (error)=>{
