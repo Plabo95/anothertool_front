@@ -99,7 +99,7 @@ export default function OrderForm({isOpen, onClose, order}){
                     <DrawerHeader>{order?'Editar':'Crear'} orden de trabajo</DrawerHeader> 
                     <Formik
                     initialValues= {initialValues}
-                    validationSchema = {validationSchema}
+                    //validationSchema = {validationSchema}
                     onSubmit={(values)=>submit(values)}
                     >
                     {formik => (
@@ -113,11 +113,16 @@ export default function OrderForm({isOpen, onClose, order}){
 
                             <Select placeholder='Selecciona' label="Coche" name="car"
                                 onChange={selectedOption =>(
-                                    formik.setFieldValue("car", selectedOption.value),
-                                    formik.setFieldTouched("car", true)
+                                    formik.setFieldValue('car', selectedOption.value),
+                                    formik.setFieldTouched('car', true)
                                     )} 
                                 options={options2} 
-                            />  
+                            />
+                            {formik.errors?.car&&
+                                <Text color='red'>
+                                    {formik.errors.car}
+                                </Text> 
+                            }
 
 
                             {cars.length===0 &&

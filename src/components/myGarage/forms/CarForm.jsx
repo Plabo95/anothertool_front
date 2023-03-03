@@ -91,10 +91,14 @@ export default function CarForm({onClose,isOpen, car}){
                 onSubmit={(values)=>submit(values)}
                 >
                 {formik => (
+                    console.log(formik.errors),
                 <>
                 <DrawerBody>        
                     <VStack as="form" >
-                        <TextField label="Matrícula" name="plate" />
+                        <TextField label="Matrícula" name="plate"  />
+                        {formik.errors?.plate &&
+                            <Text color='red' fontSize='14px' fontWeight='bold'> {formik.errors.plate} </Text>
+                        }
                         {error && 
                             <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.plate} </Text>
                         }
