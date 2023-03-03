@@ -141,6 +141,20 @@ export const myTheme = extendTheme({
                         borderColor: '#F0F0F0'
                     }
                 },
+                'navitem': {
+                    bg: "#001234",
+                    color: 'whiteAlpha.800',
+                    fontFamily: 'Poppins',
+                    fontWeight: '400',
+                    _hover: {
+                        // bg: "#aabcdb",
+                        // color: "#001234",
+                        bg: "#0258FF",
+                    },
+                    _active: {
+                        bg: "#0258FF",
+                    }
+                },
                 'filter': {
                     width: '80px',
                     bg: '#0258FF',

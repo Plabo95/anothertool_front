@@ -21,7 +21,7 @@ export default function Workshop(){
             <Flex p='2em' w='100%' justify='space-evenly'>
                 {data && 
                 <Flex direction='column' gap='0.5em'>
-                    <Heading as='h1' mb='0.5em'> {data[0].name} </Heading>
+                    <Heading as='h1' mb='0.5em'> {data[0]?.name} </Heading>
                     <Text>{data[0]?.email}</Text>
                     <Text>{data[0]?.phone}</Text>
                     <Text>{data[0]?.address}</Text>                      
