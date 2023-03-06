@@ -3,14 +3,18 @@ import {useDisclosure } from '@chakra-ui/react'
 import moment from "moment"
 //comps
 import OrderForm from '../../myGarage/forms/OrderForm'
+import InvoiceModal from "../../invoices/InvoiceModal"
 //icons
 
 export default function StartedOrderCard({order}){
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen:isOpenOrder, onOpen:onOpenOrder, onClose:onCloseOrder } = useDisclosure()
+    const { isOpen:isOpenInvoice, onOpen:onOpenInvoice, onClose:onCloseInvoice } = useDisclosure()
 
     return(
         <>
-          <Flex direction='column' w='100%' my='0.5em' boxShadow='2px 2px 2px 1px #F4F4F9'  
+            <OrderForm  isOpen={isOpenOrder} order={order} onClose={onCloseOrder} />
+            <InvoiceModal  isOpen={isOpenInvoice} order={order} onClose={onCloseInvoice} />
+            <Flex direction='column' w='100%' my='0.5em' boxShadow='2px 2px 2px 1px #F4F4F9'  
             gap='1em' rounded='xl' justify='center' align='center' p='1em' bg='yellow.100'>
                 <Flex w='100%' justify='space-between' >
                     {/* Info column */}
@@ -45,11 +49,10 @@ export default function StartedOrderCard({order}){
                 </Flex>
                 {/* Action section */}
                 <Flex w='100%' justify='end' gap='0.5em' mt='0.5em'>
-                    <Button variant='primary' size='xs' onClick={() => {onOpen()}} >Ver</Button>
-                    <Button variant='primary' size='xs' onClick={() => {onOpen()}} >Factura</Button>
+                    <Button variant='primary' size='xs' onClick={() => {onOpenOrder()}} >Ver</Button>
+                    <Button variant='primary' size='xs' onClick={() => {onOpenInvoice()}} >Factura</Button>
                 </Flex>
             </Flex>  
-            <OrderForm  isOpen={isOpen} order={order} onClose={onClose} />
         </>
     )
 }

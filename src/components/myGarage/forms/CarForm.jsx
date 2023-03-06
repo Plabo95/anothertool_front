@@ -91,7 +91,6 @@ export default function CarForm({onClose,isOpen, car}){
                 onSubmit={(values)=>submit(values)}
                 >
                 {formik => (
-                    console.log(formik.errors),
                 <>
                 <DrawerBody>        
                     <VStack as="form" >

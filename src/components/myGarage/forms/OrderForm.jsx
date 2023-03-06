@@ -99,7 +99,7 @@ export default function OrderForm({isOpen, onClose, order}){
                     <DrawerHeader>{order?'Editar':'Crear'} orden de trabajo</DrawerHeader> 
                     <Formik
                     initialValues= {initialValues}
-                    //validationSchema = {validationSchema}
+                    validationSchema = {validationSchema}
                     onSubmit={(values)=>submit(values)}
                     >
                     {formik => (
