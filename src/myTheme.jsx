@@ -156,9 +156,10 @@ export const myTheme = extendTheme({
                     }
                 },
                 'filter': {
-                    width: '80px',
                     bg: '#0258FF',
+                    p: '0.2em',
                     color: 'white',
+                    fontSize: '14px',
                     fontFamily: 'Poppins',
                     rounded: 'none',
                     fontWeight: '400',

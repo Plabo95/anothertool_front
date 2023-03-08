@@ -20,10 +20,13 @@ export default function CompletedOrderCardList () {
 
     return(
         <Flex w='30%' direction='column'  align='center' bg='white' rounded='xl' px='1em'>
-            <Text mt='1.5em'  mb='0.5em' alignSelf='start'
-            fontSize='20px'
-            >Completadas ({ordersCount})</Text>
-            <OrderListFilter period={period} setPeriod={setPeriod} />
+            
+            <Flex align='center' justify='space-between'w='100%' mt='1.5em'  mb='1em' >
+                <Text alignSelf='start'
+                fontSize='20px'
+                >Completadas ({ordersCount})</Text>
+                <OrderListFilter period={period} setPeriod={setPeriod} />
+            </Flex>
             {ordersCount !== 0
                 ?
                     <Flex direction='column' minW='90%' 
