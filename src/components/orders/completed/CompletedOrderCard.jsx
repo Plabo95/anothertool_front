@@ -3,7 +3,7 @@ import {useDisclosure } from '@chakra-ui/react'
 import moment from "moment"
 //comps
 import OrderForm from '../../myGarage/forms/OrderForm'
-import InvoiceModal from "../../invoices/InvoiceModal"
+import InvoiceModal from "../../invoices/form/InvoiceModal"
 //icons
 
 export default function StartedOrderCard({order}){
