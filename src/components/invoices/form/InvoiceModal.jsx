@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {Text,Flex,Button,Modal,ModalOverlay,ModalContent,ModalHeader,ModalBody,ModalCloseButton,} from '@chakra-ui/react'
+import {useToast, Text,Flex,Button,Modal,ModalOverlay,ModalContent,ModalHeader,ModalBody,ModalCloseButton,} from '@chakra-ui/react'
 import moment from 'moment';
 //comps
 import InvoiceItemRow from './InvoiceItemRow';
@@ -9,20 +9,37 @@ import {Formik, FieldArray} from "formik";
 import SelectField from '../../forms/SelectField';
 import InputField from '../../forms/InputField';
 //api
-import {useQuery } from '@tanstack/react-query';
+import {useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAllClients } from '../../../api/clientsApi';
-import { getInvoiceOptions } from '../../../api/invoicesApi';
+import { getInvoiceOptions, createUpdateInvoice } from '../../../api/invoicesApi';
 //auth
 import {useAuthHeader} from 'react-auth-kit'
 
 export default function InvoiceModal({order, isOpen, onClose}){
 
     const authHeader = useAuthHeader()
+    const QueryClient = useQueryClient()
+    const toast = useToast()
+
     const [subtotal, setSubtotal] = useState(0)
     const [taxes, setTaxes] = useState(0)
     const [total, setTotal] = useState(0)
 
-
+    const {isLoading, mutate, error} = useMutation(
+        ["createInvoice"],
+        createUpdateInvoice,
+        {
+        onSuccess: () => {
+            toast({title: 'Coche creado con exito!',status:"success"})
+            QueryClient.invalidateQueries(["invoices"]);
+            QueryClient.refetchQueries("invoices", {force:true})
+            onClose()
+        },
+        onError : (error)=>{
+            toast({title: error.message, description: error.code ,status:"error"})
+        }
+        }
+    )
     const {data:clients} = useQuery({
         queryKey: ['clients'],
         queryFn: () => getAllClients(authHeader()),
@@ -32,24 +49,29 @@ export default function InvoiceModal({order, isOpen, onClose}){
         queryKey: ['invoiceOptions'],
         queryFn: () => getInvoiceOptions(authHeader()),
     })
-
     const initialValues = {
         date: moment().format("YYYY-MM-DD HH:MM"),
         client: order?.car.client,
         item: [
             {
             concept: '',
+            description: '',
             price: 0,
             quantity: 0,
             }
         ], 
     }
     const validationSchema = Yup.object({
-        client : Yup.string().required()
+        client : Yup.number().required()
     })
 
     const submit = (values) => {
         console.log(values)
+        const payload = {
+            data: values,
+            token: authHeader()
+        }
+        mutate(payload)
     }
     const calculateTotals = (items) => {
         setSubtotal(items.reduce((prev,curr) => prev + curr.price * curr.quantity , 0 ))
@@ -65,7 +87,6 @@ export default function InvoiceModal({order, isOpen, onClose}){
         , 0 )).toFixed(2)
         )
         setTotal(subtotal+ taxes)
-        console.log(subtotal, taxes, total)
     }
     return(
         <Modal isOpen={isOpen} onClose={onClose} size='6xl' >

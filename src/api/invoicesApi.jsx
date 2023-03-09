@@ -11,3 +11,21 @@ export const getInvoiceOptions = async(token) => {
     );
     return response.data
 }
+
+
+export const createUpdateInvoice = async(payload) => {
+    var response = {}
+    if (payload.slug){
+        response =  await invoicesApi.put('/'+payload.slug+'/' ,
+        payload.data,
+        {headers: {'Authorization': payload.token}}
+        );
+    }
+    else{
+        response =  await invoicesApi.post('/',payload.data,
+        {headers: {'Authorization': payload.token}}
+        );
+    }
+
+    return response.data
+}
