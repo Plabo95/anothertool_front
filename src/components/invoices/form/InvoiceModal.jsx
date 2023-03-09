@@ -1,25 +1,36 @@
-import {Text,Flex,Button,Modal,ModalOverlay,ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,} from '@chakra-ui/react'
+import { useState } from 'react';
+import {Text,Flex,Button,Modal,ModalOverlay,ModalContent,ModalHeader,ModalBody,ModalCloseButton,} from '@chakra-ui/react'
 import moment from 'moment';
 //comps
 import InvoiceItemRow from './InvoiceItemRow';
 //forms validation
 import * as Yup from 'yup';
-import {Formik, Field, FieldArray} from "formik";
+import {Formik, FieldArray} from "formik";
 import SelectField from '../../forms/SelectField';
 import InputField from '../../forms/InputField';
 //api
 import {useQuery } from '@tanstack/react-query';
 import { getAllClients } from '../../../api/clientsApi';
+import { getInvoiceOptions } from '../../../api/invoicesApi';
 //auth
 import {useAuthHeader} from 'react-auth-kit'
 
 export default function InvoiceModal({order, isOpen, onClose}){
 
     const authHeader = useAuthHeader()
+    const [subtotal, setSubtotal] = useState(0)
+    const [taxes, setTaxes] = useState(0)
+    const [total, setTotal] = useState(0)
+
 
     const {data:clients} = useQuery({
         queryKey: ['clients'],
         queryFn: () => getAllClients(authHeader()),
+    })
+
+    const {data:options} = useQuery({
+        queryKey: ['invoiceOptions'],
+        queryFn: () => getInvoiceOptions(authHeader()),
     })
 
     const initialValues = {
@@ -39,7 +50,22 @@ export default function InvoiceModal({order, isOpen, onClose}){
     const submit = (values) => {
         console.log(values)
     }
-
+    const calculateTotals = (items) => {
+        setSubtotal(items.reduce((prev,curr) => prev + curr.price * curr.quantity , 0 ))
+        setTaxes (items.reduce((prev,curr) => {
+            if(curr.tax=='ten'){
+                return prev + curr.price * curr.quantity * 0.1
+            }
+            else if(curr.tax=='twenty'){
+                return prev + curr.price * curr.quantity * 0.21
+            }
+            else return 0
+        } 
+        , 0 )
+        )
+        setTotal(subtotal+ taxes)
+        console.log(subtotal, taxes, total)
+    }
     return(
         <Modal isOpen={isOpen} onClose={onClose} size='6xl' >
             <ModalOverlay />
@@ -54,8 +80,9 @@ export default function InvoiceModal({order, isOpen, onClose}){
                     onSubmit={(values)=>submit(values)}
                     >
                         {formik => (
+                        calculateTotals(formik.values.item),
                         <Flex direction='column' gap = '1em'>
-                        {/* Basic data section */}
+                            {/* Basic data section */}
                             <Flex gap='1em' bg='white' p='0.5em' rounded='sm'>
                                 <Flex direction='column' >
                                     <SelectField label="Cliente" name="client" choices={clients} />
@@ -90,20 +117,26 @@ export default function InvoiceModal({order, isOpen, onClose}){
                                 {formik.values.item && formik.values.item.length > 0 ? (
                                     formik.values.item.map((item, index) => (
                                     <>
-                                    <InvoiceItemRow formik={formik} index={index}  arrayHelpers={arrayHelpers} />
+                                    <InvoiceItemRow formik={formik}
+                                        index={index} 
+                                        taxes = {options?.actions?.POST?.item?.child?.children?.tax.choices}
+                                        arrayHelpers={arrayHelpers} />
                                     </>
                                     ))
                                 ) : (
-                                  <Button type="button" onClick={() => arrayHelpers.push('')}>
-                                    {/* show this when user has removed all friends from the list */}
-                                    Add a friend
+                                  <Button onClick={() => arrayHelpers.push('')}>
+                                    Add item
                                   </Button>
                                 )}
                               </>
                             )} 
                             />
-
-                            <Button variant='primary' maxW='30%' onClick={formik.handleSubmit}>Guardar</Button>
+                            <Flex align='center' justify='space-evenly' gap='1em'>
+                                <Text>Subtotal: {subtotal} </Text>
+                                <Text>IVA: {taxes} </Text> 
+                                <Text>Total: {total} </Text>  
+                                <Button variant='primary' maxW='30%' onClick={formik.handleSubmit}>Guardar</Button>   
+                            </Flex>
                         </Flex>
                         )}
                     </Formik>

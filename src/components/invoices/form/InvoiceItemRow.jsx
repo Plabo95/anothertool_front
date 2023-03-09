@@ -2,15 +2,22 @@ import { useState, useEffect } from "react";
 import { Flex, Text, Button } from "@chakra-ui/react"
 //forms
 import InputField from '../../forms/InputField';
+import OptionsSelectField from "../../forms/OptionsSelectField";
 
-
-export default function InvoiceItemRow({formik, index, arrayHelpers}){
+export default function InvoiceItemRow({formik, index, arrayHelpers, taxes}){
     const[total, setTotal] = useState(0)
     
     useEffect(() => {
-        setTotal(formik.values.item[index].price * formik.values.item[index].quantity)
-    });
-
+        if (formik.values.item[index].tax === 'ten' ){
+            setTotal((formik.values.item[index].price * formik.values.item[index].quantity * 1.1).toFixed(2) )
+        }
+        else if (formik.values.item[index].tax === 'twenty' ){
+            setTotal((formik.values.item[index].price * formik.values.item[index].quantity * 1.21).toFixed(2))
+        }
+        else {
+            setTotal(formik.values.item[index].price * formik.values.item[index].quantity)
+        }
+    }, [formik.values.item[index]]);
     return(
         <Flex direction='column' gap='1em' bg='white' p='0.5em' rounded='sm'>
             <Flex align='end' gap='0.5em'>
@@ -27,7 +34,7 @@ export default function InvoiceItemRow({formik, index, arrayHelpers}){
                     <InputField name={`item.${index}.price`} label='Precio' type='number'/>
                 </Flex>
                 <Flex >
-                    <InputField name={`item.${index}.tax`} label='Impuestos' type='text'/>
+                    <OptionsSelectField name={`item.${index}.tax`} label='Impuestos' choices={taxes} />
                 </Flex>
                 <Flex direction='column' gap='1.5em' >
                     <Text>Total</Text>
