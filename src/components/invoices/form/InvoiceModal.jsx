@@ -39,7 +39,8 @@ export default function InvoiceModal({order, isOpen, onClose}){
         item: [
             {
             concept: '',
-            price: '',
+            price: 0,
+            quantity: 0,
             }
         ], 
     }
@@ -52,16 +53,16 @@ export default function InvoiceModal({order, isOpen, onClose}){
     }
     const calculateTotals = (items) => {
         setSubtotal(items.reduce((prev,curr) => prev + curr.price * curr.quantity , 0 ))
-        setTaxes (items.reduce((prev,curr) => {
+        setTaxes ((items.reduce((prev,curr) => {
             if(curr.tax=='ten'){
-                return prev + curr.price * curr.quantity * 0.1
+                return (prev + curr.price * curr.quantity * 0.1)
             }
             else if(curr.tax=='twenty'){
                 return prev + curr.price * curr.quantity * 0.21
             }
             else return 0
         } 
-        , 0 )
+        , 0 )).toFixed(2)
         )
         setTotal(subtotal+ taxes)
         console.log(subtotal, taxes, total)
@@ -110,7 +111,7 @@ export default function InvoiceModal({order, isOpen, onClose}){
                                 <>
                                 <Flex justify='space-between' align='center'>
                                     <Text fontSize='16px' >Items</Text>
-                                    <Button variant='primary' onClick={() => arrayHelpers.push('')}>
+                                    <Button variant='primary' onClick={() => arrayHelpers.push({quantity: 0, price: 0})}>
                                     Add +
                                     </Button>
                                 </Flex>
