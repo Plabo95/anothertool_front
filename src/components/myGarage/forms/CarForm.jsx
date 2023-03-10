@@ -5,7 +5,7 @@ import ClientForm from './ClientForm'
 //forms validation
 import * as Yup from 'yup';
 import {Formik} from "formik";
-import TextField from '../../forms/InputField'
+import InputField from '../../forms/InputField'
 import SelectField from '../../forms/SelectField';
 //auth
 import {useAuthHeader} from 'react-auth-kit'
@@ -94,23 +94,11 @@ export default function CarForm({onClose,isOpen, car}){
                 <>
                 <DrawerBody>        
                     <VStack as="form" >
-                        <TextField label="Matrícula" name="plate"  />
-                        {formik.errors?.plate &&
-                            <Text color='red' fontSize='14px' fontWeight='bold'> {formik.errors.plate} </Text>
-                        }
-                        {error && 
-                            <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.plate} </Text>
-                        }
-                        <TextField label="Marca" name="brand" />
-                        {error && 
-                            <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.brand} </Text>
-                        }
-                        <TextField label="Modelo" name="model" />
-                        {error && 
-                            <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.model} </Text>
-                        }
-                        <SelectField label="Cliente" name="client" choices={clients}error={error?.response.data?.clients} />
-                        {clients.length===0 &&
+                        <InputField  label="Matrícula" name="plate" error={error?.response?.data?.plate} />
+                        <InputField label="Marca" name="brand" error={error?.response?.data?.brand} />
+                        <InputField label="Modelo" name="model" error={error?.response?.data?.model}/>
+                        <SelectField label="Cliente" name="client" choices={clients} error={error?.response?.data?.clients} />
+                        {clients?.length===0 &&
                             <Flex mt='1em' align='center' gap='1em'>
                                 <Text fontSize='14px' color='red' >Aún no hay clientes</Text>
                                 <Button size='sm' variant='primary' onClick={()=>onOpenClient()} >+ Crea uno</Button>
@@ -123,7 +111,7 @@ export default function CarForm({onClose,isOpen, car}){
                     <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
                     <Button size='sm' 
                     variant ='primary-s'
-                    isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) == '{}'}
+                    isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) === '{}'}
                     onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
                 </Flex>  
                 </DrawerFooter>

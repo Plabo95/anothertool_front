@@ -85,10 +85,10 @@ export default function InvoiceModal({order, isOpen, onClose}){
     const calculateTotals = (items) => {
         setSubtotal(items?.reduce((prev,curr) => prev + curr.price * curr.quantity , 0 ))
         setTaxes ((items?.reduce((prev,curr) => {
-            if(curr.tax=='ten'){
+            if(curr.tax==='ten'){
                 return (prev + curr.price * curr.quantity * 0.1)
             }
-            else if(curr.tax=='twenty'){
+            else if(curr.tax==='twenty'){
                 return prev + curr.price * curr.quantity * 0.21
             }
             else return 0
@@ -142,7 +142,9 @@ export default function InvoiceModal({order, isOpen, onClose}){
                                 <>
                                 <Flex justify='space-between' align='center' mt='1em'>
                                     <Text fontSize='20px' fontWeight='bold' >Items</Text>
-                                    <Button variant='primary' onClick={() => arrayHelpers.push({quantity: 0, price: 0})} isDisabled={formik.errors.items} >
+                                    <Button variant='primary' 
+                                    onClick={() => arrayHelpers.push({quantity: 0, price: 0})} 
+                                    isDisabled={formik.errors.items | JSON.stringify(formik.touched.items) === '{}'} >
                                     Add +
                                     </Button>
                                 </Flex>
@@ -176,7 +178,11 @@ export default function InvoiceModal({order, isOpen, onClose}){
                                     <Text fontSize='20px' fontWeight='bold' >IVA: {taxes} €</Text> 
                                     <Text fontSize='20px' fontWeight='bold' >Total: {total} €</Text> 
                                 </Flex>
-                                <Button variant='primary' maxW='30%' onClick={formik.handleSubmit}>Guardar</Button>   
+                                <Button variant='primary'
+                                isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) === '{}'}
+                                onClick={formik.handleSubmit} isLoading={isLoading} >  
+                                Guardar 
+                                </Button>  
                             </Flex>
                         </Flex>
                         )}
