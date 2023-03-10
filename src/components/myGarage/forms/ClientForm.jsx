@@ -1,10 +1,10 @@
-import { Button, useToast, Flex,VStack, Text} from '@chakra-ui/react'
+import { Button, useToast, Flex,VStack} from '@chakra-ui/react'
 import {DrawerBody,DrawerFooter, Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton} from '@chakra-ui/react'
 
 //forms validation
 import * as Yup from 'yup';
 import {Formik} from "formik";
-import TextField from '../../forms/InputField'
+import InputField from '../../forms/InputField'
 //auth
 import {useAuthHeader} from 'react-auth-kit'
 //api
@@ -82,15 +82,9 @@ export default function ClientForm({onClose, isOpen, client}){
             <>
             <DrawerBody>        
                 <VStack as="form" >
-                    <TextField label="Nombre" name="name" />
-                    <TextField label="Telefono" name="phone" />
-                    {error && 
-                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.phone} </Text>
-                    }
-                    <TextField label="Email" name="email" />
-                    {error && 
-                        <Text color='red' fontSize='14px' fontWeight='bold'> {error.response.data?.email} </Text>
-                    }
+                    <InputField label="Nombre" name="name" error={error?.response?.data?.name}/>
+                    <InputField label="Telefono" name="phone" error={error?.response?.data?.phone}  />
+                    <InputField label="Email" name="email" error={error?.response?.data?.email}/>
                 </VStack>     
             </DrawerBody>
             <DrawerFooter>
@@ -98,7 +92,7 @@ export default function ClientForm({onClose, isOpen, client}){
                 <Button variant='ghost' colorScheme='red' size='sm' onClick={onClose}>Cancelar</Button>
                 <Button size='sm' 
                 variant ='primary-s'
-                isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) == '{}'}
+                isDisabled={JSON.stringify(formik.errors) !== '{}' | JSON.stringify(formik.touched) === '{}'}
                 onClick={formik.handleSubmit} isLoading={isLoading} >  Guardar </Button>
             </Flex>  
             </DrawerFooter>
