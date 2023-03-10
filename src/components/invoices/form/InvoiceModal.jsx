@@ -52,7 +52,7 @@ export default function InvoiceModal({order, isOpen, onClose}){
     const initialValues = {
         date: moment().format("YYYY-MM-DD HH:MM"),
         client: order?.car.client,
-        item: [
+        items: [
             {
             concept: '',
             description: '',
@@ -62,11 +62,20 @@ export default function InvoiceModal({order, isOpen, onClose}){
         ], 
     }
     const validationSchema = Yup.object({
-        client : Yup.number().required()
+        invoice_number: Yup.string().required('Debes añadir numero de factura'),
+        date: Yup.date().required(),
+        client : Yup.number().required('Debes seleccionar un cliente'),
+        items: Yup.array().of(
+            Yup.object().shape({
+                concept: Yup.string().required('Concepto obligatorio'),
+                price: Yup.number().required('Introduce precio'),
+                quantity: Yup.number().min(1, 'Minima cantidad es 1').required('Debes introducir cantidad'),
+                tax: Yup.string().required('Selecciona un impuesto asociado'),
+            })
+        )
     })
 
     const submit = (values) => {
-        console.log(values)
         const payload = {
             data: values,
             token: authHeader()
@@ -74,8 +83,8 @@ export default function InvoiceModal({order, isOpen, onClose}){
         mutate(payload)
     }
     const calculateTotals = (items) => {
-        setSubtotal(items.reduce((prev,curr) => prev + curr.price * curr.quantity , 0 ))
-        setTaxes ((items.reduce((prev,curr) => {
+        setSubtotal(items?.reduce((prev,curr) => prev + curr.price * curr.quantity , 0 ))
+        setTaxes ((items?.reduce((prev,curr) => {
             if(curr.tax=='ten'){
                 return (prev + curr.price * curr.quantity * 0.1)
             }
@@ -102,8 +111,9 @@ export default function InvoiceModal({order, isOpen, onClose}){
                     onSubmit={(values)=>submit(values)}
                     >
                         {formik => (
-                        calculateTotals(formik.values.item),
+                        calculateTotals(formik.values.items),
                         <Flex direction='column' gap = '1em'>
+
                             {/* Basic data section */}
                             <Flex gap='1em' bg='white' p='0.5em' rounded='sm'>
                                 <Flex direction='column' >
@@ -122,22 +132,29 @@ export default function InvoiceModal({order, isOpen, onClose}){
                                     <InputField name='expiring_date' label='Expira' type='datetime-local'/>
                                 </Flex>
                                 <Flex>
-                                    <InputField name='invoice_number' label='Nº Factura' />
+                                    <InputField name='invoice_number' label='Nº Factura' error={error?.response?.data?.invoice_number}  />
                                 </Flex>
                             </Flex>
                             
 
-                            <FieldArray name='item'
+                            <FieldArray name='items'
                             render = {arrayHelpers => (
                                 <>
-                                <Flex justify='space-between' align='center'>
-                                    <Text fontSize='16px' >Items</Text>
-                                    <Button variant='primary' onClick={() => arrayHelpers.push({quantity: 0, price: 0})}>
+                                <Flex justify='space-between' align='center' mt='1em'>
+                                    <Text fontSize='20px' fontWeight='bold' >Items</Text>
+                                    <Button variant='primary' onClick={() => arrayHelpers.push({quantity: 0, price: 0})} isDisabled={formik.errors.items} >
                                     Add +
                                     </Button>
                                 </Flex>
-                                {formik.values.item && formik.values.item.length > 0 ? (
-                                    formik.values.item.map((item, index) => (
+                                <Flex gap='8.5em' w='100%' >
+                                    <Text>Concepto</Text>
+                                    <Text>Descripción</Text>
+                                    <Text>Precio</Text>
+                                    <Text>Qty.</Text>
+                                    <Text>Impuesto</Text>
+                                </Flex>
+                                {formik.values.items && formik.values.items.length > 0 ? (
+                                    formik.values.items.map((item, index) => (
                                     <>
                                     <InvoiceItemRow formik={formik}
                                         index={index} 
@@ -153,10 +170,12 @@ export default function InvoiceModal({order, isOpen, onClose}){
                               </>
                             )} 
                             />
-                            <Flex align='center' justify='space-evenly' gap='1em'>
-                                <Text>Subtotal: {subtotal} </Text>
-                                <Text>IVA: {taxes} </Text> 
-                                <Text>Total: {total} </Text>  
+                            <Flex align='center' justify='space-between' gap='1em' py='2em'>
+                                <Flex gap='1.5em' align='center'>
+                                    <Text fontSize='20px' fontWeight='bold' >Subtotal: {subtotal} €</Text>
+                                    <Text fontSize='20px' fontWeight='bold' >IVA: {taxes} €</Text> 
+                                    <Text fontSize='20px' fontWeight='bold' >Total: {total} €</Text> 
+                                </Flex>
                                 <Button variant='primary' maxW='30%' onClick={formik.handleSubmit}>Guardar</Button>   
                             </Flex>
                         </Flex>

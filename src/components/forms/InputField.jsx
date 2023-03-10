@@ -5,9 +5,9 @@ import {Field, useField} from "formik";
 export default function InputField({label, ...props}) {
 
     //hook de formik para obtener el field data y los errors y touched de cada field
-    const [field, meta] = useField(props) 
+    const [field, meta] = useField(props)
     return(
-        <FormControl isInvalid={meta.error && meta.touched}>
+        <FormControl isInvalid={ meta.error && meta.touched || props.error?.length>0}>
             <FormLabel> {label} </FormLabel>
             <Field
             as={Input}
