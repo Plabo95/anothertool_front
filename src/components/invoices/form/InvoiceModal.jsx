@@ -62,7 +62,7 @@ export default function InvoiceModal({order, isOpen, onClose}){
         ], 
     }
     const validationSchema = Yup.object({
-        invoice_number: Yup.string().required('Debes añadir numero de factura'),
+        invoice_number: Yup.number('Debe ser un numero').required('Debes añadir numero de factura'),
         date: Yup.date().required(),
         client : Yup.number().required('Debes seleccionar un cliente'),
         items: Yup.array().of(
@@ -126,10 +126,10 @@ export default function InvoiceModal({order, isOpen, onClose}){
                                     }
                                 </Flex>
                                 <Flex >
-                                    <InputField name='date' label='Fecha' type='datetime-local'/>
+                                    <InputField name='date' label='Fecha' type='datetime-local' error={error?.response?.data?.date} />
                                 </Flex>
                                 <Flex>
-                                    <InputField name='expiring_date' label='Expira' type='datetime-local'/>
+                                    <InputField name='expiring_date' label='Expira' type='datetime-local' error={error?.response?.data?.expiring_date} />
                                 </Flex>
                                 <Flex>
                                     <InputField name='invoice_number' label='Nº Factura' error={error?.response?.data?.invoice_number}  />
