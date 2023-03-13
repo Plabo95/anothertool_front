@@ -57,7 +57,7 @@ export default function ClientsTable(){
             </Button>
             <Button
             isLoading={ld} 
-            onClick={() => mutate({slug:client.id, token:authHeader() })   }>
+            onClick={() => mutate({slug:client.id, token:authHeader() })}>
                 <BsTrash size='20px' color='red'/>
             </Button>
         </Flex>

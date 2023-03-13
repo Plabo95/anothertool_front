@@ -4,26 +4,46 @@ import {Table} from "react-chakra-pagination";
 import moment from 'moment';
 //comps
 import InvoiceStatusBadge from '../../invoices/InvoiceStatusBadge';
+import InvoiceModal from '../../invoices/form/InvoiceModal'
 //icons
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getAllInvoices } from "../../../api/invoicesApi";
+import { getAllInvoices, deleteInvoice } from "../../../api/invoicesApi";
 //auth
 import { useAuthHeader } from 'react-auth-kit';
 
 export default function InvoicesTable(){
     
     const toast = useToast()
+    const [invoice, setInvoice] = useState()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [page, setPage] = useState(1);
     const authHeader = useAuthHeader()
+    const QueryClient = useQueryClient()
 
     const {data: invoices, isLoading} = useQuery({
         queryKey: ['invoices'],
         queryFn: () => getAllInvoices(authHeader()),
     })
+
+    const {isLoading:ld, mutate} = useMutation(
+        ["deleteInvoice"],
+        deleteInvoice,
+        {
+        onSuccess: () => {
+            toast({title: 'Borrado con exito!',status:"success"})
+            QueryClient.invalidateQueries(["invoices"]);
+            QueryClient.refetchQueries("invoices", {force:true})
+            onClose()
+        },
+        onError : (error)=>{
+            toast({title: error.message, description: error.code ,status:"error"})
+        }
+        }
+    );
+
     const tableData = useMemo( 
         () => (
             invoices?.map((invoice) => ({
@@ -35,10 +55,12 @@ export default function InvoicesTable(){
                 status: <InvoiceStatusBadge status={invoice.status} />,
                 action: (
                 <Flex gap='1em' key={invoice.id}>
-                    <Button>
+                    <Button onClick={() => {setInvoice(invoice);  onOpen()}}>
                         <AiOutlineEdit size='20px' color='blue'/>
                     </Button>
-                    <Button>
+                    <Button isLoading={ld} 
+                    onClick={() => mutate({slug:invoice.id, token:authHeader() })}
+                    >
                         <BsTrash size='20px' color='red'/>
                     </Button>
                 </Flex>
@@ -96,6 +118,7 @@ export default function InvoicesTable(){
                 Cargando...
             </Text>
         }
+        <InvoiceModal invoice={invoice} onClose={onClose} isOpen={isOpen} />
         </>  
     )
 }

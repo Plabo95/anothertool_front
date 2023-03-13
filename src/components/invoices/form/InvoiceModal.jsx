@@ -15,7 +15,7 @@ import { getInvoiceOptions, createUpdateInvoice } from '../../../api/invoicesApi
 //auth
 import {useAuthHeader} from 'react-auth-kit'
 
-export default function InvoiceModal({order, isOpen, onClose}){
+export default function InvoiceModal({invoice, order, isOpen, onClose}){
 
     const authHeader = useAuthHeader()
     const QueryClient = useQueryClient()
@@ -50,8 +50,9 @@ export default function InvoiceModal({order, isOpen, onClose}){
         queryFn: () => getInvoiceOptions(authHeader()),
     })
     const initialValues = {
-        date: moment().format("YYYY-MM-DD HH:MM"),
+        date: invoice? moment(invoice.date).format("YYYY-MM-DD HH:MM"): moment().format("YYYY-MM-DD HH:MM"),
         client: order?.car.client,
+        invoice_number: invoice? invoice.invoice_number: '',
         items: [
             {
             concept: '',

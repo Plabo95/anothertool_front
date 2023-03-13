@@ -35,3 +35,10 @@ export const createUpdateInvoice = async(payload) => {
 
     return response.data
 }
+
+export const deleteInvoice = async(payload) => {
+    const response =  await invoicesApi.delete('/'+payload.slug+'/',
+    {headers: {'Authorization': payload.token}}
+    );
+    return response.data
+}
