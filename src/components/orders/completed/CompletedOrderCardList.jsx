@@ -17,7 +17,6 @@ export default function CompletedOrderCardList () {
         queryFn: () => getAllOrders({filter:'completed&period='+period, auth: authHeader()}),
     })
     var ordersCount = completedorders?.length
-
     return(
         <Flex w='30%' direction='column'  align='center' bg='white' rounded='xl' px='1em'>
             

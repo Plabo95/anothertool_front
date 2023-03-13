@@ -50,7 +50,9 @@ export default function StartedOrderCard({order}){
                 {/* Action section */}
                 <Flex w='100%' justify='end' gap='0.5em' mt='0.5em'>
                     <Button variant='primary' size='xs' onClick={() => {onOpenOrder()}} >Ver</Button>
-                    <Button variant='primary' size='xs' onClick={() => {onOpenInvoice()}} >Factura</Button>
+                    <Button variant='primary' size='xs' onClick={() => {onOpenInvoice()}} >
+                        {order.has_invoice ? 'Ver Factura' : 'Crear Factura'}
+                    </Button>
                 </Flex>
             </Flex>  
         </>

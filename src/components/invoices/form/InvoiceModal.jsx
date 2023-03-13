@@ -86,14 +86,14 @@ export default function InvoiceModal({order, isOpen, onClose}){
         setSubtotal(items?.reduce((prev,curr) => prev + curr.price * curr.quantity , 0 ))
         setTaxes ((items?.reduce((prev,curr) => {
             if(curr.tax==='ten'){
-                return (prev + curr.price * curr.quantity * 0.1)
+                return parseFloat(prev + curr.price * curr.quantity * 0.1)
             }
             else if(curr.tax==='twenty'){
                 return prev + curr.price * curr.quantity * 0.21
             }
             else return 0
         } 
-        , 0 )).toFixed(2)
+        , 0 ))
         )
         setTotal(subtotal+ taxes)
     }
@@ -160,7 +160,7 @@ export default function InvoiceModal({order, isOpen, onClose}){
                                     <>
                                     <InvoiceItemRow formik={formik}
                                         index={index} 
-                                        taxes = {options?.actions?.POST?.item?.child?.children?.tax.choices}
+                                        taxes = {options?.actions?.POST?.items?.child?.children?.tax.choices}
                                         arrayHelpers={arrayHelpers} />
                                     </>
                                     ))
