@@ -51,24 +51,20 @@ export default function InvoiceModal({invoice, order, isOpen, onClose}){
     })
     const initialValues = {
         date: invoice? moment(invoice.date).format("YYYY-MM-DD HH:MM"): moment().format("YYYY-MM-DD HH:MM"),
-        client: order?.car.client,
+        expiring_date: invoice.expiring_date? moment(invoice.expiring_date).format("YYYY-MM-DD HH:MM"): moment().add(5, 'days').format("YYYY-MM-DD HH:MM"),
+        client: invoice? invoice.client: order?.car.client,
         invoice_number: invoice? invoice.invoice_number: '',
-        items: [
-            {
-            concept: '',
-            description: '',
-            price: 0,
-            quantity: 0,
-            }
-        ], 
+        items: invoice?.items, 
     }
     const validationSchema = Yup.object({
         invoice_number: Yup.number('Debe ser un numero').required('Debes añadir numero de factura'),
         date: Yup.date().required(),
+        expiring_date: Yup.date(),
         client : Yup.number().required('Debes seleccionar un cliente'),
         items: Yup.array().of(
             Yup.object().shape({
                 concept: Yup.string().required('Concepto obligatorio'),
+                description: Yup.string(),
                 price: Yup.number().required('Introduce precio'),
                 quantity: Yup.number().min(1, 'Minima cantidad es 1').required('Debes introducir cantidad'),
                 tax: Yup.string().required('Selecciona un impuesto asociado'),
@@ -77,9 +73,21 @@ export default function InvoiceModal({invoice, order, isOpen, onClose}){
     })
 
     const submit = (values) => {
-        const payload = {
-            data: values,
-            token: authHeader()
+        var payload = {}
+        //if there's an invoice i'm updating it
+        if (invoice) {
+            payload = {
+                data: values,
+                slug: invoice.id,
+                token: authHeader()
+            }
+        }
+        //if not, i'm creating it
+        else{
+            payload = {
+                data: values,
+                token: authHeader()
+            }
         }
         mutate(payload)
     }
