@@ -7,6 +7,7 @@ import InvoiceItemRow from './InvoiceItemRow';
 import * as Yup from 'yup';
 import {Formik, FieldArray} from "formik";
 import SelectField from '../../forms/SelectField';
+import OptionsSelectField from '../../forms/OptionsSelectField';
 import InputField from '../../forms/InputField';
 //api
 import {useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -54,6 +55,7 @@ export default function InvoiceModal({invoice, order, isOpen, onClose}){
         expiring_date: invoice?.expiring_date? moment(invoice.expiring_date).format("YYYY-MM-DD HH:MM"): moment().add(5, 'days').format("YYYY-MM-DD HH:MM"),
         client: invoice? invoice.client: order?.car.client,
         invoice_number: invoice? invoice.invoice_number: '',
+        status: invoice? invoice.status: '',
         items: invoice?.items, 
     }
     const validationSchema = Yup.object({
@@ -61,6 +63,7 @@ export default function InvoiceModal({invoice, order, isOpen, onClose}){
         date: Yup.date().required(),
         expiring_date: Yup.date(),
         client : Yup.number().required('Debes seleccionar un cliente'),
+        status: Yup.string(),
         items: Yup.array().of(
             Yup.object().shape({
                 concept: Yup.string().required('Concepto obligatorio'),
@@ -146,7 +149,12 @@ export default function InvoiceModal({invoice, order, isOpen, onClose}){
                                     <InputField name='invoice_number' label='Nº Factura' error={error?.response?.data?.invoice_number}  />
                                 </Flex>
                             </Flex>
-                            
+                            {invoice && 
+                                <Flex align='center' gap='0.5em'>
+                                    <Text>Estado</Text>
+                                    <OptionsSelectField w='200px' name='status' choices={options?.actions?.POST?.status.choices} />
+                                </Flex>
+                            }
 
                             <FieldArray name='items'
                             render = {arrayHelpers => (
@@ -183,8 +191,6 @@ export default function InvoiceModal({invoice, order, isOpen, onClose}){
                               </>
                             )} 
                             />
-                            <Text color='red'>[Impuestos] {error?.response?.data?.taxes}</Text>
-                            <Text color='red'>[Total] {error?.response?.data?.total}</Text>
                             <Flex align='center' justify='space-between' gap='1em' py='2em'>
                                 <Flex gap='1.5em' align='center'>
                                     <Text fontSize='20px' fontWeight='bold' >Subtotal: {subtotal} €</Text>
