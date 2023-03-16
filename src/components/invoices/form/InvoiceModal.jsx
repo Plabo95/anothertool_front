@@ -51,7 +51,7 @@ export default function InvoiceModal({invoice, order, isOpen, onClose}){
     })
     const initialValues = {
         date: invoice? moment(invoice.date).format("YYYY-MM-DD HH:MM"): moment().format("YYYY-MM-DD HH:MM"),
-        expiring_date: invoice.expiring_date? moment(invoice.expiring_date).format("YYYY-MM-DD HH:MM"): moment().add(5, 'days').format("YYYY-MM-DD HH:MM"),
+        expiring_date: invoice?.expiring_date? moment(invoice.expiring_date).format("YYYY-MM-DD HH:MM"): moment().add(5, 'days').format("YYYY-MM-DD HH:MM"),
         client: invoice? invoice.client: order?.car.client,
         invoice_number: invoice? invoice.invoice_number: '',
         items: invoice?.items, 
@@ -89,10 +89,12 @@ export default function InvoiceModal({invoice, order, isOpen, onClose}){
                 token: authHeader()
             }
         }
+        payload.data.total = total
+        payload.data.taxes = taxes
         mutate(payload)
     }
     const calculateTotals = (items) => {
-        setSubtotal(items?.reduce((prev,curr) => prev + curr.price * curr.quantity , 0 ))
+        setSubtotal(items?.reduce((prev,curr) => prev + curr.price * curr.quantity , 0 ))?.toFixed(2)
         setTaxes ((items?.reduce((prev,curr) => {
             if(curr.tax==='ten'){
                 return parseFloat(prev + curr.price * curr.quantity * 0.1)
@@ -103,7 +105,7 @@ export default function InvoiceModal({invoice, order, isOpen, onClose}){
             else return 0
         } 
         , 0 ))
-        )
+        )?.toFixed(2)
         setTotal(subtotal+ taxes)
     }
     return(
@@ -181,6 +183,8 @@ export default function InvoiceModal({invoice, order, isOpen, onClose}){
                               </>
                             )} 
                             />
+                            <Text color='red'>[Impuestos] {error?.response?.data?.taxes}</Text>
+                            <Text color='red'>[Total] {error?.response?.data?.total}</Text>
                             <Flex align='center' justify='space-between' gap='1em' py='2em'>
                                 <Flex gap='1.5em' align='center'>
                                     <Text fontSize='20px' fontWeight='bold' >Subtotal: {subtotal} €</Text>

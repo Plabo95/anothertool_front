@@ -52,6 +52,8 @@ export default function InvoicesTable(){
                 expiring: invoice.expiring_date?
                     moment(invoice.expiring_date).format('L')
                     :'Sin Fecha',
+                taxes: invoice.taxes,
+                total: invoice.total,
                 status: <InvoiceStatusBadge status={invoice.status} />,
                 action: (
                 <Flex gap='1em' key={invoice.id}>
@@ -82,6 +84,14 @@ export default function InvoicesTable(){
           {
             Header: 'Expira',
             accessor: 'expiring',
+          },
+          {
+            Header: 'IVA (€)',
+            accessor: 'taxes',
+          },
+          {
+            Header: 'Total (€)',
+            accessor: 'total',
           },
           {
             Header: 'Estado',
