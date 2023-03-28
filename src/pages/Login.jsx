@@ -1,6 +1,7 @@
 import { Button, Flex, Heading, Text, useToast} from '@chakra-ui/react'
 import {useNavigate} from 'react-router-dom'
 import jwt_decode from "jwt-decode";
+import moment from 'moment/moment';
 //images
 import bg from '../img/login-register/login_bg.jpg'
 //Components
@@ -22,25 +23,33 @@ export default function Login(){
     const toast = useToast()
     const signIn = useSignIn()
 
+    const calculateExpire = (unix) => {
+        var date1 = moment.unix(unix)
+        var date2 = moment()
+        var diff = date1.diff(date2, 'minutes');
+        return(diff)
+    }
+
     const {isLoading, mutate, error} = useMutation(
         ["login"],
         login,
         {
         onSuccess: (token) => {
-            var decoded = jwt_decode(token.access);
-            //console.log(decoded);
+            var access_decoded = jwt_decode(token.access)
+            var refresh_decoded = jwt_decode(token.refresh)
+
             toast({title: 'Login exitoso!',status:"success"})
             signIn({
                 //Acces token duration (minutes)
                 token: token.access,
-                expiresIn: 3600,
+                expiresIn: calculateExpire(access_decoded.exp),
                 tokenType: "Bearer",
                 //Refresh token data
                 refreshToken: token.refresh,
-                refreshTokenExpireIn: 1,
+                refreshTokenExpireIn: calculateExpire(refresh_decoded.exp),
                 authState:{
-                    email: decoded.email,
-                    is_staff: decoded.is_staff,
+                    email: access_decoded.email,
+                    is_staff: access_decoded.is_staff,
                 },
             })
             //console.log(token)
@@ -88,7 +97,7 @@ export default function Login(){
                             <Flex direction='column' onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" w='80%' justify='space-around' align='center' gap='3'>
                                 <InputField name="email" placeholder="Email"  />
                                 <InputField type="password" name="password" placeholder="Contraseña" />
-                                {error?.response.data?.detail &&
+                                {error?.response?.data?.detail &&
                                     <Text color='red' > {error.response.data.detail} </Text>
                                 }
                                 <Button mt='8' variant='primary-s' size='md'
