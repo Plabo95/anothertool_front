@@ -8,7 +8,7 @@ import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
 import useAuthQuery from '../../../myHooks/useAuthQuery';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAllCars, deleteCar } from '../../../api/carsApi';
 //auth
 import { useAuthHeader } from 'react-auth-kit';

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import CompletedOrderCard from './CompletedOrderCard';
 import OrderListFilter from '../OrderListFilter';
 //api
-import { useQuery } from "@tanstack/react-query"
+import useAuthQuery from '../../../myHooks/useAuthQuery';
 import { getAllOrders } from '../../../api/ordersApi';
 //auth
 import { useAuthHeader } from "react-auth-kit";
@@ -12,7 +12,7 @@ import { useAuthHeader } from "react-auth-kit";
 export default function CompletedOrderCardList () {
     const [period, setPeriod] = useState('month')
     const authHeader = useAuthHeader()
-    const {data:completedorders} = useQuery({
+    const {data:completedorders} = useAuthQuery({
         queryKey: ['completedorders',period],
         queryFn: () => getAllOrders({filter:'completed&period='+period, auth: authHeader()}),
     })

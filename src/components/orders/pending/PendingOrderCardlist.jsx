@@ -4,7 +4,7 @@ import { useState } from 'react';
 import PendingOrderCard from './PendingOrderCard';
 import OrderListFilter from '../OrderListFilter';
 //api
-import { useQuery } from "@tanstack/react-query"
+import useAuthQuery from '../../../myHooks/useAuthQuery';
 import { getAllOrders } from '../../../api/ordersApi';
 //auth
 import { useAuthHeader } from "react-auth-kit";
@@ -12,7 +12,7 @@ import { useAuthHeader } from "react-auth-kit";
 export default function PendingOrderCardlist () {
     const [period, setPeriod] = useState('month')
     const authHeader = useAuthHeader()
-    const {data:pendingorders} = useQuery({
+    const {data:pendingorders} = useAuthQuery({
         queryKey: ['pendingorders',period],
         queryFn: () => getAllOrders({filter:'pending&period='+period, auth: authHeader()}),
     })

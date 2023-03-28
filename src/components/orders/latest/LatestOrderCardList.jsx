@@ -3,7 +3,7 @@ import {Flex, Text, Button, useDisclosure} from '@chakra-ui/react'
 import LatestOrderCard from './LatestOrderCard';
 import OrderForm from '../../myGarage/forms/OrderForm';
 //api
-import { useQuery } from "@tanstack/react-query"
+import useAuthQuery from '../../../myHooks/useAuthQuery';
 import { getLatestOrders } from '../../../api/ordersApi';
 //auth
 import { useAuthHeader } from "react-auth-kit";
@@ -11,7 +11,7 @@ import { useAuthHeader } from "react-auth-kit";
 export default function LatestOrderCardList () {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const authHeader = useAuthHeader()
-    const {data:latestorders, isLoading} = useQuery({
+    const {data:latestorders, isLoading} = useAuthQuery({
         queryKey: ['latestorders'],
         queryFn: () => getLatestOrders({number:'5', auth: authHeader()}),
     })
