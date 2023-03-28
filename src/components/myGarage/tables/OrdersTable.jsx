@@ -9,6 +9,7 @@ import OrderForm from '../forms/OrderForm';
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
+import useAuthQuery from '../../../myHooks/useAuthQuery';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAllOrders, deleteOrder } from '../../../api/ordersApi';
 //auth
@@ -25,7 +26,7 @@ export default function OrdersTable(){
     const QueryClient = useQueryClient()
 
 
-    const {data, isLoading} = useQuery({
+    const {data, isLoading} = useAuthQuery({
         queryKey: ['orders'],
         queryFn: () => getAllOrders({auth: authHeader()}),
     })

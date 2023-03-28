@@ -9,6 +9,7 @@ import InvoiceModal from '../../invoices/form/InvoiceModal'
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
+import useAuthQuery from '../../../myHooks/useAuthQuery';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAllInvoices, deleteInvoice } from "../../../api/invoicesApi";
 //auth
@@ -23,7 +24,7 @@ export default function InvoicesTable(){
     const authHeader = useAuthHeader()
     const QueryClient = useQueryClient()
 
-    const {data: invoices, isLoading} = useQuery({
+    const {data: invoices, isLoading} = useAuthQuery({
         queryKey: ['invoices'],
         queryFn: () => getAllInvoices(authHeader()),
     })

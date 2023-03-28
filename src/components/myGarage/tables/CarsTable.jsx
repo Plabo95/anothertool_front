@@ -7,6 +7,7 @@ import CarForm from '../forms/CarForm';
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
+import useAuthQuery from '../../../myHooks/useAuthQuery';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAllCars, deleteCar } from '../../../api/carsApi';
 //auth
@@ -23,7 +24,7 @@ export default function ServicesTable(){
     const QueryClient = useQueryClient()
 
 
-    const {data, isLoading} = useQuery({
+    const {data, isLoading} = useAuthQuery({
         queryKey: ['cars'],
         queryFn: () => getAllCars(authHeader()),
     })

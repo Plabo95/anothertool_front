@@ -7,6 +7,7 @@ import ClientForm from '../forms/ClientForm';
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
+import useAuthQuery from '../../../myHooks/useAuthQuery';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAllClients, deleteClient } from '../../../api/clientsApi';
 //auth
@@ -23,7 +24,7 @@ export default function ClientsTable(){
     const QueryClient = useQueryClient()
 
 
-    const {data, isLoading} = useQuery({
+    const {data, isLoading} = useAuthQuery({
         queryKey: ['clients'],
         queryFn: () => getAllClients(authHeader()),
     })
