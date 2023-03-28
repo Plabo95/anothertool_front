@@ -31,14 +31,17 @@ export default function Login(){
             //console.log(decoded);
             toast({title: 'Login exitoso!',status:"success"})
             signIn({
+                //Acces token duration (minutes)
                 token: token.access,
-                refresh: token.refresh,
+                expiresIn: 3600,
+                tokenType: "Bearer",
+                //Refresh token data
+                refreshToken: token.refresh,
+                refreshTokenExpireIn: 1,
                 authState:{
                     email: decoded.email,
                     is_staff: decoded.is_staff,
                 },
-                expiresIn: 3600,
-                tokenType: "Bearer",
             })
             //console.log(token)
             navigate('/dashboard')

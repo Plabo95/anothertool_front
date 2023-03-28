@@ -8,6 +8,11 @@ export const login = async(credentials) => {
     const response =  await authApi.post('/token', credentials);
     return response.data
 }
+
+export const refresh = async(credentials) => {
+    const response =  await authApi.post('/refresh-token', credentials);
+    return response.data
+}
 export const register = async(credentials) => {
     const response =  await authApi.post('/create', credentials);
     return response.data

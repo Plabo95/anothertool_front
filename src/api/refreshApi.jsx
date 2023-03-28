@@ -1,39 +1,44 @@
 import axios from 'axios'
 import {useAuthHeader, createRefresh} from 'react-auth-kit'
 
-const refreshToken = axios.create({
-    baseURL: process.env.REACT_APP_API_URL +'user/refresh-token'
-})
+//api 
+import { refresh } from './authApi'
+import { useMutation } from "@tanstack/react-query"
+import jwt_decode from "jwt-decode";
 
 const refreshApi = createRefresh({
-    interval: 1,   // Refreshs the token in every x minutes
-    refreshApiCallback: (
-    {
-        authToken,
-        authTokenExpireAt,
-        refreshToken,
-        refreshTokenExpiresAt,
-        authUserState
+  interval: 1,   // Refreshs the token in every 10 minutes
+  refreshApiCallback: async (
+    {   // arguments
+      authToken,
+      authTokenExpireAt,
+      refreshToken,
+      refreshTokenExpiresAt,
+      authUserState
     }) => {
-    refreshToken.post('/',
-        {
-        refreshToken: refreshToken,
-        oldAuthToken: authToken
-        }
-    ).then(({data})=>{
-        return {
-        isSuccess: true,  // For successful network request isSuccess is true
-        newAuthToken: data.newAuthToken,
-        newAuthTokenExpireIn: data.newAuthTokenExpireIn
-        // You can also add new refresh token ad new user state
-        }
-    }).catch((e)=>{
-        console.error(e)
-        return{
-        isSuccess:false // For unsuccessful network request isSuccess is false
-        }
-    })
-    }
+        const {isLoading, mutate, error} = useMutation(
+            ["refresh"],
+            refresh,
+            {
+            onSuccess: (token) => {
+                var decoded = jwt_decode(token.access);
+                //console.log(decoded);
+                return {
+                    isSuccess: true,
+                    newAuthToken: token.access,
+                    newAuthTokenExpireIn: 3600,
+                    newRefreshTokenExpiresIn: 1
+                  }
+            },
+            onError : (error)=>{
+                console.error(error)
+                return {
+                  isSuccess: false
+                }            
+            }
+            }
+        );  
+  }
 })
 
 export default refreshApi

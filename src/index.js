@@ -21,6 +21,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <AuthProvider authType = {'cookie'}
     authName={'_auth'}
+    refresh={refreshApi}
     cookieDomain={window.location.hostname}
     cookieSecure={false}> 
         <QueryClientProvider client={queryClient}>
