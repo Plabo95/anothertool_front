@@ -1,5 +1,7 @@
 import { Button, Flex, Heading, Text, useToast} from '@chakra-ui/react'
 import {useNavigate} from 'react-router-dom'
+import jwt_decode from "jwt-decode";
+import moment from 'moment/moment';
 //images
 import bg from '../img/login-register/login_bg.jpg'
 //Components
@@ -7,7 +9,7 @@ import NavLoginRegister from '../components/loginRegister/NavLoginRegister';
 //validation
 import * as Yup from 'yup';
 import {Formik} from "formik";
-import TextField from '../components/forms/TextField'
+import InputField from '../components/forms/InputField'
 //api
 import { login } from '../api/authApi';
 import { useMutation } from "@tanstack/react-query"
@@ -21,20 +23,37 @@ export default function Login(){
     const toast = useToast()
     const signIn = useSignIn()
 
-    const {isLoading, mutate} = useMutation(
+    const calculateExpire = (unix) => {
+        var date1 = moment.unix(unix)
+        var date2 = moment()
+        var diff = date1.diff(date2, 'minutes');
+        return(diff)
+    }
+
+    const {isLoading, mutate, error} = useMutation(
         ["login"],
         login,
         {
-        onSuccess: (data) => {
+        onSuccess: (token) => {
+            var access_decoded = jwt_decode(token.access)
+            var refresh_decoded = jwt_decode(token.refresh)
+
             toast({title: 'Login exitoso!',status:"success"})
             signIn({
-                token: data.access,
-                refresh: data.refresh,
-                expiresIn: 3600,
+                //Acces token duration (minutes)
+                token: token.access,
+                expiresIn: calculateExpire(access_decoded.exp),
                 tokenType: "Bearer",
+                //Refresh token data
+                refreshToken: token.refresh,
+                refreshTokenExpireIn: calculateExpire(refresh_decoded.exp),
+                authState:{
+                    email: access_decoded.email,
+                    is_staff: access_decoded.is_staff,
+                },
             })
-            console.log(data)
-            navigate('/calendar')
+            //console.log(token)
+            navigate('/dashboard')
         },
         onError : (error)=>{
             toast({title: error.message, description: error.response?.data.message ,status:"error"})
@@ -49,7 +68,6 @@ export default function Login(){
             .required('Es obligatorio'),
         email: Yup.string().email('Formato de email inválido').required('Es obligatorio'),
         });  
-
     return(
         <Flex w='100%' height='100vh' direction='column' 
             bgImage={bg}
@@ -76,12 +94,15 @@ export default function Login(){
                                 }}
                             >
                             {formik => (
-                            <Flex direction={'column'} onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" w='80%' justify='space-around' align='center' gap='3'>
-                            <TextField name="email" placeholder="Email"  />
-                            <TextField type="password" name="password" placeholder="Contraseña" />
-                            <Button mt='8' variant='primary-s' size='md'
-                            onClick={formik.handleSubmit}  isLoading={isLoading}  >
-                                Iniciar Sesión </Button> 
+                            <Flex direction='column' onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" w='80%' justify='space-around' align='center' gap='3'>
+                                <InputField name="email" placeholder="Email"  />
+                                <InputField type="password" name="password" placeholder="Contraseña" />
+                                {error?.response?.data?.detail &&
+                                    <Text color='red' > {error.response.data.detail} </Text>
+                                }
+                                <Button mt='8' variant='primary-s' size='md'
+                                onClick={formik.handleSubmit}  isLoading={isLoading}  >
+                                    Iniciar Sesión </Button> 
                             </Flex>
                                 )}
                             </Formik>

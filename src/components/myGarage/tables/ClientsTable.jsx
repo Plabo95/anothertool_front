@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import {useToast, Flex, Button, Text} from '@chakra-ui/react'
-import {Drawer,DrawerHeader,DrawerOverlay,DrawerContent,DrawerCloseButton,useDisclosure} from '@chakra-ui/react'
+import {useToast, useDisclosure, Flex, Button, Text} from '@chakra-ui/react'
 import {Table} from "react-chakra-pagination";
 //comps
 import ClientForm from '../forms/ClientForm';
@@ -8,7 +7,8 @@ import ClientForm from '../forms/ClientForm';
 import {BsTrash} from 'react-icons/bs'
 import {AiOutlineEdit} from 'react-icons/ai'
 //api
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import useAuthQuery from '../../../myHooks/useAuthQuery';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAllClients, deleteClient } from '../../../api/clientsApi';
 //auth
 import { useAuthHeader } from 'react-auth-kit';
@@ -24,7 +24,7 @@ export default function ClientsTable(){
     const QueryClient = useQueryClient()
 
 
-    const {data, isLoading} = useQuery({
+    const {data, isLoading} = useAuthQuery({
         queryKey: ['clients'],
         queryFn: () => getAllClients(authHeader()),
     })
@@ -48,7 +48,8 @@ export default function ClientsTable(){
     // Formatter for each user
     const tableData = data?.map((client) => ({
         name: client.name,
-        phone: client.telf,
+        phone: client.phone,
+        email: client.email,
         moroso: client.moroso?'Si':'No',
         action: (
         <Flex gap='1em' key={client.id}>
@@ -57,7 +58,7 @@ export default function ClientsTable(){
             </Button>
             <Button
             isLoading={ld} 
-            onClick={() => mutate({slug:client.id, token:authHeader() })   }>
+            onClick={() => mutate({slug:client.id, token:authHeader() })}>
                 <BsTrash size='20px' color='red'/>
             </Button>
         </Flex>
@@ -73,6 +74,10 @@ export default function ClientsTable(){
       {
         Header: "Teléfono",
         accessor: "phone"
+      },
+      {
+        Header: "Email",
+        accessor: "email"
       },
       {
         Header: "Moroso",
@@ -110,19 +115,8 @@ export default function ClientsTable(){
             <Text>
                 Cargando...
             </Text>
-        }
-        <Drawer
-        isOpen={isOpen}
-        placement='right'
-        onClose={onClose}
-        >
-            <DrawerOverlay />
-            <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>{client?'Editar':'Crear'} Cliente</DrawerHeader>                
-            <ClientForm client={client} onClose={onClose} />
-            </DrawerContent>
-        </Drawer>  
+        }  
+        <ClientForm client={client} onClose={onClose} isOpen={isOpen} />
         </>
     )
 }

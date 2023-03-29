@@ -1,5 +1,5 @@
-import  {useState } from 'react'
-import {Flex, Divider, Avatar, Heading, Text, IconButton, Button, Box} from '@chakra-ui/react'
+import {Flex, Divider, Avatar, Text, Button } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom';
 
 //comps
 import NavItem from './NavItem';
@@ -8,42 +8,45 @@ import {MdOutlineAdminPanelSettings} from 'react-icons/md';
 import {FiLogOut} from 'react-icons/fi';
 import {AiOutlineCalendar} from 'react-icons/ai';
 import {BiWrench} from 'react-icons/bi';
-import {VscGraph} from 'react-icons/vsc';
+//import {VscGraph} from 'react-icons/vsc';
+import {BsSticky} from 'react-icons/bs'
 import {FaUserTie} from 'react-icons/fa';
 //images
-import Logo from '../../img/logos/logo_navbar.png'
 //auth
-import { useSignOut } from 'react-auth-kit'
+import { useSignOut, useAuthUser } from 'react-auth-kit'
 
 export default function Navbar(){
 
     const signOut = useSignOut()
+    const navigate = useNavigate()
+    const auth = useAuthUser()
 
     return(
-        <Flex direction='column' bg='darkblue' justify='space-between' py='4em' minH='100vh' px='2em'>
-
-            <Flex direction='column'>
-                <NavItem icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/none' />
-                <NavItem icon={AiOutlineCalendar} title="Calendario" slash='/calendar' />
-                <NavItem icon={BiWrench} title="Mi taller" slash='/taller' />      
-                <NavItem icon={VscGraph} title="Estadisticas" slash='/none' />
-            </Flex>
+        <Flex w='150px' direction='column' bg='darkblue' justify='space-between' py='4em' minH='100vh'>
 
             <Flex direction='column' gap='2em'>
-                <Divider/>
-                <Flex _hover={{bg:'darkblue'}} _focus={{bg:'darkblue'}}  gap='1em' cursor={'pointer'}>
-                    <FiLogOut style={{ background: 'none', color: 'white', fontSize: '25px', padding: '0px', _hover:{background:'none'}, _focus:{background:'none'} }}/> 
-                    <Text color="whiteAlpha.800"
-                    onClick={() => signOut()}
-                    > Cerrar sesión </Text>
-                </Flex>
-                <Flex >
-                    <Avatar size="sm" icon={<FaUserTie fontSize='1.5rem' />}/> 
-                    <Flex direction="column" ml="4"  >
-                        <Heading color="whiteAlpha.800" size="sm"> Romario </Heading>
-                        <Text color="whiteAlpha.800" >Jefe de taller</Text>
+                <NavItem icon={MdOutlineAdminPanelSettings} title="AdminPanel" slash='/none' />
+                <NavItem icon={AiOutlineCalendar} title="Dashboard" slash='/dashboard' />
+                <NavItem icon={BsSticky} title="Ordenes" slash='/ordenes' />
+                <NavItem icon={BiWrench} title="Datos" slash='/datos' /> 
+                <NavItem icon={BiWrench} title="Taller" slash='/taller' />      
+            </Flex>
+
+            <Flex direction='column' gap='2em' justify='center'  align='center'  >
+                <Divider w='100px' color='lightgray' />
+                <Button variant='darkblue' py='2em' w='100%'>
+                    <Flex direction='column' align='center' gap='0.5em' onClick={() =>{ signOut(); navigate('/')}} >
+                        <FiLogOut size='20px' />
+                        <Text fontSize='14px' color= 'whiteAlpha.800'> Signout </Text>
                     </Flex>
-                </Flex>
+                </Button>
+                <Button variant='darkblue' py='4em' w='100%'>
+                    <Flex direction='column' justify='center' align='center' gap='0.5em'>
+                        <Avatar size="sm" icon={<FaUserTie />}/> 
+                        <Text color="whiteAlpha.800" fontWeight='bold' fontSize='16px' > {auth()?.email} </Text>
+                        <Text color="whiteAlpha.800" fontSize='14px'>Jefe de taller</Text>
+                    </Flex>
+                </Button>
             </Flex>
 
         </Flex>

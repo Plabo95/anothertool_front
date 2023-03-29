@@ -10,6 +10,7 @@ import { myTheme } from './myTheme';
 import {QueryClient,QueryClientProvider,} from '@tanstack/react-query'
 //auth
 import { AuthProvider } from 'react-auth-kit'
+import refreshApi from './api/refreshApi';
 
 /* Styles */
 import './index.css'
@@ -20,6 +21,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <AuthProvider authType = {'cookie'}
     authName={'_auth'}
+    refresh={refreshApi}
     cookieDomain={window.location.hostname}
     cookieSecure={false}> 
         <QueryClientProvider client={queryClient}>

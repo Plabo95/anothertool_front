@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import bg from '../img/login-register/register_bg.jpg'
 //Components
 import NavLoginRegister from '../components/loginRegister/NavLoginRegister';
-import TextField from '../components/forms/TextField'
+import InputField from '../components/forms/InputField'
 //forms
 import * as Yup from 'yup';
 import {Formik} from "formik";
@@ -71,17 +71,17 @@ export default function Register(){
                         >
                         {formik => (
                         <Flex  onKeyDown={(e)=> {if(e.key === "Enter"){formik.handleSubmit()}}} as="form" direction={'column'} justify='space-around' gap='3'>
-                            <TextField placeholder="Correo electrónico" name="email" />
+                            <InputField placeholder="Correo electrónico" name="email" />
                             {error.email&&
                             <Text color='red' fontSize='xs' >{error.email}</Text>
                             }
-                            <TextField placeholder="Contraseña" name="password" type="password" />
+                            <InputField placeholder="Contraseña" name="password" type="password" />
                             <Flex direction={'column'} align='start'  >
                                 <Text color='gray' fontSize='xs' fontWeight='hairline'>Debe tener al menos 8 caracteres</Text>
                                 <Text color='gray' fontSize='xs' fontWeight='hairline'>No puede ser similar a tu otra información personal</Text>
                                 <Text color='gray' fontSize='xs' fontWeight='hairline'>No puede ser enteramente numérica</Text>
                             </Flex>
-                            <TextField placeholder="Repite Contraseña" name="password2" type="password" />
+                            <InputField placeholder="Repite Contraseña" name="password2" type="password" />
                             <Button variant="primary-s" size='md' mt='8' w='50%' alignSelf='center'
                             isDisabled={JSON.stringify(formik.errors) !== '{}' }
                             onClick={formik.handleSubmit} isLoading={isLoading}  loadingText='Iniciando...'>

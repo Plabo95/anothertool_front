@@ -7,8 +7,8 @@ export const myTheme = extendTheme({
     colors: {
         blue: "#0258FF", //light blue
         darkblue: "#001234", //darkblue,
-        orange: "#FF7C02", //orange
-        lightgray: "#F0F0F0",
+        brandOrange: "#FF7C02", //orange
+        lightgrey: "#F4F4F9",
 
         brand:{
             100:'#5292DE',
@@ -54,6 +54,17 @@ export const myTheme = extendTheme({
                         // bg: "#aabcdb",
                         // color: "#001234",
                         bg: "#749FF2",
+                    }
+                },
+                'darkblue': {
+                    bg: "#001234",
+                    color: 'whiteAlpha.800',
+                    fontFamily: 'Poppins',
+                    fontWeight: '400',
+                    _hover: {
+                        // bg: "#aabcdb",
+                        // color: "#001234",
+                        bg: "#0258FF",
                     }
                 },
                 'primary-s': {
@@ -128,6 +139,39 @@ export const myTheme = extendTheme({
                     _hover: {
                         bg: "#F0F0F0",
                         borderColor: '#F0F0F0'
+                    }
+                },
+                'navitem': {
+                    bg: "#001234",
+                    color: 'whiteAlpha.800',
+                    fontFamily: 'Poppins',
+                    fontWeight: '400',
+                    _hover: {
+                        // bg: "#aabcdb",
+                        // color: "#001234",
+                        bg: "#0258FF",
+                    },
+                    _active: {
+                        bg: "#0258FF",
+                    }
+                },
+                'filter': {
+                    bg: '#0258FF',
+                    p: '0.2em',
+                    color: 'white',
+                    fontSize: '14px',
+                    fontFamily: 'Poppins',
+                    rounded: 'none',
+                    fontWeight: '400',
+                    _hover: {
+                        // bg: "#aabcdb",
+                        // color: "#001234",
+                        bg: "#749FF2",
+                    },
+                    _active: {
+                        bg: 'white',
+                        color:'#0258FF',
+                        border: '1px solid #0258FF'
                     }
                 },
             }
