@@ -1,27 +1,35 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client'
+import ReactDOM from 'react-dom/client';
 import App from './App';
-import { ChakraProvider } from '@chakra-ui/react'
-import customTheme from './assets/chakraThemes/customTheme';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import { AuthProvider } from './auth/AuthContext';
-import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom';
+
+//chakra ui
+import { ChakraProvider } from '@chakra-ui/react';
+import { myTheme } from './myTheme';
+//query client
+import {QueryClient,QueryClientProvider,} from '@tanstack/react-query'
+//auth
+import { AuthProvider } from 'react-auth-kit'
+import refreshApi from './api/refreshApi';
 
 /* Styles */
 import './index.css'
 
-const rootElement = document.getElementById('root');
-const root = createRoot(rootElement);
+const queryClient = new QueryClient()
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
-  root.render(
-  <ChakraProvider theme={customTheme}>
-    <BrowserRouter>
-      <AuthProvider>
-        <App/>
-      </AuthProvider>
-    </BrowserRouter>
-  </ChakraProvider>,
+root.render(
+    <AuthProvider authType = {'cookie'}
+    authName={'_auth'}
+    refresh={refreshApi}
+    cookieDomain={window.location.hostname}
+    cookieSecure={false}> 
+        <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+                <ChakraProvider theme={myTheme}>
+                    <App />
+                </ChakraProvider>
+            </BrowserRouter>
+        </QueryClientProvider>
+  </AuthProvider>
 );
-
-serviceWorkerRegistration.register();
-

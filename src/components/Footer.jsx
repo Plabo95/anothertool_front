@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Text, Image } from "@chakra-ui/react";
 
-import imgLogo from '../assets/logo_navbar.png'
+import imgLogo from '../img/logos/logo_navbar.png'
 
 export default function Footer(){
     return(

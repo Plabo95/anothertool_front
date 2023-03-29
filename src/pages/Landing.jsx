@@ -1,53 +1,22 @@
 import {Flex, Heading, Text, Button, Image} from '@chakra-ui/react'
-import AuthContext from '../auth/AuthContext'
 import ReactTypingEffect from 'react-typing-effect';
-import {useNavigate} from 'react-router-dom'
-import { useContext, useEffect } from 'react'
-
+import { useNavigate } from 'react-router-dom';
 //images
-import gradient from '../assets/landing/gradient.jpg'
-import img1 from '../assets/landing/img1.png'
-import img2 from '../assets/landing/img2.png'
-import img3 from '../assets/landing/img3.png'
-import img4 from '../assets/landing/img4.png'
-import img5 from '../assets/landing/img5.png'
-import img6 from '../assets/landing/img6.png'
-import tick from '../assets/landing/tick.png'
-
-
+import gradient from '../img/landing/gradient.jpg'
+import img1 from '../img/landing/img1.png'
+import img2 from '../img/landing/img2.png'
+import img3 from '../img/landing/img3.png'
+import img4 from '../img/landing/img4.png'
+import img5 from '../img/landing/img5.png'
+import img6 from '../img/landing/img6.png'
+import tick from '../img/landing/tick.png'
 //components
-import NavbarLanding from '../components/Navbar/NavLanding';
+import NavbarLanding from '../components/landing/NavLanding';
 import Footer from '../components/Footer';
 
 export default function Landing(){
 
-    const {user, logoutUser} = useContext(AuthContext)
-    const navigate = useNavigate();
-
-    function getWindowDimensions() {
-        const { innerWidth: width, innerHeight: height } = window;
-        return {
-          width,
-          height
-        };
-      }
-
-    useEffect(() => {
-        console.log(getWindowDimensions())
-        if(user){
-            var now=Date.now();
-            console.log(user.exp - now)
-            if(user.exp - now > 0){
-                //console.log('Aun hay tiempo')
-                navigate('/calendar')
-            }
-            else{
-                //console.log('no time, login out..')
-                logoutUser()
-            }            
-        }
-      },[])
-
+    const navigate = useNavigate()
 
     return(
         <Flex direction='column' w='100%' bgImage={gradient} align='center'>

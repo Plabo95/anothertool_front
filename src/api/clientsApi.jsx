@@ -1,44 +1,37 @@
-import { base_url } from '../environment/global';
+import axios from "axios";
 
-const getAllClients = async (user, authTokens) => {
-    const data = await fetch(base_url+'clients/'+user.user_id,{
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ String(authTokens.access),
-        }}) 
-    return data;  
+const clientsApi = axios.create({
+    baseURL: process.env.REACT_APP_API_URL +'clients'
+})
+
+export const getAllClients = async(token) => {
+    const response =  await clientsApi.get('/', 
+    {headers: {'Authorization': token}}
+    );
+    return response.data
 }
 
-const deleteClient = async (id, user, authTokens) => {
-    const data = await fetch(base_url+'deleteclient/'+user.user_id+'/'+id, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ String(authTokens.access),
-        }}) 
-    data.noJson = true;
-    return data;
+export const createUpdateClient = async(payload) => {
+    var response = {}
+    if (payload.slug){
+        response =  await clientsApi.put('/'+payload.slug+'/' ,
+        payload.data,
+        {headers: {'Authorization': payload.token}}
+        );
+    }
+    else{
+        response =  await clientsApi.post('/',payload.data,
+        {headers: {'Authorization': payload.token}}
+        );
+    }
+
+    return response.data
+}
+export const deleteClient = async(payload) => {
+    const response =  await clientsApi.delete('/'+payload.slug+'/',
+    {headers: {'Authorization': payload.token}}
+    );
+    return response.data
 }
 
-const createClient = async (client, clientToCreate, user,authTokens) => {
-    var url=''
-    if(client === undefined){ 
-            url = base_url+'createclient'}   
-    else{   url = base_url+'updateclient/'+ user.user_id + '/' + client.id}
-    const data = await fetch(url,{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ String(authTokens.access),
-        },
-        body: JSON.stringify(clientToCreate)
-    })
-    return data;
-}
 
-export default {
-    getAllClients,
-    deleteClient,
-    createClient
-};

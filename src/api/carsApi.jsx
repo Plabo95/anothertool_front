@@ -1,49 +1,37 @@
-import {base_url} from '../environment/global';
+import axios from "axios";
 
+const carsApi = axios.create({
+    baseURL: process.env.REACT_APP_API_URL +'cars'
+})
 
-const getAllCars = async (user, authTokens)=>{
-    const data = await fetch(base_url+"cars/"+user.user_id,{
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ String(authTokens.access),
-        }
-    })   
-    return data;
+export const getAllCars = async(token) => {
+    const response =  await carsApi.get('/', 
+    {headers: {'Authorization': token}}
+    );
+    return response.data
 }
+export const createUpdateCar = async(payload) => {
+    var response = {}
 
-const deleteCar = async (id, user, authTokens) => {
-    const data = await fetch(base_url+'deletecar/'+user.user_id+'/'+id, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ String(authTokens.access),
-        }}) 
-    data.noJson = true;
-    return data;
+    if (payload.slug){
+        response =  await carsApi.put('/'+payload.slug+'/' ,
+        payload.data,
+        {headers: {'Authorization': payload.token}}
+        );
+    }
+    else{
+        response =  await carsApi.post('/',payload.data,
+        {headers: {'Authorization': payload.token}}
+        );
+    }
+
+    return response.data
 }
-
-const createCar = async (car, carToCreate, user,authTokens) => {
-    var url=''
-    if(car === undefined){ 
-            url = base_url+'createcar'}   
-    else{   url = base_url+'updatecar/'+ user.user_id + '/' + car.id}
-    const data = await fetch(url,{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ String(authTokens.access),
-        },
-        body: JSON.stringify(carToCreate)
-    })
-    return data;
+export const deleteCar = async(payload) => {
+    const response =  await carsApi.delete('/'+payload.slug+'/',
+    {headers: {'Authorization': payload.token}}
+    );
+    return response.data
 }
 
 
-
-export default {
-    getAllCars,
-    deleteCar,
-    createCar
-    
-  };
